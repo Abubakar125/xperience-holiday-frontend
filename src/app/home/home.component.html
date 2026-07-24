@@ -179,137 +179,50 @@
 
     <div class="fh-grid">
 
-      <!-- Card 1: Mauritius Family Escape -->
-      <article class="fh-card">
-        <div class="fh-card__img-wrap">
-          <img src="images/mauritius.jpg" alt="Mauritius Family Escape" class="fh-card__photo" />
-          <span class="fh-card__badge-date">27 July 2026</span>
-          <span class="fh-card__badge-type">Family Tour</span>
-          <div class="fh-card__dots">
-            <span class="fh-card__dot"></span>
-            <span class="fh-card__dot fh-card__dot--active"></span>
-            <span class="fh-card__dot"></span>
-          </div>
-        </div>
-        <div class="fh-card__body">
-          <h3 class="fh-card__title">Mauritius Family Escape</h3>
-          <div class="fh-card__meta">
-            <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
-            <span class="fh-card__location">Mauritius</span>
-            <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
-            <span class="fh-card__duration">05 Days/6 Nights</span>
-          </div>
-          <div class="fh-card__footer">
-            <a href="#" class="fh-card__book">
-              Book Now
-              <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
-            </a>
-            <div class="fh-card__price">
-              <span class="fh-card__per">per person</span>
-              <span class="fh-card__amount">AED 1,500</span>
+      @for (card of fhCards; track card.title; let ci = $index) {
+        <article class="fh-card">
+          <div class="fh-card__img-wrap">
+            <div class="fh-card__img-clip">
+              <div class="fh-card__slider-track"
+                   [style.margin-left]="'-' + (fhCardSlides[ci] * 100) + '%'">
+                @for (img of card.images; track img) {
+                  <img [src]="img" [alt]="card.title" class="fh-card__photo" />
+                }
+              </div>
+            </div>
+            <span class="fh-card__badge-date">{{ card.date }}</span>
+            <span class="fh-card__badge-type">{{ card.type }}</span>
+            <div class="fh-card__dots">
+              @for (img of card.images; track img; let si = $index) {
+                <span
+                  class="fh-card__dot"
+                  [class.fh-card__dot--active]="si === fhCardSlides[ci]"
+                  (click)="goToFhSlide(ci, si)"
+                ></span>
+              }
             </div>
           </div>
-        </div>
-      </article>
-
-      <!-- Card 2: Kenya Safari Adventure -->
-      <article class="fh-card">
-        <div class="fh-card__img-wrap">
-          <img src="images/adventure-tours.png" alt="Kenya Safari Adventure" class="fh-card__photo" />
-          <span class="fh-card__badge-date">15 Aug 2026</span>
-          <span class="fh-card__badge-type">Adventure Tour</span>
-          <div class="fh-card__dots">
-            <span class="fh-card__dot"></span>
-            <span class="fh-card__dot fh-card__dot--active"></span>
-            <span class="fh-card__dot"></span>
-          </div>
-        </div>
-        <div class="fh-card__body">
-          <h3 class="fh-card__title">Kenya Safari Adventure</h3>
-          <div class="fh-card__meta">
-            <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
-            <span class="fh-card__location">Kenya, Africa</span>
-            <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
-            <span class="fh-card__duration">07 Days/8 Nights</span>
-          </div>
-          <div class="fh-card__footer">
-            <a href="#" class="fh-card__book">
-              Book Now
-              <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
-            </a>
-            <div class="fh-card__price">
-              <span class="fh-card__per">per person</span>
-              <span class="fh-card__amount">AED 5,500</span>
+          <div class="fh-card__body">
+            <h3 class="fh-card__title">{{ card.title }}</h3>
+            <div class="fh-card__meta">
+              <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
+              <span class="fh-card__location">{{ card.location }}</span>
+              <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
+              <span class="fh-card__duration">{{ card.duration }}</span>
+            </div>
+            <div class="fh-card__footer">
+              <a href="#" class="fh-card__book">
+                Book Now
+                <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
+              </a>
+              <div class="fh-card__price">
+                <span class="fh-card__per">per person</span>
+                <span class="fh-card__amount">{{ card.price }}</span>
+              </div>
             </div>
           </div>
-        </div>
-      </article>
-
-      <!-- Card 3: Switzerland Scenic Holiday -->
-      <article class="fh-card">
-        <div class="fh-card__img-wrap">
-          <img src="images/luxury-holidays.png" alt="Switzerland Scenic Holiday" class="fh-card__photo" />
-          <span class="fh-card__badge-date">20 Sep 2026</span>
-          <span class="fh-card__badge-type">Luxury Tour</span>
-          <div class="fh-card__dots">
-            <span class="fh-card__dot"></span>
-            <span class="fh-card__dot fh-card__dot--active"></span>
-            <span class="fh-card__dot"></span>
-          </div>
-        </div>
-        <div class="fh-card__body">
-          <h3 class="fh-card__title">Switzerland Scenic Holiday</h3>
-          <div class="fh-card__meta">
-            <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
-            <span class="fh-card__location">Switzerland</span>
-            <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
-            <span class="fh-card__duration">07 Days/8 Nights</span>
-          </div>
-          <div class="fh-card__footer">
-            <a href="#" class="fh-card__book">
-              Book Now
-              <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
-            </a>
-            <div class="fh-card__price">
-              <span class="fh-card__per">per person</span>
-              <span class="fh-card__amount">AED 1,500</span>
-            </div>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 4: Maldives Honeymoon -->
-      <article class="fh-card">
-        <div class="fh-card__img-wrap">
-          <img src="images/couples-honeymoon.png" alt="Maldives Honeymoon" class="fh-card__photo" />
-          <span class="fh-card__badge-date">10 Oct 2026</span>
-          <span class="fh-card__badge-type">Honeymoon</span>
-          <div class="fh-card__dots">
-            <span class="fh-card__dot"></span>
-            <span class="fh-card__dot fh-card__dot--active"></span>
-            <span class="fh-card__dot"></span>
-          </div>
-        </div>
-        <div class="fh-card__body">
-          <h3 class="fh-card__title">Maldives Honeymoon</h3>
-          <div class="fh-card__meta">
-            <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
-            <span class="fh-card__location">Maldives</span>
-            <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
-            <span class="fh-card__duration">05 Days/6 Nights</span>
-          </div>
-          <div class="fh-card__footer">
-            <a href="#" class="fh-card__book">
-              Book Now
-              <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
-            </a>
-            <div class="fh-card__price">
-              <span class="fh-card__per">per person</span>
-              <span class="fh-card__amount">AED 1,500</span>
-            </div>
-          </div>
-        </div>
-      </article>
+        </article>
+      }
 
     </div>
   </div>

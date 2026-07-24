@@ -493,17 +493,26 @@
     padding: 10px;
   }
 
-  &__photo {
-    width: 100%;
-    height: 242px;
-    object-fit: cover;
+  &__img-clip {
+    overflow: hidden;
     border-radius: 10px;
-    display: block;
-    transition: transform 0.4s;
+    height: 242px;
   }
 
-  &:hover &__photo {
-    transform: scale(1.03);
+  &__slider-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: margin-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: margin-left;
+  }
+
+  &__photo {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   &__badge-date {

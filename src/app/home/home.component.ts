@@ -11,6 +11,52 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
+  // ── Featured Holiday cards ───────────────────────────────────
+  fhCards = [
+    {
+      images: ['images/mauritius.jpg', 'images/family-holidays.png', 'images/mauritius-beach.png'],
+      date: '27 July 2026', type: 'Family Tour',
+      title: 'Mauritius Family Escape', location: 'Mauritius',
+      duration: '05 Days/6 Nights', price: 'AED 1,500'
+    },
+    {
+      images: ['images/adventure-tours.png', 'images/group-travel.png', 'images/luxury-holidays.png'],
+      date: '15 Aug 2026', type: 'Adventure Tour',
+      title: 'Kenya Safari Adventure', location: 'Kenya, Africa',
+      duration: '07 Days/8 Nights', price: 'AED 5,500'
+    },
+    {
+      images: ['images/luxury-holidays.png', 'images/cruises.png', 'images/couples-honeymoon.png'],
+      date: '20 Sep 2026', type: 'Luxury Tour',
+      title: 'Switzerland Scenic Holiday', location: 'Switzerland',
+      duration: '07 Days/8 Nights', price: 'AED 1,500'
+    },
+    {
+      images: ['images/couples-honeymoon.png', 'images/mauritius-beach.png', 'images/family-holidays.png'],
+      date: '10 Oct 2026', type: 'Honeymoon',
+      title: 'Maldives Honeymoon', location: 'Maldives',
+      duration: '05 Days/6 Nights', price: 'AED 1,500'
+    }
+  ];
+  fhCardSlides = [0, 0, 0, 0];
+  private fhCardTimer: ReturnType<typeof setInterval> | null = null;
+
+  goToFhSlide(cardIndex: number, slideIndex: number) {
+    this.fhCardSlides[cardIndex] = slideIndex;
+  }
+
+  private startFhCardTimer() {
+    this.fhCardTimer = setInterval(() => {
+      this.fhCardSlides = this.fhCardSlides.map((slide, i) =>
+        (slide + 1) % this.fhCards[i].images.length
+      );
+    }, 3000);
+  }
+
+  private clearFhCardTimer() {
+    if (this.fhCardTimer) { clearInterval(this.fhCardTimer); this.fhCardTimer = null; }
+  }
+
   // ── Hero slider ──────────────────────────────────────────────
   heroSlides = [
     'images/main-container.png',
@@ -34,11 +80,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.startHeroTimer();
     this.startTsTimer();
+    this.startFhCardTimer();
   }
 
   ngOnDestroy() {
     this.clearHeroTimer();
     this.clearTsTimer();
+    this.clearFhCardTimer();
   }
 
   goToSlide(index: number) {
