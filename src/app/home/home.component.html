@@ -69,17 +69,23 @@
 
     </div>
 
-    <!-- ── RIGHT: hero image ── -->
+    <!-- ── RIGHT: hero image slider ── -->
     <div class="hero__right">
-      <img src="images/main-container.png" alt="Hello Summer – Hot Deals" class="hero__img" />
+      <div class="hero__slider">
+        <div class="hero__slider-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+          @for (slide of heroSlides; track slide; let i = $index) {
+            <img [src]="slide" alt="Xperienz Holidays slide {{i + 1}}" class="hero__slide-img" />
+          }
+        </div>
+      </div>
       <div class="hero__dots">
-        <span class="hero__dot hero__dot--active"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
-        <span class="hero__dot"></span>
+        @for (slide of heroSlides; track slide; let i = $index) {
+          <span
+            class="hero__dot"
+            [class.hero__dot--active]="i === currentSlide"
+            (click)="goToSlide(i)"
+          ></span>
+        }
       </div>
     </div>
 
@@ -473,45 +479,32 @@
       <p class="travel-stories__sub">Hear directly from our travellers and relive unforgettable moments from around the world.</p>
     </div>
 
-    <!-- 3 video placeholder cards -->
-    <div class="travel-stories__grid">
-
-      <div class="ts-card">
-        <button class="ts-card__play" aria-label="Play video">
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/>
-            <path d="M27 21L46 32L27 43V21Z" fill="white"/>
-          </svg>
-        </button>
+    <!-- Rolling carousel – 3 cards visible, shifts 1 card per step -->
+    <div class="travel-stories__slider">
+      <div class="travel-stories__slider-track"
+           [style.margin-left]="'calc(' + (-currentTsSlide) + ' * (100% + 32px) / 3)'">
+        @for (card of travelStoryCards; track card) {
+          <div class="ts-card">
+            <button class="ts-card__play" aria-label="Play video">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/>
+                <path d="M27 21L46 32L27 43V21Z" fill="white"/>
+              </svg>
+            </button>
+          </div>
+        }
       </div>
-
-      <div class="ts-card">
-        <button class="ts-card__play" aria-label="Play video">
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/>
-            <path d="M27 21L46 32L27 43V21Z" fill="white"/>
-          </svg>
-        </button>
-      </div>
-
-      <div class="ts-card">
-        <button class="ts-card__play" aria-label="Play video">
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/>
-            <path d="M27 21L46 32L27 43V21Z" fill="white"/>
-          </svg>
-        </button>
-      </div>
-
     </div>
 
     <!-- Slide dots -->
     <div class="travel-stories__dots">
-      <span class="ts-dot"></span>
-      <span class="ts-dot"></span>
-      <span class="ts-dot"></span>
-      <span class="ts-dot"></span>
-      <span class="ts-dot ts-dot--active"></span>
+      @for (dot of travelStoryDots; track dot; let i = $index) {
+        <span
+          class="ts-dot"
+          [class.ts-dot--active]="i === currentTsSlide"
+          (click)="goToTsSlide(i)"
+        ></span>
+      }
     </div>
 
     <!-- Bottom CTA -->
