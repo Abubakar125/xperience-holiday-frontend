@@ -1,0 +1,2366 @@
+/* ══════════════════════════════════════════════════════════════
+   XPERIENZ HOLIDAYS – App Component Styles
+   All measurements derived from the Figma design (1920 px wide).
+   ══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────
+   1. TRUST BAR  –  exact Figma values: bg #0056a6, Poppins 14px
+   ───────────────────────────────────────────────────────────── */
+.trust-bar {
+  background: #0056a6;
+  height: 40px;
+  display: flex;
+  align-items: center;
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(32px, 4.5vw, 60px);
+    padding-inline: 32px;
+    flex-wrap: nowrap;
+
+    @media (max-width: 768px) {
+      gap: 20px;
+      overflow-x: auto;
+      justify-content: flex-start;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    white-space: nowrap;
+    line-height: 20px;
+    flex-shrink: 0;
+  }
+
+  &__icon {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   2. SITE HEADER  –  exact Figma values
+      bg #fff · shadow 0 1px 10px rgba(0,0,0,.08) · h=86px
+      nav: Poppins Bold 15px #364153 · gap 20px
+      active underline: #f9a147 6px at very bottom
+      CTA: #f4a340 pill · Poppins SemiBold 14px
+   ───────────────────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
+  height: 86px;
+
+  &__inner {
+    width: 100%;
+    max-width: 1920px;
+    margin-inline: auto;
+    padding-inline: 40px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  /* ── Logo ── */
+  &__logo {
+    flex-shrink: 0;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 50px;
+      width: auto;
+      display: block;
+    }
+  }
+
+  /* ── Nav ── */
+  &__nav {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  /* ── Nav links ── */
+  &__link {
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #364153;
+    line-height: 19.5px;
+    white-space: nowrap;
+    text-decoration: none;
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #f4a340;
+    }
+
+    /* 6px amber underline at the very bottom of the header */
+    &--active {
+      color: #364153;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: #f9a147;
+        border-radius: 2px 2px 0 0;
+      }
+    }
+  }
+
+  /* ── "New Tours" badge on "Home" — floats at very top of header ── */
+  &__link--badged {
+    position: relative;
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Orange pill: top=11px, h=16px, border-radius=2px (from Figma) */
+  &__badge-pill {
+    margin-top: 11px;
+    background: #f9a147;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 16px;
+    padding: 0 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    height: 16px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* CSS downward triangle at top=27px (11+16), pointing toward "Home" */
+  &__badge-pointer {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #f9a147;
+  }
+
+  /* ── "Plan My Holiday" CTA ── */
+  &__cta {
+    flex-shrink: 0;
+    background: #f4a340;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 32px;
+    height: 40px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #e0932e;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  /* ── Mobile hamburger ── */
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: auto;
+
+    span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #364153;
+      border-radius: 2px;
+    }
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   3. HERO  –  solid #0056a6 · left text+card · right image
+   ───────────────────────────────────────────────────────────── */
+.hero {
+  background: #0056a6;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  /* ── Two-column layout  (Figma: 1036 left : 884 right in 1920px) ── */
+  &__layout {
+    display: grid;
+    grid-template-columns: 1036fr 884fr;
+    min-height: 680px;
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+
+    @media (max-width: 1100px) {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+
+  /* ── Left column ── */
+  &__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px 48px 60px 80px;
+
+    @media (max-width: 1280px) {
+      padding: 48px 32px 48px 48px;
+    }
+    @media (max-width: 1100px) {
+      padding: 48px 32px;
+    }
+    @media (max-width: 640px) {
+      padding: 32px 20px;
+    }
+  }
+
+  /* "TRUSTED BY 100,000+ TRAVELLERS" */
+  &__trust {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0 0 16px;
+  }
+
+  /* "Xperienz Holidays" + second line */
+  &__headline {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.18;
+    color: #ffffff;
+    margin: 0 0 14px;
+  }
+
+  &__headline-orange {
+    color: #f9a147;
+    display: block;
+  }
+
+  /* Body paragraph */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0 0 28px;
+    // max-width: 520px;
+  }
+
+  /* ── Search card — glassmorphic on blue bg ── */
+  &__card {
+    background: rgba(255, 255, 255, 0.14);
+    border: 0.75px solid rgba(255, 255, 255, 0.28);
+    border-radius: 24px;
+    padding: 32px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+    width: 100%;
+    max-width: 896px;
+  }
+
+  &__card-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 24px;
+  }
+
+  /* 4-column inputs grid */
+  &__inputs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+
+    @media (max-width: 800px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__label {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.66px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  &__input {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: #1a1a2e;
+    background: rgba(255, 255, 255, 0.92);
+    outline: none;
+
+    &::placeholder {
+      color: #99a1af;
+    }
+    &:focus {
+      background: #ffffff;
+    }
+  }
+
+  /* Budget pills row */
+  &__pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+
+  &__pill {
+    padding: 9px 17px;
+    border-radius: 999px;
+    border: 0.75px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.18);
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      border-color 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
+
+    &--active {
+      background: rgba(255, 255, 255, 0.32);
+      border-color: rgba(255, 255, 255, 0.6);
+      color: #ffffff;
+    }
+  }
+
+  /* Action buttons */
+  &__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__btn-explore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #0056a6;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #004a8f;
+    }
+  }
+
+  &__btn-plan {
+    background: #f9a147;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #e08f35;
+    }
+  }
+
+  /* ── Right column: image starts flush left, 80px right margin (Figma exact) ── */
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 80px 24px 0;
+
+    @media (max-width: 1280px) {
+      padding: 32px 48px 20px 0;
+    }
+    @media (max-width: 1100px) {
+      padding: 24px 20px;
+    }
+  }
+
+  &__main-img {
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    border: 0.75px solid rgba(255, 255, 255, 0.28);
+    object-fit: cover;
+    display: block;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.22);
+  }
+
+  /* ── Carousel dots — 26px below image, centered (Figma exact) ── */
+  &__dots {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 26px;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.4);
+    transition:
+      width 0.3s,
+      background 0.3s;
+
+    &--active {
+      width: 28px;
+      background: #f9a147;
+    }
+  }
+
+  /* ── Floating WhatsApp / Phone buttons ── */
+  &__floats {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__float {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    &--wa {
+      background: #25d366;
+    }
+    &--phone {
+      background: #0078b5;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. HOLIDAY FILTER – image category cards
+   ───────────────────────────────────────────────────────────── */
+.holiday-filter {
+  padding-block: 50px;
+  background: var(--color-surface);
+
+  &__cards {
+    display: flex;
+    gap: 16px;
+    margin-top: 36px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      justify-content: flex-start;
+    }
+  }
+}
+
+.hf-card {
+  flex: 0 0 auto;
+  width: 160px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2.5px solid transparent;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    transform 0.2s;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+  }
+
+  &--active {
+    border-color: var(--color-primary);
+  }
+
+  &__img {
+    height: 120px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__label {
+    display: block;
+    padding: 10px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    text-align: center;
+
+    .hf-card--active & {
+      color: var(--color-primary);
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   5. FEATURED HOLIDAYS GRID
+   ───────────────────────────────────────────────────────────── */
+.featured-holidays {
+  background: var(--color-white);
+}
+
+.fh-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 44px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fh-card {
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition:
+    box-shadow 0.3s,
+    transform 0.3s;
+
+  &:hover {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.13);
+    transform: translateY(-4px);
+  }
+
+  &__img-wrap {
+    position: relative;
+    height: 242px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+
+    &--family {
+      background: #3bab6f;
+    }
+    &--adventure {
+      background: #e05a2b;
+    }
+    &--featured {
+      top: 50px;
+      background: var(--color-primary);
+    }
+  }
+
+  &__dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.5);
+
+    &--active {
+      background: #fff;
+    }
+    &--wide {
+      width: 24px;
+      background: #fff;
+    }
+  }
+
+  &__divider-line {
+    position: absolute;
+    bottom: 0;
+    left: 16px;
+    right: 16px;
+    height: 4px;
+    background: var(--color-primary);
+    border-radius: 2px 2px 0 0;
+  }
+
+  &__body {
+    padding: 20px;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    margin: 8px 0 16px;
+  }
+
+  &__location {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  &__divider {
+    color: var(--color-muted);
+    letter-spacing: -2px;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-top: 1px solid var(--color-border);
+    padding-top: 14px;
+    margin-top: 8px;
+  }
+
+  &__book {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--color-primary-dark);
+    }
+  }
+
+  &__price {
+    text-align: right;
+  }
+
+  &__per-person {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  &__amount {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-dark);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   6. WHY TRUST US  –  bg #0056a6 · full-width · Figma node 125:1221
+      Left: heading + tags + stats · Right: 3-image mosaic
+   ───────────────────────────────────────────────────────────── */
+.why-us {
+  background: #0056a6;
+  position: relative;
+  overflow: hidden;
+  min-height: 726px;
+  margin-bottom: 24px;
+
+  /* Same grid ratio as hero (Figma: 1036 left : 884 right) */
+  &__layout {
+    display: grid;
+    grid-template-columns: 1036fr 884fr;
+    min-height: 726px;
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+
+    @media (max-width: 1400px) {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+  }
+
+  /* Left column — padded to match Figma x=92 content start */
+  &__left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 60px 80px 92px;
+
+    @media (max-width: 1280px) {
+      padding: 60px 40px 60px 48px;
+    }
+    @media (max-width: 1100px) {
+      padding: 48px 32px;
+    }
+    @media (max-width: 640px) {
+      padding: 40px 20px;
+    }
+  }
+
+  /* "Why 100,000+ Travellers Trust Xperienz" — Poppins Bold 41.6px */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(24px, 3vw, 41.6px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0 0 20px;
+  }
+
+  /* Body paragraph — Poppins Regular 16px white */
+  &__body {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #ffffff;
+    margin: 0 0 32px;
+    // max-width: 700px;
+  }
+
+  /* 8 orange pill tags in 2 rows */
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  /* Stats row — 4 columns, top border separator */
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 0.75px solid #f3f4f6;
+    padding-top: 24px;
+
+    @media (max-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  /* Right column ─────────────────────────────────────────────
+     ≥ 1400px : absolute-positioned mosaic matching Figma exactly
+     <  1400px : 2×2 responsive grid below the left text column  */
+  &__images {
+    position: relative;
+    aspect-ratio: 884 / 726;
+    align-self: center;
+
+    @media (max-width: 1400px) {
+      position: static;
+      aspect-ratio: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 32px 40px 40px;
+    }
+
+    @media (max-width: 640px) {
+      padding: 24px 20px 32px;
+      gap: 12px;
+    }
+  }
+
+  /* Images — absolute on desktop, static grid items on smaller screens */
+  &__img {
+    position: absolute;
+    display: block;
+
+    /* img-one: x=1561 y=87 w=276 h=219  →  left=525/884  top=87/726 */
+    &--one {
+      left: 59.39%;
+      top: 11.98%;
+      width: 31.22%;
+      height: 30.17%;
+      object-fit: cover;
+    }
+
+    /* img-two: x=1201 y=326 w=345 h=314  →  left=165/884  top=326/726 */
+    &--two {
+      left: 18.66%;
+      top: 44.9%;
+      width: 39.03%;
+      height: 43.25%;
+      object-fit: cover;
+    }
+
+    /* img-three: x=1566 y=326 w=271 h=314  →  left=530/884  top=326/726 */
+    &--three {
+      left: 59.95%;
+      top: 44.9%;
+      width: 30.65%;
+      height: 43.25%;
+      object-fit: cover;
+    }
+
+    /* Switch to grid-item sizing below 1400px */
+    @media (max-width: 1400px) {
+      position: static;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  /* Card — absolute on desktop, first grid cell on smaller screens */
+  &__card {
+    position: absolute;
+    left: 29.98%;
+    top: 14.05%;
+    width: 27.15%;
+    height: 28.1%;
+    object-fit: contain;
+    display: block;
+
+    @media (max-width: 1400px) {
+      position: static;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+/* Orange pill tags  –  #fff7ef bg · #f4a340 text · border rgba(244,163,64,0.25) */
+.why-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 0.75px solid rgba(244, 163, 64, 0.25);
+  background: #fff7ef;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f4a340;
+  white-space: nowrap;
+}
+
+/* Stats — white Bold 32px number, Regular 13px label */
+.why-stat {
+  text-align: center;
+  padding: 0 8px;
+
+  &__num {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(22px, 2.5vw, 32px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+  }
+
+  &__label {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   7. AIR MAURITIUS  (Figma node 125:1933)
+   bg #0056a6 · left 873fr · right 930fr (at 1920px)
+   Orange decoration rect + photo on the right
+   ───────────────────────────────────────────────────────────── */
+.air-mauritius {
+  background: #0056a6;
+  overflow: hidden;
+
+  /* Inner: max 1920px, pl=85px pr=32px from Figma, py=80px */
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 80px 32px 80px 85px;
+    display: grid;
+    grid-template-columns: 873fr 930fr;
+    align-items: center;
+
+    @media (max-width: 1100px) {
+      grid-template-columns: 1fr;
+      padding: 60px 40px;
+    }
+    @media (max-width: 640px) {
+      padding: 48px 20px;
+    }
+  }
+
+  /* Left column */
+  &__left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* "OFFICIAL PARTNER" — Poppins SemiBold 11px #f4a340 */
+  &__partner-label {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: #f4a340;
+    margin: 0;
+    line-height: 16.5px;
+  }
+
+  /* "Mauritius Made Easy" — Poppins Bold 41.6px white, mt=12px */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(28px, 3vw, 41.6px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    margin: 12px 0 0;
+  }
+
+  /* Subtitle — Poppins Regular 16px rgba(255,255,255,0.75), mt=12px */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 24px;
+    margin: 12px 0 0;
+  }
+
+  /* Feature list — flex col, gap=20px, pt=40px */
+  &__features {
+    list-style: none;
+    padding: 0;
+    margin: 40px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  /* "Discover Mauritius" CTA — #f4a340 pill, mt=40px from features */
+  &__cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 40px;
+    background: #f4a340;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 22.5px;
+    border: none;
+    border-radius: 999px;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #e0932e;
+    }
+  }
+
+  &__cta-arrow {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* ── Right column ──────────────────────────────────────────
+     Figma: right col = 930px wide × 537px tall.
+     aspect-ratio locks proportions so % heights resolve correctly
+     at every viewport. All values = figma_px / col_dimension.
+       orange bg: left=41/930  top=18/537  w=825/930  h=519/537
+       photo:     left=-25/930 top=78/537  w=836/930  h=459/537
+  */
+  &__right {
+    position: relative;
+    aspect-ratio: 930 / 537;
+    align-self: center;
+
+    @media (max-width: 1100px) {
+      display: none;
+    }
+  }
+
+  /* Orange rounded rectangle decoration */
+  &__orange {
+    position: absolute;
+    left: 4.41%; /* 41/930  */
+    top: 3.35%; /* 18/537  */
+    width: 88.71%; /* 825/930 */
+    height: 96.65%; /* 519/537 */
+    background: #f4a340;
+    border-radius: 51px;
+    pointer-events: none;
+  }
+
+  /* Mauritius photo — overlaid on orange, border-radius 48px */
+  &__photo {
+    position: absolute;
+    left: -2.69%; /* -25/930 */
+    top: 14.53%; /* 78/537  */
+    width: 89.89%; /* 836/930 */
+    height: 85.47%; /* 459/537 */
+    object-fit: cover;
+    border-radius: 48px;
+    display: block;
+  }
+}
+
+/* Feature list item */
+.am-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+
+  /* Frosted glass icon box — rgba(255,255,255,0.12), radius=14px, 40×40 */
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: block;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* Feature title — Poppins SemiBold 14px white */
+  &__title {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 21px;
+    display: block;
+  }
+
+  /* Feature description — Poppins Regular 13px rgba(255,255,255,0.6) */
+  &__desc {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 19.5px;
+    display: block;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   8. CORPORATE & MICE  (Figma node 125:1877)
+   bg #ffffff · centered header · 4-card row
+   Card: white · border #f3f4f6 0.75px · radius 24px · shadow
+   ───────────────────────────────────────────────────────────── */
+.mice {
+  background: #ffffff;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 80px 59px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* "BUSINESS TRAVEL" — Poppins SemiBold 11px #f4a340 */
+  &__label {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: #f4a340;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* "Corporate & MICE Solutions" — Poppins Bold 38.4px #1a1a2e */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.8vw, 38.4px);
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.5;
+    text-align: center;
+    margin: 12px 0 0;
+  }
+
+  /* Subtitle — Poppins Regular 16px #6a7282, max-width 512px */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #6a7282;
+    line-height: 24px;
+    text-align: center;
+    max-width: 512px;
+    margin: 12px 0 0;
+  }
+
+  /* 4-column card grid, mt=48px */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    width: 100%;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* Individual card */
+.mice-card {
+  background: #ffffff;
+  border: 0.75px solid #f3f4f6;
+  border-radius: 24px;
+  padding: 33px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  /* PNG icon — 40×40px to match Figma icon box */
+  &__icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Card title — Poppins Bold 16px #1a1a2e, mt=20px */
+  &__title {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 24px;
+    margin: 20px 0 0;
+  }
+
+  /* Card description — Poppins Regular 14px #6a7282, mt=8px */
+  &__desc {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #6a7282;
+    line-height: 22.4px;
+    margin: 8px 0 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   9. TESTIMONIALS  (Figma node 125:1665)
+   bg #0056a6 · centered header · 3 glassmorphic cards · nav
+   ───────────────────────────────────────────────────────────── */
+.testimonials {
+  background: #0056a6;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Stars + "Google Reviews" row */
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Gold stars */
+  &__stars {
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: #f9a147;
+    line-height: 1;
+  }
+
+  /* "Google Reviews" label */
+  &__platform {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 19.5px;
+  }
+
+  /* "Real Stories. Real Memories." — Poppins Bold 38.4px white */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.8vw, 38.4px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Subtitle — Poppins Regular 16px rgba(255,255,255,0.7), mt=8px */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 24px;
+    text-align: center;
+    margin: 8px 0 0;
+  }
+
+  /* 3-column grid, mt=48px */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    width: 100%;
+
+    @media (max-width: 960px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Prev / Next nav */
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+}
+
+/* Glassmorphic testimonial card */
+.testi-card {
+  background: rgba(255, 255, 255, 0.1);
+  border: 0.75px solid rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  padding: 29px;
+  display: flex;
+  flex-direction: column;
+
+  /* 5 gold stars */
+  &__stars {
+    font-size: 16px;
+    letter-spacing: 2px;
+    color: #f9a147;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  /* Quote text — Poppins Regular 14px rgba(255,255,255,0.85), mt=20px */
+  &__quote {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 22.75px;
+    margin: 20px 0 0;
+    font-style: normal;
+    flex: 1;
+  }
+
+  /* Footer: top border separator + avatar + author info, mt=20px */
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 17px;
+    border-top: 0.75px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Orange avatar circle — #f4a340, 40×40, initials Poppins Bold 12px */
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f4a340;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* Name — Poppins SemiBold 14px white */
+  &__name {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 21px;
+    display: block;
+  }
+
+  /* Trip info — Poppins Regular 12px rgba(255,255,255,0.55) */
+  &__trip {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.55);
+    line-height: 18px;
+    display: block;
+  }
+}
+
+/* Carousel nav buttons — 40px circles, white border */
+.testi-nav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 0.75px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   10. AWARDS & ACCOLADES  (Figma node 125:1821)
+   bg #ffffff · centered header · 4-card grid
+   Card: transparent bg · border 0.75px #f3f4f6 · radius 24px
+   ───────────────────────────────────────────────────────────── */
+.awards {
+  background: #ffffff;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 80px 59px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (max-width: 640px) {
+      padding: 60px 20px;
+    }
+  }
+
+  /* "Awards & Accolades" — Poppins Bold 38.4px #1a1a2e */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.8vw, 38.4px);
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Subtitle — Poppins Regular 16px #6a7282, mt=12px */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #6a7282;
+    line-height: 24px;
+    text-align: center;
+    margin: 12px 0 0;
+  }
+
+  /* 4-column card grid, mt=48px */
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+    width: 100%;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.award-card {
+  background: rgba(255, 255, 255, 0);
+  border: 0.75px solid #f3f4f6;
+  border-radius: 24px;
+  padding: 33px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  /* PNG icon — 48×48px */
+  &__icon {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  /* Card title — Poppins Bold 15px #1a1a2e, mt=16px */
+  &__title {
+    font-family: "Poppins", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 22.5px;
+    margin: 16px 0 0;
+  }
+
+  /* Year — Poppins SemiBold 12px #0056a6, mt=4px */
+  &__year {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0056a6;
+    line-height: 18px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  /* Organisation — Poppins Regular 12px #99a1af, mt=4px */
+  &__org {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: #99a1af;
+    line-height: 18px;
+    margin: 4px 0 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   11. STRATEGIC PARTNERS  (Figma node 125:1768)
+   bg #fff7ef · centered header · two chip-row groups
+   Chips: white · border #f3f4f6 0.75px · radius 16px · shadow
+   ───────────────────────────────────────────────────────────── */
+.partners {
+  background: #fff7ef;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 80px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (max-width: 640px) {
+      padding: 60px 20px;
+    }
+  }
+
+  /* "Our Strategic Partners" — Poppins Bold 38.4px #1a1a2e */
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.8vw, 38.4px);
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* Subtitle — Poppins Regular 16px #6a7282, mt=12px */
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #6a7282;
+    line-height: 24px;
+    text-align: center;
+    margin: 12px 0 0;
+  }
+
+  /* Group wrapper — first group mt=48px, hotel group mt=40px */
+  &__group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 48px;
+    width: 100%;
+
+    &--hotels {
+      margin-top: 40px;
+    }
+  }
+
+  /* "TOURISM BOARDS" / "HOTEL PARTNERS" — Poppins SemiBold 11px #f4a340 */
+  &__group-label {
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: #f4a340;
+    margin: 0;
+    text-align: center;
+    line-height: 16.5px;
+  }
+
+  /* Chip row — flex wrap centered, mt=20px below label */
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+  }
+}
+
+/* Individual chip */
+.partner-chip {
+  background: #ffffff;
+  border: 0.75px solid #f3f4f6;
+  border-radius: 16px;
+  padding: 17px 29px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+
+  /* Hotel Partners chips use muted gray text */
+  &--muted {
+    color: #6b7280;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   12. CTA BANNER  (Figma node 125:1925)
+   white section · next-plan.png as full card · woman overlaid
+   ───────────────────────────────────────────────────────────── */
+.cta-banner {
+  background: #ffffff;
+  /* Extra top padding gives the woman room to overflow above the card */
+  padding: 100px 97px 40px;
+
+  @media (max-width: 1400px) {
+    padding: 70px 40px 40px;
+  }
+  @media (max-width: 768px) {
+    padding: 56px 20px 32px;
+  }
+
+  /* Wrapper — no overflow:hidden so woman pops above the card top */
+  &__wrapper {
+    max-width: 1726px;
+    margin-inline: auto;
+    width: 100%;
+    position: relative;
+    line-height: 0;
+  }
+
+  /* Full card image — drives wrapper height naturally */
+  &__bg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 20px;
+  }
+
+  /* Woman — anchored to card bottom, head overflows above the card */
+  &__woman {
+    position: absolute;
+    left: 45%;
+    bottom: 0;
+    height: 118%;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    object-position: bottom center;
+
+    @media (max-width: 1100px) {
+      left: 45%;
+      height: 115%;
+    }
+    @media (max-width: 768px) {
+      left: 45%;
+      height: 115%;
+    }
+    @media (max-width: 500px) {
+      left: 45%;
+      height: 115%;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   13. FAQ  (Figma node 125:1002)
+   bg white · centered header · individual card items · chevron
+   ───────────────────────────────────────────────────────────── */
+.faq {
+  background: #ffffff;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 30px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (max-width: 640px) {
+      padding: 60px 20px;
+    }
+  }
+
+  &__heading {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.8vw, 38.4px);
+    font-weight: 700;
+    color: #1a1a2e;
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+  }
+
+  &__sub {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #6a7282;
+    line-height: 24px;
+    text-align: center;
+    margin: 12px 0 0;
+    max-width: 600px;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+    width: 100%;
+    max-width: 740px;
+  }
+}
+
+.faq-item {
+  background: #f3f4f6;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &[open] {
+    background: #ffffff;
+    border-color: #0056a6;
+  }
+
+  &__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__arrow-up,
+  &__arrow-down {
+    width: 12px;
+    height: 12px;
+    display: block;
+    object-fit: contain;
+  }
+
+  /* up shows when open, down shows when closed */
+  &__arrow-up {
+    display: none;
+  }
+  &__arrow-down {
+    display: block;
+  }
+
+  &[open] &__arrow-up {
+    display: block;
+  }
+  &[open] &__arrow-down {
+    display: none;
+  }
+
+  &__a {
+    padding: 0 20px 14px;
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.65;
+    color: #6a7282;
+    background: #fff;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   14. FOOTER
+   ───────────────────────────────────────────────────────────── */
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER COUNTER BAR  (Figma node 143:3)
+   bg #f9a147 · 4 stats · icon left · num+label right · dividers
+   ───────────────────────────────────────────────────────────── */
+
+.site-footer {
+  padding-top: 70px;
+}
+
+.footer-counter {
+  background: #f9a147;
+
+  &__inner {
+    max-width: 1920px;
+    margin-inline: auto;
+    width: 100%;
+    height: 154px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 200px;
+
+    @media (max-width: 1024px) {
+      padding-inline: 40px;
+    }
+    @media (max-width: 640px) {
+      height: auto;
+      padding: 32px 20px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+  }
+
+  &__item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-inline: 24px;
+
+    @media (max-width: 640px) {
+      flex: 0 1 calc(50% - 12px);
+      padding-inline: 0;
+    }
+  }
+
+  &__icon {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__num {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(26px, 2.2vw, 38px);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.1;
+  }
+
+  &__label {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
+    line-height: 1.5;
+    margin-top: 3px;
+  }
+
+  &__divider {
+    height: 72px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    flex-shrink: 0;
+
+    @media (max-width: 640px) {
+      display: none;
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER UPPER  (contact bar + body share one map background)
+   bg #00589c · map.png at 50% opacity covering both sections
+   ───────────────────────────────────────────────────────────── */
+.footer-upper {
+  background: #00589c;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 1920px);
+    background: url("/images/map.png") center center / cover no-repeat;
+    opacity: 1;
+    pointer-events: none;
+    z-index: -1;
+  }
+}
+  
+/* ─────────────────────────────────────────────────────────────
+   FOOTER CONTACT BAR  (Figma node 125:1360 — top strip)
+   4 items · icon + label + value · divider below
+   ───────────────────────────────────────────────────────────── */
+.footer-contact {
+
+  &__inner {
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
+    height: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 60px;
+
+    @media (max-width: 1200px) {
+      padding-inline: 40px;
+    }
+    @media (max-width: 768px) {
+      height: auto;
+      padding: 24px 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+  }
+
+  &__item {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding-inline: 20px;
+    // border-right: 1px solid rgba(255, 255, 255, 0.2);
+
+    &:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 768px) {
+      flex: 0 1 calc(50% - 10px);
+      border-right: none;
+    }
+  }
+
+  &__divider-row {
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
+    padding-inline: 60px;
+    box-sizing: border-box;
+
+    img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 1200px) {
+      padding-inline: 40px;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__icon-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      display: block;
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.35;
+  }
+
+  &__value {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.35;
+    margin-top: 12px;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER BODY  (Figma node 125:1360 — main grid)
+   4-col: brand + 3 link cols · bg + map handled by footer-upper
+   ───────────────────────────────────────────────────────────── */
+.footer-body {
+  &__inner {
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
+    padding: 75px 60px 105px;
+    display: grid;
+    grid-template-columns: 380px 1fr 1fr 1fr;
+    gap: 40px;
+
+    @media (max-width: 1200px) {
+      padding: 60px 40px 80px;
+      grid-template-columns: 300px 1fr 1fr 1fr;
+    }
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      padding: 40px 20px;
+    }
+  }
+}
+
+/* Brand column */
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+
+  &__logo {
+    height: 46px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  &__name {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 35px 0 0;
+    line-height: 1.4;
+  }
+
+  &__address {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 2px 0 0;
+    line-height: 1.5;
+  }
+
+  &__socials {
+    display: flex;
+    gap: 9px;
+    margin-top: 71px;
+  }
+}
+
+/* Social icon circles — orange bg, white icon */
+.footer-social {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f9a147;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  text-decoration: none;
+
+  img {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    display: block;
+  }
+
+  &:hover {
+    background: #e0932e;
+  }
+}
+
+/* Link columns */
+.footer-col {
+  &__heading {
+    font-family: "Roboto", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #ffffff;
+    margin: 0 0 35px;
+  }
+
+  &__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+
+    a {
+      font-family: "Roboto", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: #ffffff;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #f9a147;
+      }
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER BOTTOM BAR
+   bg #004a8f (slightly darker) · copyright + payment
+   ───────────────────────────────────────────────────────────── */
+.footer-bottom {
+  border-top: 1px solid #ffffff;
+
+  &__inner {
+    max-width: 1320px;
+    margin-inline: auto;
+    width: 100%;
+    height: 66px;
+    padding-inline: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    @media (max-width: 1200px) {
+      padding-inline: 40px;
+    }
+    @media (max-width: 640px) {
+      height: auto;
+      padding: 16px 20px;
+      justify-content: center;
+    }
+  }
+
+  &__copy {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  &__payment {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__payment-label {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+}
+
+.pay-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 49px;
+  height: 26px;
+  background: #ffffff;
+  border-radius: 4px;
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: 3px 5px;
+  box-sizing: border-box;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE UTILITIES
+   ───────────────────────────────────────────────────────────── */
+.text-center {
+  text-align: center;
+}
+.mt-2 {
+  margin-top: 8px;
+}
+.mt-3 {
+  margin-top: 12px;
+}
+.mt-4 {
+  margin-top: 16px;
+}
+.mt-8 {
+  margin-top: 32px;
+}
+.mt-10 {
+  margin-top: 40px;
+}
+.mb-4 {
+  margin-bottom: 16px;
+}

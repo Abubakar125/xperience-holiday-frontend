@@ -1,1 +1,156 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Global Tokens ──────────────────────────────────────────── */
+:root {
+  /* Brand colours */
+  --color-primary:        #1B6CA8;   /* deep travel blue – nav, buttons */
+  --color-primary-dark:   #145285;
+  --color-accent:         #E8A020;   /* warm amber – highlights, badges */
+  --color-accent-dark:    #C8871A;
+  --color-dark:           #1A1A2E;   /* near-black headings */
+  --color-text:           #4A4A6A;   /* body copy */
+  --color-muted:          #8A8AAA;   /* captions, labels */
+  --color-surface:        #F7F8FC;   /* section backgrounds */
+  --color-white:          #FFFFFF;
+  --color-border:         #E2E4EE;
+
+  /* Trust-bar / header strip */
+  --color-trustbar-bg:    #0056a6;
+  --color-trustbar-text:  #ffffff;
+
+  /* Typography */
+  --font-primary: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Poppins', sans-serif;
+
+  /* Sizing helpers */
+  --container-max: 1840px;
+  --section-pad-y: 80px;
+}
+
+/* ── Reset / Base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-primary);
+  color: var(--color-text);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { text-decoration: none; color: inherit; }
+
+img { display: block; max-width: 100%; }
+
+/* ── Utility: constrained container ────────────────────────── */
+.xh-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 32px;
+}
+
+/* ── Shared section spacing ─────────────────────────────────── */
+.xh-section {
+  padding-block: var(--section-pad-y);
+}
+
+/* ── Shared heading styles ──────────────────────────────────── */
+.xh-h2 {
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  font-weight: 700;
+  color: var(--color-dark);
+  line-height: 1.2;
+}
+
+.xh-h3 {
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.xh-h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-dark);
+}
+
+.xh-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.xh-body {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text);
+}
+
+/* ── Shared pill badge ──────────────────────────────────────── */
+.xh-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+/* ── Primary button ─────────────────────────────────────────── */
+.xh-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover { background: var(--color-primary-dark); }
+}
+
+/* ── Secondary / outline button ─────────────────────────────── */
+.xh-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: transparent;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+}
+
+/* ── Star rating row ────────────────────────────────────────── */
+.xh-stars {
+  display: flex;
+  gap: 3px;
+  color: #F5A623;
+  font-size: 1rem;
+}
+
+/* ── Scrollbar styling ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: var(--color-muted); border-radius: 3px; }
