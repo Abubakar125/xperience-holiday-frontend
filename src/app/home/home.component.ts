@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 
@@ -71,13 +71,37 @@ export class HomeComponent implements OnInit, OnDestroy {
   private heroTimer: ReturnType<typeof setInterval> | null = null;
 
   // ── Travel Stories slider ────────────────────────────────────
-  // 7 cards total, 3 visible at once → 5 nav positions
   travelStoryCards = [0, 1, 2, 3, 4, 5, 6];
-  travelStoryDots  = [0, 1, 2, 3, 4];
+  visibleTsCards = 3;
   currentTsSlide = 0;
   private tsTimer: ReturnType<typeof setInterval> | null = null;
 
+  get travelStoryDots(): number[] {
+    const count = this.travelStoryCards.length - this.visibleTsCards + 1;
+    return Array.from({ length: count }, (_, i) => i);
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    const prev = this.visibleTsCards;
+    this.updateVisibleTsCards();
+    if (prev !== this.visibleTsCards) {
+      this.clearTsTimer();
+      this.startTsTimer();
+    }
+  }
+
+  private updateVisibleTsCards() {
+    const w = window.innerWidth;
+    const next = w < 640 ? 1 : w < 900 ? 2 : 3;
+    if (next !== this.visibleTsCards) {
+      this.visibleTsCards = next;
+      this.currentTsSlide = 0;
+    }
+  }
+
   ngOnInit() {
+    this.updateVisibleTsCards();
     this.startHeroTimer();
     this.startTsTimer();
     this.startFhCardTimer();
@@ -113,7 +137,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private startTsTimer() {
     this.tsTimer = setInterval(() => {
-      this.currentTsSlide = (this.currentTsSlide + 1) % this.travelStoryDots.length;
+      const maxSlide = this.travelStoryCards.length - this.visibleTsCards;
+      this.currentTsSlide = (this.currentTsSlide + 1) % (maxSlide + 1);
     }, 4000);
   }
 

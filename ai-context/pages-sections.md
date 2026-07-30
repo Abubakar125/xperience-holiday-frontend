@@ -6,9 +6,9 @@ Sections in order (top to bottom):
 
 | # | Section | Class | Notes |
 |---|---|---|---|
-| 1 | Trust Bar | `.trust-bar` | Top strip, `#0056a6` bg, 4 trust items with icons |
-| 2 | Header / Navigation | `.site-header` | Logo, nav links, "Plan My Holiday" CTA, hamburger |
-| 3 | Hero | `.hero` | Blue bg (#0056a6), left: headline + search widget, right: image slider |
+| 1 | Trust Bar | `.trust-bar` | Top strip, `#0056a6` bg, 4 trust items with icons — **hidden at ≤640px** |
+| 2 | Header / Navigation | `.site-header` | Logo, nav links, "Plan My Holiday" CTA, hamburger — **nav collapses to hamburger at ≤1200px**; mobile drawer slides in from right |
+| 3 | Hero | `.hero` | Blue bg (#0056a6), left: headline + search widget, right: image slider — **right slider has min-height at small screens** |
 | 4 | Holiday Type Filter | `.holiday-filter` | 3×2 image card grid, local images, gradient overlay, white label bottom-left |
 | 5 | Featured Holidays | `.featured-holidays` | `#fff7ef` bg, 4-card grid — white cards, inner image padding, dual badges, slide dots |
 | 6a | Why Trust Us — heading | `.why-us-heading` | Blue bg `#0051a1`, single centered white heading, 160px tall |
@@ -153,12 +153,23 @@ Sections in order (top to bottom):
 
 **Figma node:** 2:1053  
 **Background:** `#0051a1`  
-**Layout:** 3-column grid, `gap: 32px`, `padding: 96px 80px`, max-width 1440px  
+**Layout:** overflow-hidden slider, `gap: 32px`, `padding: 96px 80px`, max-width 1440px  
 **Heading:** "Travel Stories" — Poppins 700, `clamp(28px, 3.3vw, 48px)`, `#ffffff`  
 **Subtitle:** 20px Inter, `rgba(255,255,255,0.8)`  
-**Video cards** (`.ts-card`): `rgba(255,255,255,0.1)` bg, `border-radius: 32px`, `height: 500px`, play button (inline SVG circle+triangle, white)  
+**Video cards** (`.ts-card`): `rgba(255,255,255,0.1)` bg, `border-radius: 32px`, play button (inline SVG circle+triangle, white)  
 **Slide dots** (`.ts-dot`): inactive = `rgba(255,255,255,0.5)` 8px circle; active = `#f4a340` 28px pill  
 **CTA heading** + **CTA button** (`.travel-stories__cta-btn`): `#f5a623` bg, `border-radius: 16px`, `height: 60px`
+
+### Responsive slider behaviour
+7 total cards, sliding 1 card at a time. `visibleTsCards` is computed in `HomeComponent` via `@HostListener('window:resize')`:
+
+| Breakpoint | Cards visible | Card width | Card height | Dots count |
+|---|---|---|---|---|
+| ≥900px | 3 | `calc((100% - 64px) / 3)` | 500px | 5 |
+| 640–899px | 2 | `calc((100% - 32px) / 2)` | 360px | 6 |
+| ≤639px | 1 | `100%` | 280px | 7 |
+
+Slider margin-left formula: `calc(-currentSlide * (100% + 32px) / visibleTsCards)` — always moves exactly 1 card per step regardless of visible count. Auto-advances every 4 s; timer restarts on dot click or resize.
 
 ---
 
@@ -195,3 +206,42 @@ Home (active, "New Tours" badge), Holidays, Experiences, Destinations, Cruises, 
 
 ## Budget range pills (hero search)
 AED 3,000–5,000 | AED 5,000–8,000 (active) | AED 8,000–12,000 | AED 12,000+
+
+---
+
+## Responsive breakpoint reference
+
+### Header (`header.component.scss`)
+| Breakpoint | Behaviour |
+|---|---|
+| ≥1201px | Full desktop nav visible, hamburger hidden |
+| ≤1200px | Nav hidden, hamburger shown, mobile drawer available |
+| ≤768px | "Plan My Holiday" CTA hidden |
+| ≤640px | Trust bar hidden entirely |
+| ≤480px | Trust bar was 2×2 grid (moot — hidden at 640px) |
+
+### Mobile nav drawer (`header.component.html` + `.scss`)
+- Triggered by hamburger button (`site-header__hamburger`)
+- State managed in `HeaderComponent.menuOpen` (boolean)
+- Slides in from right: `translateX(100%) → translateX(0)` with 0.35s cubic-bezier
+- Backdrop: `rgba(0,0,0,0.45)`, click closes the drawer
+- Closes on: backdrop click, any nav link click, Escape key (`@HostListener`)
+- Body scroll locked (`document.body.style.overflow = 'hidden'`) while open
+- Hamburger animates to × when open via `--open` modifier class
+
+### Hero right-side image slider
+- `min-height: 440px` at ≤1100px (when layout becomes single-column)
+- `min-height: 300px` at ≤640px
+- `object-fit: cover` on slide images
+
+### Footer (`footer.component.scss`)
+| Breakpoint | Behaviour |
+|---|---|
+| ≥1025px | Map background (`map.png`) visible; contact bar single row (4 items); footer body 4-col grid |
+| ≤1024px | Map hidden; contact bar wraps to 2×2 (font 14px); footer body 2-col grid; social icons margin-top 28px |
+| ≤640px | Contact bar single column; footer body single column; footer bottom bar stacked (payment label hidden) |
+
+### Footer contact bar font sizes
+- Desktop: 18px label + value
+- ≤1024px: 14px label + value
+- No change below (14px carries through)
