@@ -62,9 +62,47 @@
     <button class="site-header__cta">Plan My Holiday</button>
 
     <!-- Mobile hamburger -->
-    <button class="site-header__hamburger" aria-label="Open menu">
+    <button
+      class="site-header__hamburger"
+      [class.site-header__hamburger--open]="menuOpen"
+      (click)="toggleMenu()"
+      aria-label="Toggle menu"
+    >
       <span></span><span></span><span></span>
     </button>
 
   </div>
 </header>
+
+<!-- Mobile nav drawer -->
+<div class="mobile-menu" [class.mobile-menu--open]="menuOpen" (click)="closeMenu()">
+  <div class="mobile-menu__drawer" (click)="$event.stopPropagation()">
+
+    <div class="mobile-menu__head">
+      <img src="icons/xperience-logo.svg" alt="Xperienz Holidays" class="mobile-menu__logo" />
+      <button class="mobile-menu__close" (click)="closeMenu()" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5l10 10" stroke="#364153" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="mobile-menu__nav">
+      <a href="#" class="mobile-menu__link mobile-menu__link--active" (click)="closeMenu()">
+        Home
+        <span class="mobile-menu__badge">New Tours</span>
+      </a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Holidays</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Experiences</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Destinations</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Cruises</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">MICE Travel Insurance</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Offers</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">About Us</a>
+      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Contact Us</a>
+    </nav>
+
+    <button class="mobile-menu__cta" (click)="closeMenu()">Plan My Holiday</button>
+
+  </div>
+</div>

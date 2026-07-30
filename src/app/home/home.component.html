@@ -395,7 +395,7 @@
     <!-- Rolling carousel – 3 cards visible, shifts 1 card per step -->
     <div class="travel-stories__slider">
       <div class="travel-stories__slider-track"
-           [style.margin-left]="'calc(' + (-currentTsSlide) + ' * (100% + 32px) / 3)'">
+           [style.margin-left]="'calc(' + (-currentTsSlide) + ' * (100% + 32px) / ' + visibleTsCards + ')'">
         @for (card of travelStoryCards; track card) {
           <div class="ts-card">
             <button class="ts-card__play" aria-label="Play video">
