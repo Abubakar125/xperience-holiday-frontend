@@ -1,0 +1,375 @@
+<app-header></app-header>
+
+<!-- ══ Hero Banner ════════════════════════════════════════════════════ -->
+<section class="about-hero">
+  <img src="images/about-us-hero.svg" alt="About Xperienz Holidays" class="about-hero__bg" />
+  <div class="about-hero__overlay"></div>
+  <div class="about-hero__content">
+    <h1 class="about-hero__heading">About Xperienz Holidays</h1>
+  </div>
+</section>
+
+<!-- ══ About Intro ════════════════════════════════════════════════════ -->
+<section class="about-intro xh-section">
+  <div class="xh-container about-intro__inner">
+
+    <!-- Left: text -->
+    <div class="about-intro__text">
+      <h2 class="about-intro__heading">About Xperienz Holidays</h2>
+      <h3 class="about-intro__subheading">We Focus on Bringing the Best Travel Experiences</h3>
+      <p class="about-intro__body about-intro__body--first">
+        At Xperienz Holidays, travel is more than just visiting a destination — it is about
+        creating unforgettable moments, discovering new cultures, and building memories that
+        stay with you forever. With decades of expertise and a passion for exceptional service,
+        we curate journeys designed around your dreams, preferences, and travel style.
+      </p>
+      <p class="about-intro__body">
+        Whether you are planning a relaxing family vacation, a luxury escape, an adventurous
+        getaway, or a corporate retreat, our dedicated team ensures every detail is handled
+        with care, precision, and professionalism.
+      </p>
+    </div>
+
+    <!-- Right: image collage — absolute positioning matches Figma nodes 277:7269/7270/7271 -->
+    <div class="about-intro__collage">
+      <!-- z-index 1: back  — Rectangle 17 (x=1263 y=959 w=311 h=230) -->
+      <img src="images/best-travel-three.svg" alt="Travel memories"       class="about-intro__img about-intro__img--three" />
+      <!-- z-index 2: mid   — Rectangle 16 (x=1087 y=691 w=311 h=368) -->
+      <img src="images/best-travel-one.svg"   alt="Travel experience"     class="about-intro__img about-intro__img--two"   />
+      <!-- z-index 3: front — Rectangle 15 (x=1312 y=641 w=311 h=288) -->
+      <img src="images/best-travel-two.svg"   alt="Best travel experience" class="about-intro__img about-intro__img--one"  />
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ Our Story ══════════════════════════════════════════════════════ -->
+<section class="our-story">
+  <div class="xh-container our-story__content">
+
+    <h2 class="our-story__heading">Our Story</h2>
+
+    <p class="our-story__intro">
+      Since 1976, Nasser Air Travel &amp; Shipping Agencies LLC has been a trusted name in the
+      UAE's travel industry, serving individuals, families, and businesses with excellence and
+      reliability. Established with a vision to make travel seamless and accessible, the company
+      quickly became one of the region's most respected travel pioneers.
+    </p>
+
+    <!-- Three-box row — Figma: 297px | 626px | 297px with 34px gaps + airplane overlay -->
+    <div class="our-story__row">
+      <img src="images/our-story-one.svg" alt="Our story" class="our-story__photo" />
+      <div class="our-story__logo-card">
+        <img src="images/our-story-logo.svg" alt="Nasser Air Travel &amp; Shipping Agencies" class="our-story__logo" />
+      </div>
+      <div class="our-story__right-box"></div>
+      <!-- Airplane: Figma x=1133 y=1601 w=613 h=330, left=63.5% top=-29px width=47.6% -->
+      <img src="images/our-story-airplane.svg" alt="" class="our-story__airplane" aria-hidden="true" />
+    </div>
+
+    <!-- Long body text (Figma node 277:7380) -->
+    <div class="our-story__body">
+      <p>Since 1976, Nasser Air Travel &amp; Shipping Agencies LLC has been a trusted name in the UAE's
+         travel industry, serving individuals, families, and businesses with excellence and reliability.
+         Established with a vision to make travel seamless and accessible, the company quickly became one
+         of the region's most respected travel pioneers.</p>
+      <p>As the demand for leisure travel grew, Nasser Air Travel introduced its dedicated holiday
+         division under the brand name Exciting Holidays. For over three decades, Exciting Holidays became
+         synonymous with memorable vacations and personalized holiday experiences for travelers across the
+         region.</p>
+      <p>In 2009, the brand evolved into Xperienz Holidays — a modern identity that reflects innovation,
+         creativity, and a customer-first approach while preserving the same trusted values and heritage
+         built over decades.</p>
+      <p>Today, Xperienz Holidays proudly stands as the leisure travel arm of Nasser Air Travel, backed
+         by nearly 50 years of industry expertise. From Asia and Europe to Africa, the Americas, Australia,
+         and beyond, we craft tailor-made holidays, luxury escapes, honeymoon trips, family vacations,
+         group tours, cruises, and adventure experiences for travelers around the world.</p>
+      <p>We don't just plan holidays — we create experiences that inspire, connect, and last a lifetime.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ Behind The Journey ══════════════════════════════════════════════ -->
+<section class="behind-journey">
+  <div class="xh-container behind-journey__inner">
+
+    <h2 class="behind-journey__heading">Behind The Journey</h2>
+    <p class="behind-journey__sub">
+      With years of experience in the travel industry, we specialize in crafting personalized journeys.
+    </p>
+
+    <!-- Three circular tabs -->
+    <div class="behind-journey__tabs">
+      @for (tab of journeyTabs; track tab.year) {
+        <button
+          class="behind-journey__tab"
+          [class.behind-journey__tab--active]="activeJourneyTab === tab.year"
+          (click)="activeJourneyTab = tab.year"
+          type="button"
+          [attr.aria-pressed]="activeJourneyTab === tab.year"
+        >
+          <div class="behind-journey__circle">
+            <img [src]="tab.icon" [alt]="tab.year" class="behind-journey__icon" />
+          </div>
+          <span class="behind-journey__year">{{ tab.year }}</span>
+          <div class="behind-journey__dot"></div>
+        </button>
+      }
+    </div>
+
+    <!-- Active tab content panel -->
+    @for (tab of journeyTabs; track tab.year) {
+      @if (activeJourneyTab === tab.year) {
+        <div class="behind-journey__panel">
+          <h3 class="behind-journey__panel-title">{{ tab.title }}</h3>
+          <p class="behind-journey__panel-desc">{{ tab.desc }}</p>
+        </div>
+      }
+    }
+
+  </div>
+</section>
+
+<!-- ══ Why Travel with Us? ════════════════════════════════════════════ -->
+<section class="why-travel xh-section">
+  <div class="xh-container">
+    <div class="text-center">
+      <h2 class="why-travel__heading">Why Travel with Us?</h2>
+      <p class="why-travel__sub">
+        We specialize in crafting personalized journeys that suit every traveller's dream.
+      </p>
+    </div>
+    <div class="why-travel__cards">
+      @for (card of whyCards; track card.label) {
+        <div class="why-travel__card" [style.background]="card.bg">
+          <img [src]="card.icon" [alt]="card.label" class="why-travel__icon" />
+          <span class="why-travel__label">{{ card.label }}</span>
+        </div>
+      }
+    </div>
+
+    <!-- ══ Video Placeholder ═══════════════════════════════════════════════ -->
+    <div class="about-video">
+      <button class="about-video__play" aria-label="Play About Xperienz Holidays video" type="button">
+        <svg width="22" height="26" viewBox="0 0 22 26" fill="none" aria-hidden="true">
+          <path d="M1 1.5L21 13L1 24.5V1.5Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <h3 class="about-video__title">About Xperienz Holidays</h3>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Wall of Travellers Experience ══════════════════════════════════ -->
+<section class="wall-of-travellers">
+  <div class="wall-of-travellers__inner">
+
+    <h2 class="wall-of-travellers__heading">Wall of Travellers Experience</h2>
+    <p class="wall-of-travellers__sub">We go beyond just booking trips—we create unforgettable travel experiences that match your dreams!</p>
+
+    <div class="wall-of-travellers__grid">
+
+      <!-- Card 1: Alia -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Alia" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Alia</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+      <!-- Card 2: Suhana -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Suhana" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Suhana</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+      <!-- Card 3: Ahmed -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Ahmed" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Ahmed</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ About Counters ═════════════════════════════════════════════════ -->
+<section class="about-counters">
+  <div class="about-counters__inner">
+
+    <div class="about-counters__circle">
+      <img src="icons/tour-completed-orange.png" alt="" class="about-counters__icon" />
+      <span class="about-counters__label">Tour Completed</span>
+      <span class="about-counters__number">26K+</span>
+    </div>
+
+    <div class="about-counters__circle">
+      <img src="icons/travel-experience-orange.png" alt="" class="about-counters__icon" />
+      <span class="about-counters__label">Travel Experience</span>
+      <span class="about-counters__number">12+</span>
+    </div>
+
+    <div class="about-counters__circle">
+      <img src="icons/happy-travel-orange.png" alt="" class="about-counters__icon" />
+      <span class="about-counters__label">Happy Traveler</span>
+      <span class="about-counters__number">20K+</span>
+    </div>
+
+    <div class="about-counters__circle">
+      <img src="icons/retention-rate-orange.png" alt="" class="about-counters__icon" />
+      <span class="about-counters__label">Retention Rate</span>
+      <span class="about-counters__number">98%</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ Customize Travel Package ═══════════════════════════════════════ -->
+<section class="customize-trip">
+  <div class="customize-trip__card">
+    <h2 class="customize-trip__heading">Customize Your Travel Package!</h2>
+
+    <!-- Dashed border form wrapper -->
+    <div class="customize-trip__form-wrap">
+      <div class="customize-trip__search-bar">
+        <span class="customize-trip__pin-icon" aria-hidden="true">
+          <img src="icons/loaction-navigation.png" width="18" height="18" alt="" />
+        </span>
+        <input type="text" class="customize-trip__input" placeholder="Select Your Location" />
+        <button class="customize-trip__search-btn" type="button">Search Now</button>
+      </div>
+    </div>
+
+    <div class="customize-trip__features">
+      <span class="customize-trip__feature">
+        <img src="icons/customize-check.svg" width="18" height="18" alt="" aria-hidden="true" />
+        Make Your Favourite Package
+      </span>
+      <span class="customize-trip__feature">
+        <img src="icons/customize-check.svg" width="18" height="18" alt="" aria-hidden="true" />
+        Easily Customize Tours
+      </span>
+      <span class="customize-trip__feature">
+        <img src="icons/customize-check.svg" width="18" height="18" alt="" aria-hidden="true" />
+        Enjoy Your Trip
+      </span>
+    </div>
+
+    <div class="customize-trip__cta-row">
+      <span class="customize-trip__cta-label">Meet Our Local Tour Guider!</span>
+      <a href="#" class="customize-trip__cta-link">
+        Contact Now
+        <img src="icons/contact-now.png" width="10" height="10" alt="" aria-hidden="true" class="customize-trip__cta-icon" />
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ Travel Inspirations ══════════════════════════════════════════════ -->
+<section class="travel-inspiration">
+  <div class="travel-inspiration__inner">
+
+    <div class="travel-inspiration__header">
+      <h2 class="travel-inspiration__heading">Travel Inspirations</h2>
+      <p class="travel-inspiration__sub">A curated list of Inspiration the most tour &amp; travel based on different destinations.</p>
+    </div>
+
+    <div class="travel-inspiration__grid">
+
+      <!-- Card 1 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-1.svg" alt="Nature travel in Thailand" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Pathaya, Thailand
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Mar, 2026</span>
+          <h3 class="ti-card__title">Nature, Culture &amp; Thrill: Travel Stories That Inspire.</h3>
+          <p class="ti-card__desc">Escape to the World's Most Breathtaking Islands and immerse yourself in paradise.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-2.svg" alt="Bali temples and islands" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Bali, Indonesia
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Feb, 2026</span>
+          <h3 class="ti-card__title">Escape to the World's Breathtaking Islands.</h3>
+          <p class="ti-card__desc">Escape to the World's Most Breathtaking Islands and immerse yourself in paradise.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-3.svg" alt="Hiking and trekking in Brazil" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Brazil
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Jan, 2026</span>
+          <h3 class="ti-card__title">Hiking, Trekking &amp; Thrill-Seeking.</h3>
+          <p class="ti-card__desc">Discover the best mountain getaways for nature lovers, where breathtaking landscapes.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-faq></app-faq>
+
+<app-footer></app-footer>

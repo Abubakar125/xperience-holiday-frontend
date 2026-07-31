@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { FaqComponent } from '../shared/components/faq/faq.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, FaqComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

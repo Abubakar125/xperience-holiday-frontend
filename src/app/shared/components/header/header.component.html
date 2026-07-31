@@ -39,7 +39,7 @@
     <nav class="site-header__nav">
 
       <!-- "Home" — active link with "New Tours" badge + pointer at header top -->
-      <a href="#" class="site-header__link site-header__link--active site-header__link--badged">
+      <a routerLink="/" routerLinkActive="site-header__link--active" [routerLinkActiveOptions]="{exact:true}" class="site-header__link site-header__link--badged">
         <!-- Badge pill + downward triangle, positioned at very top of header -->
         <span class="site-header__badge">
           <span class="site-header__badge-pill">New Tours</span>
@@ -54,7 +54,7 @@
       <a href="#" class="site-header__link">Cruises</a>
       <a href="#" class="site-header__link">MICE Travel Insurance</a>
       <a href="#" class="site-header__link">Offers</a>
-      <a href="#" class="site-header__link">About Us</a>
+      <a routerLink="/about" routerLinkActive="site-header__link--active" class="site-header__link">About Us</a>
       <a href="#" class="site-header__link">Contact Us</a>
     </nav>
 
@@ -88,7 +88,7 @@
     </div>
 
     <nav class="mobile-menu__nav">
-      <a href="#" class="mobile-menu__link mobile-menu__link--active" (click)="closeMenu()">
+      <a routerLink="/" routerLinkActive="mobile-menu__link--active" [routerLinkActiveOptions]="{exact:true}" class="mobile-menu__link" (click)="closeMenu()">
         Home
         <span class="mobile-menu__badge">New Tours</span>
       </a>
@@ -98,7 +98,7 @@
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Cruises</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">MICE Travel Insurance</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Offers</a>
-      <a href="#" class="mobile-menu__link" (click)="closeMenu()">About Us</a>
+      <a routerLink="/about" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">About Us</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Contact Us</a>
     </nav>
 
