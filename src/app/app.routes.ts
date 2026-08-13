@@ -8,5 +8,21 @@ export const routes: Routes = [
   {
     path: 'about',
     loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
+  },
+  {
+    path: 'experiences',
+    loadChildren: () => import('./experiences/experiences.module').then(m => m.ExperiencesModule)
+  },
+  {
+    path: 'destinations',
+    loadChildren: () => import('./destinations/destinations.module').then(m => m.DestinationsModule)
+  },
+  {
+    path: 'destination/:id',
+    loadChildren: () => import('./destination-detail/destination-detail.module').then(m => m.DestinationDetailModule)
+  },
+  {
+    path: 'experience/:id',
+    loadChildren: () => import('./experience-detail/experience-detail.module').then(m => m.ExperienceDetailModule)
   }
 ];

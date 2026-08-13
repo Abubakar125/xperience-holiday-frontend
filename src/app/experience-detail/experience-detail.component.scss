@@ -1,0 +1,670 @@
+.ed-hero {
+  position: relative;
+  width: 100%;
+  height: 670px;
+  overflow: hidden;
+
+  &__img {
+    position: absolute;
+    width: 100%;
+    // height: 197%;
+    // top: -23%;
+    // left: 0;
+    object-fit: cover;
+    // object-position: center;
+    display: block;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  // Phone number — top right
+  &__phone {
+    position: absolute;
+    top: 20px;
+    right: 32px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Roboto', 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #ffffff;
+  }
+
+  // Centre content block
+  &__content {
+    position: absolute;
+    inset: 0 0 52px 0; // leave space for bottom bar
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 2;
+  }
+
+  // Price row above title
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    color: #ffffff;
+  }
+
+  &__price-from {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+  }
+
+  &__price-amount {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 30px;
+  }
+
+  &__price-per {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+  }
+
+  // Large title
+  &__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: clamp(32px, 4vw, 58px);
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.15;
+    margin: 0;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  // Frosted glass duration pill
+  &__duration-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(75px);
+    -webkit-backdrop-filter: blur(75px);
+    border-radius: 100px;
+    padding: 10px 28px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #ffffff;
+    white-space: nowrap;
+  }
+
+  // Bottom white bar
+  &__bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: #ffffff;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 2;
+  }
+
+  &__bar-items {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  &__bar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Roboto', 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #525252;
+  }
+
+  &__share {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover svg * { stroke: #f9a147; }
+  }
+
+  @media (max-width: 899px) {
+    height: 440px;
+
+    &__title { font-size: 36px; }
+    &__duration-pill { font-size: 16px; padding: 8px 20px; }
+    &__price-amount { font-size: 26px; }
+    &__price-from, &__price-per { font-size: 15px; }
+  }
+
+  @media (max-width: 640px) {
+    height: 380px;
+
+    &__phone { right: 20px; font-size: 13px; }
+    &__content { padding: 0 20px; gap: 12px; }
+    &__title { font-size: 26px; }
+    &__duration-pill { font-size: 13px; padding: 8px 14px; }
+    &__price-from, &__price-per { font-size: 13px; }
+    &__price-amount { font-size: 20px; }
+    &__bar { padding: 0 20px; }
+    &__bar-items { gap: 20px; }
+    &__bar-item { font-size: 13px; }
+  }
+}
+
+// ── Trust Bar ─────────────────────────────────────────────────────────────────
+.ed-trust {
+  border-bottom: 1px solid #e8e8e8;
+
+  &__inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 32px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__items {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  &__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Roboto', 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #525252;
+  }
+
+  &__share {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    &:hover { background: #e0e0e0; }
+  }
+
+  @media (max-width: 640px) {
+    &__inner { padding: 0 20px; }
+    &__items { gap: 20px; }
+    &__item { font-size: 13px; }
+  }
+}
+
+// ── About Tour Package ────────────────────────────────────────────────────────
+.ed-about {
+  padding: 56px 0 80px;
+
+  &__inner {
+    max-width: 1340px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 160px;
+    align-items: start;
+  }
+
+  // ── Left column ─────────────────────────────────────────────────────────────
+  &__left {}
+
+  &__heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(20px, 2.5vw, 28px);
+    color: #110f0f;
+    margin: 0 0 16px;
+  }
+
+  &__desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #525252;
+    line-height: 26px;
+    margin: 0 0 36px;
+  }
+
+  // 3×3 info grid
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid #e8e8e8;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  &__grid-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 27px 18px;
+    border-right: 1px solid #e8e8e8;
+    border-bottom: 1px solid #e8e8e8;
+
+    &:nth-child(3n) { border-right: none; }
+    &:nth-child(7), &:nth-child(8), &:nth-child(9) { border-bottom: none; }
+  }
+
+  &__grid-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+
+  &__grid-text {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  &__grid-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #525252;
+    line-height: 1;
+  }
+
+  &__grid-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #110f0f;
+    line-height: 1.3;
+  }
+
+  // Right column wrapper — stacks both cards
+  &__right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  // ── Right booking card ───────────────────────────────────────────────────────
+  &__card {
+    background: #fdf3e7;
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    position: relative;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #f9a147;
+    color: #ffffff;
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  &__card-from {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #525252;
+    margin: 0 0 4px;
+  }
+
+  &__card-price {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  &__card-amount {
+    font-family: 'Poppins', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #110f0f;
+    line-height: 1;
+  }
+
+  &__card-per {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #525252;
+  }
+
+  &__card-perks {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__card-perk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #525252;
+  }
+
+  &__card-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    border-radius: 10px;
+    height: 48px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &--primary {
+      background: #00589c;
+      color: #ffffff;
+      margin-bottom: 12px;
+      &:hover { opacity: 0.88; }
+    }
+
+    &--secondary {
+      background: transparent;
+      border: 1.5px solid rgba(17, 15, 15, 0.1);
+      color: #00589c;
+      margin-bottom: 16px;
+      &:hover { background: rgba(0, 88, 156, 0.04); }
+    }
+  }
+
+  &__card-note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #525252;
+    margin: 0;
+  }
+
+  // Responsive
+  @media (max-width: 1024px) {
+    &__inner { grid-template-columns: 1fr 320px; }
+  }
+
+  @media (max-width: 860px) {
+    &__inner { grid-template-columns: 1fr; }
+
+    &__card { max-width: 480px; }
+  }
+
+  @media (max-width: 640px) {
+    padding: 40px 0 56px;
+
+    &__inner { padding: 0 20px; }
+
+    &__grid { grid-template-columns: repeat(2, 1fr); }
+    &__grid-item:nth-child(3n) { border-right: 1px solid #e8e8e8; }
+    &__grid-item:nth-child(2n) { border-right: none; }
+    &__grid-item:nth-child(7), &__grid-item:nth-child(8), &__grid-item:nth-child(9) { border-bottom: 1px solid #e8e8e8; }
+    &__grid-item:nth-last-child(-n+2) { border-bottom: none; }
+  }
+}
+
+// ── Explore Locations ─────────────────────────────────────────────────────────
+.ed-locations {
+  margin-top: 40px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 24px);
+    color: #110f0f;
+    margin: 0;
+  }
+
+  &__arrows {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 1; }
+
+    img { display: block; }
+  }
+
+  &__slider {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__card-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+  }
+
+  &__card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #110f0f;
+    margin: 12px 0 4px;
+    text-align: center;
+  }
+
+  &__card-days {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #525252;
+    margin: 0;
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    &__slider { grid-template-columns: repeat(2, 1fr); }
+  }
+}
+
+// ── Highlights of the Tour ────────────────────────────────────────────────────
+.ed-highlights {
+  margin-top: 40px;
+
+  &__heading {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 24px);
+    color: #110f0f;
+    margin: 0 0 20px;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #525252;
+    line-height: 1.6;
+  }
+}
+
+// ── Customize Travel Package card ─────────────────────────────────────────────
+.ed-customize {
+  background: #0c3360;
+  border-radius: 20px;
+  padding: 28px 24px 24px;
+
+  &__eyebrow {
+    font-family: 'Poppins', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    font-style: italic;
+    color: #f5a623;
+    margin: 0 0 4px;
+    line-height: 1.2;
+  }
+
+  &__title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 20px;
+    line-height: 1.2;
+  }
+
+  &__perks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__perk {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #f5a623;
+      flex-shrink: 0;
+    }
+  }
+
+  &__guides {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  &__guides-img {
+    width: 56px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 100px;
+    flex-shrink: 0;
+  }
+
+  &__guides-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.5;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 48px;
+    background: #f5a623;
+    border-radius: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    text-decoration: none;
+    transition: opacity 0.2s;
+
+    &:hover { opacity: 0.88; }
+  }
+
+  @media (max-width: 860px) {
+    max-width: 480px;
+  }
+}
