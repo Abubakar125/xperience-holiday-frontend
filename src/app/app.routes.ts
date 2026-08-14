@@ -24,5 +24,9 @@ export const routes: Routes = [
   {
     path: 'experience/:id',
     loadChildren: () => import('./experience-detail/experience-detail.module').then(m => m.ExperienceDetailModule)
+  },
+  {
+    path: 'contact',
+    loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
   }
 ];

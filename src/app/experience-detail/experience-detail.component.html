@@ -5,7 +5,6 @@
   <img src="images/experice-details-hero.svg" alt="Experience" class="ed-hero__img" />
   <div class="ed-hero__overlay"></div>
 
-  <!-- Center overlaid content -->
   <div class="ed-hero__content">
     <div class="ed-hero__price-row">
       <span class="ed-hero__price-from">starting from</span>
@@ -22,26 +21,16 @@
   <div class="ed-trust__inner">
     <div class="ed-trust__items">
       <span class="ed-trust__item">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M2.5 7.5L5.5 10.5L11.5 4" stroke="#525252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <img src="icons/tick-exp.png" alt="" width="16" height="16" aria-hidden="true">
         No Booking Fee
       </span>
       <span class="ed-trust__item">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-          <path d="M2.5 7.5L5.5 10.5L11.5 4" stroke="#525252" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <img src="icons/tick-exp.png" alt="" width="16" height="16" aria-hidden="true">
         Best Price Ever
       </span>
     </div>
     <button class="ed-trust__share" aria-label="Share">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <circle cx="12" cy="3"  r="1.5" stroke="#525252" stroke-width="1.3"/>
-        <circle cx="12" cy="13" r="1.5" stroke="#525252" stroke-width="1.3"/>
-        <circle cx="4"  cy="8"  r="1.5" stroke="#525252" stroke-width="1.3"/>
-        <line x1="10.55" y1="3.75"  x2="5.45" y2="7.25"  stroke="#525252" stroke-width="1.3"/>
-        <line x1="10.55" y1="12.25" x2="5.45" y2="8.75"  stroke="#525252" stroke-width="1.3"/>
-      </svg>
+      <img src="icons/share.png" alt="" width="30" height="30" aria-hidden="true">
     </button>
   </div>
 </div>
@@ -75,44 +64,326 @@
         }
       </div>
 
-      <!-- Explore Locations -->
+      <!-- Explore Locations slider -->
       <div class="ed-locations">
-        <div class="ed-locations__header">
-          <h3 class="ed-locations__heading">Explore Locations</h3>
-          <div class="ed-locations__arrows">
-            <button class="ed-locations__arrow" aria-label="Previous">
-              <img src="icons/previous.png" alt="" width="32" height="32">
-            </button>
-            <button class="ed-locations__arrow" aria-label="Next">
-              <img src="icons/next.png" alt="" width="32" height="32">
-            </button>
-          </div>
-        </div>
-        <div class="ed-locations__slider">
-          @for (loc of locations; track loc.name) {
-            <div class="ed-locations__card">
-              <img class="ed-locations__card-img" [src]="loc.image" [alt]="loc.name">
-              <p class="ed-locations__card-name">{{ loc.name }}</p>
-              <p class="ed-locations__card-days">{{ loc.days }}</p>
+        <h3 class="ed-locations__heading">Explore Locations</h3>
+        <div class="ed-locations__viewport">
+          <button
+            class="ed-locations__arrow ed-locations__arrow--prev"
+            aria-label="Previous"
+            [disabled]="locationsAtStart"
+            (click)="prevLocation()">
+            <img src="icons/left-arrow.svg" alt="" width="12" height="14">
+          </button>
+          <div class="ed-locations__clip">
+            <div class="ed-locations__track"
+              [style.margin-left]="'calc(' + (-currentLocationsSlide) + ' * (100% + 20px) / ' + visibleLocations + ')'">
+              @for (loc of locations; track loc.name) {
+                <div class="ed-locations__card">
+                  <img class="ed-locations__card-img" [src]="loc.image" [alt]="loc.name">
+                  <p class="ed-locations__card-name">{{ loc.name }}</p>
+                  <p class="ed-locations__card-days">{{ loc.days }}</p>
+                </div>
+              }
             </div>
-          }
+          </div>
+          <button
+            class="ed-locations__arrow ed-locations__arrow--next"
+            aria-label="Next"
+            [disabled]="locationsAtEnd"
+            (click)="nextLocation()">
+            <img src="icons/right-arrow.svg" alt="" width="12" height="14">
+          </button>
         </div>
       </div>
 
       <!-- Highlights of the Tour -->
       <div class="ed-highlights">
         <h3 class="ed-highlights__heading">Highlights of the Tour</h3>
-        <ul class="ed-highlights__list">
-          @for (h of highlights; track h) {
-            <li class="ed-highlights__item">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:3px">
-                <circle cx="8" cy="8" r="8" fill="#f9a147"/>
-                <path d="M4.5 8.5L6.5 10.5L11.5 5.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              {{ h }}
+        <div class="ed-highlights__card">
+          <ul class="ed-highlights__list">
+            @for (h of highlights; track h) {
+              <li class="ed-highlights__item">
+                <img src="icons/money-tick.png" alt="" width="16" height="16" aria-hidden="true" class="ed-highlights__icon">
+                {{ h }}
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tour Itinerary -->
+      <div class="ed-itinerary">
+        <div class="ed-itinerary__header">
+          <h3 class="ed-itinerary__heading">Tour Itinerary</h3>
+          <button class="ed-itinerary__expand-all" (click)="toggleExpandAll()">
+            {{ expandAll ? 'Collapse All −' : 'Expand All +' }}
+          </button>
+        </div>
+
+        @for (dest of itinerary; track dest.destination; let di = $index) {
+          <div class="ed-itinerary__dest">
+
+            <!-- Static destination header -->
+            <div class="ed-itinerary__dest-header">
+              <div class="ed-itinerary__dest-pill">
+                <img src="icons/tour-nav-icon.svg" alt="" width="32" height="16" aria-hidden="true">
+              </div>
+              <span class="ed-itinerary__dest-name">{{ dest.destination }}</span>
+              <span class="ed-itinerary__dest-departure">{{ dest.departure }}</span>
+            </div>
+
+            <!-- Bordered card containing the day items -->
+            <div class="ed-itinerary__dest-card">
+              @for (day of dest.days; track day.day; let dayIdx = $index) {
+                <div class="ed-itinerary__day">
+                  <button class="ed-itinerary__day-header" (click)="toggleDay(di, dayIdx)">
+                    <img src="icons/tour-location.svg" alt="" width="14" height="14" aria-hidden="true" class="ed-itinerary__day-pin">
+                    <span class="ed-itinerary__day-label">{{ day.day }}</span>
+                    <span class="ed-itinerary__day-title">{{ day.title }}</span>
+                    <img src="icons/arrow-down.svg" alt="" width="12" height="12" aria-hidden="true" class="ed-itinerary__chevron" [class.ed-itinerary__chevron--open]="day.expanded">
+                  </button>
+
+                  @if (day.expanded) {
+                    <div class="ed-itinerary__day-body">
+                      <p class="ed-itinerary__day-desc">{{ day.body }}</p>
+                      <div class="ed-itinerary__day-rows">
+                        @if (day.transport) {
+                          <div class="ed-itinerary__day-row">
+                            <img src="icons/transport.svg" alt="" width="14" height="14" aria-hidden="true">
+                            <span class="ed-itinerary__day-key">Transport</span>
+                            <span class="ed-itinerary__day-val">{{ day.transport }}</span>
+                          </div>
+                        }
+                        @if (day.activities) {
+                          <div class="ed-itinerary__day-row">
+                            <img src="icons/activities.svg" alt="" width="14" height="14" aria-hidden="true">
+                            <span class="ed-itinerary__day-key">Activities</span>
+                            <span class="ed-itinerary__day-val">{{ day.activities }}</span>
+                          </div>
+                        }
+                        @if (day.meals) {
+                          <div class="ed-itinerary__day-row">
+                            <img src="icons/meals.svg" alt="" width="14" height="14" aria-hidden="true">
+                            <span class="ed-itinerary__day-key">Meals</span>
+                            <span class="ed-itinerary__day-val">{{ day.meals }}</span>
+                          </div>
+                        }
+                        @if (day.accommodation) {
+                          <div class="ed-itinerary__day-row">
+                            <img src="icons/accomodation.svg" alt="" width="14" height="14" aria-hidden="true">
+                            <span class="ed-itinerary__day-key">Accomodation</span>
+                            <span class="ed-itinerary__day-val">{{ day.accommodation }}</span>
+                            <a href="#" class="ed-itinerary__view-hotel">View Hotel</a>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Package Destination Map -->
+      <div class="ed-map">
+        <h3 class="ed-map__heading">Package Destination Map</h3>
+        <div class="ed-map__container">
+          <img src="images/package-destination-map.svg" alt="Package destination map" class="ed-map__img">
+        </div>
+      </div>
+
+      <!-- Package Features List -->
+      <div class="ed-features">
+        <h3 class="ed-features__heading">Package Features List</h3>
+        <div class="ed-features__cols">
+          <!-- Include -->
+          <div class="ed-features__col">
+            <h4 class="ed-features__sub-heading ed-features__sub-heading--include">Include Features</h4>
+            <ul class="ed-features__list">
+              @for (item of includeFeatures; track item) {
+                <li class="ed-features__item ed-features__item--include">
+                  <img src="icons/include-tick.svg" alt="" width="16" height="16" aria-hidden="true" class="ed-features__icon">
+                  {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+          <!-- Exclude -->
+          <div class="ed-features__col">
+            <h4 class="ed-features__sub-heading ed-features__sub-heading--exclude">Exclude Features</h4>
+            <ul class="ed-features__list">
+              @for (item of excludeFeatures; track item) {
+                <li class="ed-features__item ed-features__item--exclude">
+                  <img src="icons/exclude-cross.svg" alt="" width="16" height="16" aria-hidden="true" class="ed-features__icon">
+                  {{ item }}
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Talk to Travel Expert Banner -->
+      <div class="ed-talk">
+        <img src="images/talk-to-travel.svg" alt="Talk to our travel expert team" class="ed-talk__img">
+      </div>
+
+      <!-- Additional Info -->
+      <div class="ed-additional">
+        <h3 class="ed-additional__heading">Additional Info</h3>
+        <ul class="ed-additional__list">
+          @for (info of additionalInfo; track info) {
+            <li class="ed-additional__item">
+              <img src="icons/include-tick.svg" alt="" width="16" height="16" aria-hidden="true" class="ed-additional__icon">
+              {{ info }}
             </li>
           }
         </ul>
+      </div>
+
+      <!-- FAQ -->
+      <section class="faq">
+        <div class="faq__inner">
+
+          
+          <h3 class="ed-additional__heading">Frequently Asked Questions</h3>
+          <div class="faq__list">
+
+            <details class="faq-item" open>
+              <summary class="faq-item__q">
+                What Services Does Xperienz Holidays Provide?
+                <span class="faq-item__arrow" aria-hidden="true">
+                  <img class="faq-item__arrow-up" src="icons/arrow-up.svg" alt="" />
+                  <img class="faq-item__arrow-down" src="icons/arrow-down.svg" alt="" />
+                </span>
+              </summary>
+              <div class="faq-item__a">
+                Xperienz Holidays offers complete travel solutions including holiday packages, flight
+                bookings, hotel reservations, visa assistance, cruises, travel insurance, group tours,
+                honeymoon packages, and customized international travel experiences.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-item__q">
+                Do You Offer Customized Travel Packages?
+                <span class="faq-item__arrow" aria-hidden="true">
+                  <img class="faq-item__arrow-up" src="icons/arrow-up.svg" alt="" />
+                  <img class="faq-item__arrow-down" src="icons/arrow-down.svg" alt="" />
+                </span>
+              </summary>
+              <div class="faq-item__a">
+                Yes, we specialise in tailor-made itineraries built around your preferences, budget,
+                and travel dates.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-item__q">
+                How Do I Book a Tour or Vacation Package?
+                <span class="faq-item__arrow" aria-hidden="true">
+                  <img class="faq-item__arrow-up" src="icons/arrow-up.svg" alt="" />
+                  <img class="faq-item__arrow-down" src="icons/arrow-down.svg" alt="" />
+                </span>
+              </summary>
+              <div class="faq-item__a">
+                You can book online through our website, call our team, or visit our Dubai office.
+                Our specialists will guide you through every step.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-item__q">
+                Why Choose Xperienz Holidays?
+                <span class="faq-item__arrow" aria-hidden="true">
+                  <img class="faq-item__arrow-up" src="icons/arrow-up.svg" alt="" />
+                  <img class="faq-item__arrow-down" src="icons/arrow-down.svg" alt="" />
+                </span>
+              </summary>
+              <div class="faq-item__a">
+                With 50+ years of expertise, Air Mauritius GSA status, 100,000+ satisfied travellers,
+                and a passionate UAE-based team, we deliver holidays that exceed expectations.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-item__q">
+                How Can I Contact Xperienz Holidays?
+                <span class="faq-item__arrow" aria-hidden="true">
+                  <img class="faq-item__arrow-up" src="icons/arrow-up.svg" alt="" />
+                  <img class="faq-item__arrow-down" src="icons/arrow-down.svg" alt="" />
+                </span>
+              </summary>
+              <div class="faq-item__a">
+                Reach us by phone, email, or visit our Dubai office. We're available 24/7 for UAE
+                travellers.
+              </div>
+            </details>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Customer Review & Rating -->
+      <div class="ed-reviews">
+        <h3 class="ed-reviews__heading">Customer Review &amp; Rating</h3>
+
+        <!-- Aggregate rating card -->
+        <div class="ed-reviews__aggregate">
+          <div class="ed-reviews__agg-score">
+            <span class="ed-reviews__agg-label">Excellent!</span>
+            <span class="ed-reviews__agg-stars">★★★★★</span>
+            <p class="ed-reviews__agg-count"><strong>5</strong> based on 1 reviews</p>
+            <a href="#" class="ed-reviews__write-btn">Write a Review</a>
+          </div>
+          <div class="ed-reviews__agg-bars">
+            @for (stat of reviewStats; track stat.label) {
+              <div class="ed-reviews__bar-row">
+                <span class="ed-reviews__bar-header">
+                  <span class="ed-reviews__bar-label">{{ stat.label }}</span>
+                  <span class="ed-reviews__bar-score">{{ stat.score.toFixed(1) }}</span>
+                </span>
+                <div class="ed-reviews__bar-track">
+                  <div class="ed-reviews__bar-fill" [style.width]="stat.pct + '%'"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Individual review cards -->
+        @for (review of reviews; track review.name) {
+          <div class="ed-reviews__card">
+            <div class="ed-reviews__card-top">
+              <div class="ed-reviews__avatar">
+                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
+                  <circle cx="25" cy="25" r="25" fill="#e8e8e8"/>
+                  <circle cx="25" cy="20" r="9" fill="#b0b0c8"/>
+                  <ellipse cx="25" cy="43" rx="16" ry="10" fill="#b0b0c8"/>
+                </svg>
+              </div>
+              <span class="ed-reviews__card-name">{{ review.name }}</span>
+              <span class="ed-reviews__card-date">{{ review.date }}</span>
+            </div>
+            <p class="ed-reviews__card-body">{{ review.body }}</p>
+            <div class="ed-reviews__card-ratings">
+              @for (r of review.ratings; track r.label) {
+                <div class="ed-reviews__mini-rating">
+                  <span class="ed-reviews__mini-label">{{ r.label }}</span>
+                  <span class="ed-reviews__mini-stars">
+                    @for (s of range(5); track s) {
+                      <span>{{ s < r.stars ? '★' : '☆' }}</span>
+                    }
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+        }
       </div>
 
     </div><!-- /.ed-about__left -->
@@ -126,39 +397,32 @@
 
         <p class="ed-about__card-from">Starting From</p>
         <div class="ed-about__card-price">
-          <span class="ed-about__card-amount">AED 250</span>
+          <span class="ed-about__card-amount">AED 4199</span>
           <span class="ed-about__card-per">/per person</span>
         </div>
 
         <ul class="ed-about__card-perks">
           <li class="ed-about__card-perk">
-            <img src="icons/customize-check.svg" alt="" width="14" height="14">
-            Mony Back Guarantee.
+            <img src="icons/money-tick.png" alt="" width="14" height="14" aria-hidden="true">
+            Mony Back Guarentee.
           </li>
           <li class="ed-about__card-perk">
-            <img src="icons/customize-check.svg" alt="" width="14" height="14">
+            <img src="icons/money-tick.png" alt="" width="14" height="14" aria-hidden="true">
             Your Safety is Our Top Priority.
           </li>
         </ul>
 
         <a href="#" class="ed-about__card-cta ed-about__card-cta--primary">
           Check Availability
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2V9" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <img src="icons/check-availability.png" alt="" width="14" height="14" aria-hidden="true">
         </a>
         <a href="#" class="ed-about__card-cta ed-about__card-cta--secondary">
           Submit an Enquiry
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 12L12 2M12 2H5M12 2V9" stroke="#00589c" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <img src="icons/an-enquiry.png" alt="" width="14" height="14" aria-hidden="true">
         </a>
 
         <p class="ed-about__card-note">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <circle cx="7" cy="7" r="6.5" stroke="#525252"/>
-            <path d="M7 6v4M7 4.5v.5" stroke="#525252" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
+          <img src="icons/bonus-activity.png" alt="" width="14" height="14" aria-hidden="true">
           Bonus Activity Included – Limited Time!
         </p>
       </div>
@@ -168,8 +432,14 @@
         <p class="ed-customize__eyebrow">Customize</p>
         <h3 class="ed-customize__title">Travel Package!</h3>
         <ul class="ed-customize__perks">
-          <li class="ed-customize__perk">Make Your Favourite Package</li>
-          <li class="ed-customize__perk">Enjoy Your Trip</li>
+          <li class="ed-customize__perk">
+            <img src="icons/make-your-fav.png" alt="" class="ed-customize__perk-icon" aria-hidden="true">
+            Make Your Favourite Package
+          </li>
+          <li class="ed-customize__perk">
+            <img src="icons/make-your-fav.png" alt="" class="ed-customize__perk-icon" aria-hidden="true">
+            Enjoy Your Trip
+          </li>
         </ul>
         <div class="ed-customize__guides">
           <img src="images/peoples.png" alt="Guides" class="ed-customize__guides-img">
@@ -185,6 +455,76 @@
 
     </div><!-- /.ed-about__right -->
 
+  </div>
+</section>
+
+<!-- Relevant Packages -->
+<section class="ed-relevant">
+  <div class="ed-relevant__inner">
+    <h2 class="ed-relevant__heading">Relevant Package</h2>
+    <p class="ed-relevant__sub">A curated list of the most popular travel packages based on different destinations.</p>
+
+    <div class="ed-relevant__clip">
+      <div class="ed-relevant__track"
+        [style.margin-left]="'calc(' + (-currentRelevantSlide) + ' * (100% + 24px) / ' + visibleRelevantPackages + ')'">
+      @for (pkg of relevantPackages; track pkg.title) {
+        <div class="ed-relevant__card">
+          <div class="ed-relevant__img-wrap">
+            <img class="ed-relevant__img" [src]="pkg.image" [alt]="pkg.title">
+            <span class="ed-relevant__badge">{{ pkg.badge }}</span>
+          </div>
+          <div class="ed-relevant__body">
+            <h3 class="ed-relevant__title">{{ pkg.title }}</h3>
+            <div class="ed-relevant__meta">
+              <span class="ed-relevant__loc">
+                <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
+                {{ pkg.location }}
+              </span>
+              <span class="ed-relevant__dur">
+                <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="8">
+                {{ pkg.duration }}
+              </span>
+            </div>
+            <div class="ed-relevant__cta-row">
+              <a class="ed-relevant__book" href="#">
+                Book Now
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                  <path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <div class="ed-relevant__price-wrap">
+                <span class="ed-relevant__per">per person</span>
+                <span class="ed-relevant__price">{{ pkg.price }}</span>
+              </div>
+            </div>
+            <div class="ed-relevant__divider"></div>
+            <div class="ed-relevant__tags">
+              <span class="ed-relevant__tag">
+                <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
+                Experience
+                <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+              </span>
+              <span class="ed-relevant__tag">
+                <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
+                Inclusion
+                <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+      </div>
+    </div>
+
+    <div class="ed-relevant__dots">
+      @for (dot of relevantDots; track dot; let i = $index) {
+        <span
+          class="ed-relevant__dot"
+          [class.ed-relevant__dot--active]="i === currentRelevantSlide"
+          (click)="goToRelevantSlide(i)">
+        </span>
+      }
+    </div>
   </div>
 </section>
 

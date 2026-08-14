@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<!-- ══ Hero Banner ════════════════════════════════════════════════════ -->
+<section class="contact-hero">
+  <img src="images/contact-hero.svg" alt="Contact Xperienz Holidays" class="contact-hero__bg" />
+  <div class="contact-hero__overlay"></div>
+  <div class="contact-hero__content">
+    <h1 class="contact-hero__heading">Contact Us</h1>
+  </div>
+</section>
+
+<!-- ══ Contact Info Cards ══════════════════════════════════════════════ -->
+<section class="contact-info">
+  <div class="contact-info__grid">
+
+    <div class="contact-card">
+      <img src="images/phone.svg" alt="" class="contact-card__icon" width="95" height="95" />
+      <h3 class="contact-card__title">Phone</h3>
+      <p class="contact-card__value">+971 4 221 4455</p>
+    </div>
+
+    <div class="contact-card">
+      <img src="images/whatsapp.svg" alt="" class="contact-card__icon" width="95" height="95" />
+      <h3 class="contact-card__title">Whatsapp</h3>
+      <p class="contact-card__value">+971 54 275 2887</p>
+    </div>
+
+    <div class="contact-card">
+      <img src="images/email.svg" alt="" class="contact-card__icon" width="95" height="95" />
+      <h3 class="contact-card__title">Email</h3>
+      <p class="contact-card__value">holidays&#64;xperienzholidays.com</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ Get in Touch Form ═══════════════════════════════════════════════ -->
+<section class="get-in-touch">
+  <div class="get-in-touch__card">
+    <h2 class="get-in-touch__heading">Get in Touch</h2>
+    <p class="get-in-touch__sub">
+      We're excited to hear from you! Whether you have a question about our services,
+      want to discuss a new project.
+    </p>
+
+    <form class="get-in-touch__form" (submit)="$event.preventDefault()">
+
+      <div class="get-in-touch__field">
+        <label class="get-in-touch__label" for="contact-name">Full Name</label>
+        <input
+          id="contact-name"
+          type="text"
+          class="get-in-touch__input"
+          placeholder="Enter Your Full Name"
+        />
+      </div>
+
+      <div class="get-in-touch__field">
+        <label class="get-in-touch__label" for="contact-email">Email</label>
+        <input
+          id="contact-email"
+          type="email"
+          class="get-in-touch__input"
+          placeholder="Enter Your Email Address"
+        />
+      </div>
+
+      <div class="get-in-touch__field">
+        <label class="get-in-touch__label" for="contact-phone">Phone</label>
+        <input
+          id="contact-phone"
+          type="tel"
+          class="get-in-touch__input"
+          placeholder="Enter Your Phone Number"
+        />
+      </div>
+
+      <div class="get-in-touch__field">
+        <label class="get-in-touch__label" for="contact-message">Message</label>
+        <textarea
+          id="contact-message"
+          class="get-in-touch__textarea"
+          placeholder="Write your message"
+          rows="6"
+        ></textarea>
+      </div>
+
+      <button type="submit" class="get-in-touch__submit">Submit</button>
+
+    </form>
+  </div>
+</section>
+
+<!-- ══ Google Map ══════════════════════════════════════════════════════ -->
+<section class="contact-map">
+  <iframe
+    src="https://maps.google.com/maps?q=Nasser+Air+Travel+Al+Maktoum+Road+Deira+Dubai+UAE&output=embed"
+    class="contact-map__iframe"
+    allowfullscreen=""
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Xperienz Holidays — Al Maktoum Rd, Deira, Dubai"
+  ></iframe>
+</section>
+
+<div class="contact-footer-wrap">
+  <app-footer></app-footer>
+</div>

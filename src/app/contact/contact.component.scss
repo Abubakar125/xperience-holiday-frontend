@@ -1,0 +1,318 @@
+// ── Contact Hero ──────────────────────────────────────────────────────────
+.contact-hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  &__bg {
+    display: block;
+    width: 100%;
+    height: 427px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 88, 156, 0.5);
+  }
+
+  &__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__heading {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    color: #fff;
+    text-align: center;
+    line-height: 1.2;
+    margin: 0;
+  }
+}
+
+// ── Contact Info Cards ─────────────────────────────────────────────────────
+.contact-info {
+  padding: 60px 80px;
+  background: #fff;
+
+  &__grid {
+    max-width: 1296px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+}
+
+.contact-card {
+  border: 2px solid #0357a0;
+  border-radius: 22px;
+  min-height: 245px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 36px 24px;
+  text-align: center;
+  gap: 4px;
+  background: #fff;
+
+  &__icon {
+    width: 95px;
+    height: 95px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #110f0f;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__value {
+    font-family: var(--font-primary);
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: #110f0f;
+    margin: 4px 0 0;
+    line-height: 1.4;
+    word-break: break-word;
+  }
+}
+
+// ── Get in Touch Form ──────────────────────────────────────────────────────
+.get-in-touch {
+  background: #fff;
+  padding: 0 80px 80px;
+
+  &__card {
+    max-width: 942px;
+    margin-inline: auto;
+    background: #00589c;
+    border-radius: 43px;
+    padding: 64px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__heading {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(1.75rem, 2.8vw, 2.5rem);
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  &__sub {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    text-align: center;
+    line-height: 1.6;
+    margin: 14px 0 0;
+    max-width: 580px;
+  }
+
+  &__form {
+    width: 100%;
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: #fff;
+    line-height: 1.4;
+  }
+
+  &__input,
+  &__textarea {
+    background: #fff;
+    border: none;
+    border-radius: 7px;
+    padding: 14px 20px;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    color: #110f0f;
+    outline: none;
+    width: 100%;
+    transition: box-shadow 0.2s;
+
+    &::placeholder {
+      color: #b4b4b4;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(249, 161, 71, 0.5);
+    }
+  }
+
+  &__input {
+    height: 57px;
+  }
+
+  &__textarea {
+    resize: vertical;
+    min-height: 185px;
+    line-height: 1.6;
+  }
+
+  &__submit {
+    background: #f9a147;
+    border: none;
+    border-radius: 7px;
+    height: 57px;
+    width: 100%;
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.15s;
+    letter-spacing: 0.01em;
+
+    &:hover {
+      background: #e8943a;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+// ── Google Map ─────────────────────────────────────────────────────────────
+.contact-map {
+  width: 100%;
+  height: 682px;
+  display: block;
+  overflow: hidden;
+  line-height: 0;
+
+  &__iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+}
+
+// ── Footer override (contact page only) ───────────────────────────────────
+.contact-footer-wrap {
+  ::ng-deep .site-footer {
+    padding-top: 0;
+  }
+}
+
+// ── Responsive ─────────────────────────────────────────────────────────────
+@media (max-width: 1200px) {
+  .contact-counter__inner {
+    padding-inline: 80px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .contact-info {
+    padding: 48px 40px;
+  }
+
+  .get-in-touch {
+    padding: 0 40px 60px;
+
+    &__card {
+      padding: 48px 48px;
+    }
+  }
+
+  .contact-counter__inner {
+    padding-inline: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-info {
+    padding: 40px 24px;
+
+    &__grid {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin-inline: auto;
+    }
+  }
+
+  .get-in-touch {
+    padding: 0 24px 48px;
+
+    &__card {
+      padding: 40px 32px;
+      border-radius: 24px;
+    }
+  }
+
+  .contact-map {
+    height: 420px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-hero__bg {
+    height: 220px;
+  }
+
+  .contact-map {
+    height: 320px;
+  }
+
+  .contact-counter {
+    &__inner {
+      height: auto;
+      padding: 32px 20px;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    &__item {
+      flex: 0 1 calc(50% - 12px);
+      padding-inline: 0;
+    }
+
+    &__divider {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .get-in-touch__card {
+    padding: 32px 20px;
+    border-radius: 20px;
+  }
+}
