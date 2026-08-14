@@ -1,0 +1,113 @@
+<app-header></app-header>
+
+<!-- ══ Hero Banner ════════════════════════════════════════════════════ -->
+<section class="dest-hero">
+  <img src="images/destination-hero.svg" alt="Destinations" class="dest-hero__bg" />
+  <div class="dest-hero__overlay"></div>
+  <div class="dest-hero__content">
+    <h1 class="dest-hero__heading">Destinations</h1>
+  </div>
+</section>
+
+<!-- ══ Featured Destinations ══════════════════════════════════════════ -->
+<section class="featured-dest">
+  <div class="featured-dest__inner">
+
+    <h2 class="featured-dest__heading">Featured Destinations</h2>
+
+    <!-- Filter tabs -->
+    <div class="featured-dest__tabs">
+      @for (tab of filterTabs; track tab.key) {
+        <button
+          class="featured-dest__tab"
+          [class.featured-dest__tab--active]="activeRegion === tab.key"
+          (click)="activeRegion = tab.key"
+          type="button"
+        >{{ tab.label }}</button>
+      }
+    </div>
+
+    <!-- Destinations grid -->
+    <div class="featured-dest__grid">
+      @for (dest of filteredDestinations; track dest.name) {
+        <a class="dest-card" [routerLink]="['/destination', dest.name.toLowerCase().replace(' ', '-')]">
+          <div class="dest-card__img-wrap">
+            <img [src]="dest.image" [alt]="dest.name" class="dest-card__img" />
+          </div>
+          <div class="dest-card__footer">
+            <img src="icons/location.png" width="14" height="14" alt="" aria-hidden="true" class="dest-card__pin" />
+            <span class="dest-card__name">{{ dest.name }}</span>
+          </div>
+        </a>
+      }
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ Travel Inspirations ══════════════════════════════════════════════ -->
+<section class="travel-inspiration">
+  <div class="travel-inspiration__inner">
+
+    <div class="travel-inspiration__header">
+      <h2 class="travel-inspiration__heading">Travel Inspirations</h2>
+      <p class="travel-inspiration__sub">A curated list of Inspiration the most tour &amp; travel based on different destinations.</p>
+    </div>
+
+    <div class="travel-inspiration__grid">
+
+      <!-- Card 1 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-1.svg" alt="Nature travel in Thailand" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Pathaya, Thailand
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Mar, 2026</span>
+          <h3 class="ti-card__title">Nature, Culture &amp; Thrill: Travel Stories That Inspire.</h3>
+          <p class="ti-card__desc">Escape to the World's Most Breathtaking Islands and immerse yourself in paradise.</p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-2.svg" alt="Bali temples and islands" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Bali, Indonesia
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Feb, 2026</span>
+          <h3 class="ti-card__title">Escape to the World's Breathtaking Islands.</h3>
+          <p class="ti-card__desc">Escape to the World's Most Breathtaking Islands and immerse yourself in paradise.</p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="ti-card">
+        <div class="ti-card__img-wrap">
+          <img src="images/travel-inspiration-3.svg" alt="Hiking and trekking in Brazil" class="ti-card__img" />
+          <span class="ti-card__tag">
+            <img src="icons/loaction-navigation.png" width="16" height="16" alt="" aria-hidden="true" />
+            Brazil
+          </span>
+        </div>
+        <div class="ti-card__content">
+          <span class="ti-card__date">12 Jan, 2026</span>
+          <h3 class="ti-card__title">Hiking, Trekking &amp; Thrill-Seeking.</h3>
+          <p class="ti-card__desc">Discover the best mountain getaways for nature lovers, where breathtaking landscapes.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-faq></app-faq>
+
+<app-footer></app-footer>

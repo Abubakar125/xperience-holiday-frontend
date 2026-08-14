@@ -49,13 +49,13 @@
       </a>
 
       <a href="#" class="site-header__link">Holidays</a>
-      <a href="#" class="site-header__link">Experiences</a>
-      <a href="#" class="site-header__link">Destinations</a>
+      <a routerLink="/experiences" routerLinkActive="site-header__link--active" class="site-header__link">Experiences</a>
+      <a routerLink="/destinations" routerLinkActive="site-header__link--active" class="site-header__link">Destinations</a>
       <a href="#" class="site-header__link">Cruises</a>
       <a href="#" class="site-header__link">MICE Travel Insurance</a>
       <a href="#" class="site-header__link">Offers</a>
       <a routerLink="/about" routerLinkActive="site-header__link--active" class="site-header__link">About Us</a>
-      <a href="#" class="site-header__link">Contact Us</a>
+      <a routerLink="/contact" routerLinkActive="site-header__link--active" class="site-header__link">Contact Us</a>
     </nav>
 
     <!-- CTA button -->
@@ -93,13 +93,13 @@
         <span class="mobile-menu__badge">New Tours</span>
       </a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Holidays</a>
-      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Experiences</a>
-      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Destinations</a>
+      <a routerLink="/experiences" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Experiences</a>
+      <a routerLink="/destinations" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Destinations</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Cruises</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">MICE Travel Insurance</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Offers</a>
       <a routerLink="/about" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">About Us</a>
-      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Contact Us</a>
+      <a routerLink="/contact" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Contact Us</a>
     </nav>
 
     <button class="mobile-menu__cta" (click)="closeMenu()">Plan My Holiday</button>

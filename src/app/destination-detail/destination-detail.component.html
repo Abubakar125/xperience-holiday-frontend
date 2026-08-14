@@ -1,0 +1,408 @@
+<app-header></app-header>
+
+<!-- Hero image gallery -->
+<section class="dd-hero">
+  <div class="dd-hero__gallery">
+    @for (slide of slides; track $index) {
+      <img class="dd-hero__img" [src]="slide" alt="Destination view">
+    }
+  </div>
+</section>
+
+<!-- Destination info section -->
+<section class="dd-info">
+  <div class="dd-info__inner">
+
+    <h1 class="dd-info__title">Paris, France</h1>
+
+    <div class="dd-info__pills">
+      <span class="dd-info__pill">Capital - Paris</span>
+      <span class="dd-info__pill">Currency - Euro</span>
+      <span class="dd-info__pill">Language - French</span>
+    </div>
+
+    <p class="dd-info__desc">
+      Paris, known as the <strong>"City of Light"</strong> (La Ville Lumière), is the capital of France and one
+      of the most romantic and iconic cities in the world. Known for its timeless architecture, world-class
+      museums, charming streets, rich history, and exquisite cuisine, Paris is a must-visit destination for
+      travelers from around the globe. Globally recognized as a fashion capital, Paris is the birthplace of haute
+      couture and luxury brands like Chanel, Louis Vuitton, and Dior.
+    </p>
+
+    <a class="dd-info__cta">
+      Best Time to Visit
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 13L13 3M13 3H5M13 3V11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+
+  </div>
+</section>
+
+<!-- Popular Tourist Places slider -->
+<section class="dd-places">
+  <div class="dd-places__inner">
+
+    <h2 class="dd-places__heading">Popular Tourist Place</h2>
+
+    <div class="dd-places__viewport">
+
+      <!-- Left arrow — sits -20px outside the clip area -->
+      <button
+        class="dd-places__arrow dd-places__arrow--prev"
+        (click)="prevPlace()"
+        [disabled]="placesAtStart"
+        aria-label="Previous places">
+        <img src="icons/left-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
+      </button>
+
+      <!-- Clip wrapper — only this clips the scrolling track -->
+      <div class="dd-places__clip">
+        <div
+          class="dd-places__track"
+          [style.margin-left]="'calc(' + (-currentPlacesSlide) + ' * (100% + 24px) / ' + visiblePlaces + ')'">
+          @for (place of places; track $index) {
+            <div class="dd-places__card">
+              <div class="dd-places__img-wrap">
+                <img class="dd-places__img" [src]="place.image" [alt]="place.name">
+              </div>
+              <p class="dd-places__label">{{ place.name }}</p>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Right arrow — sits -20px outside the clip area -->
+      <button
+        class="dd-places__arrow dd-places__arrow--next"
+        (click)="nextPlace()"
+        [disabled]="placesAtEnd"
+        aria-label="Next places">
+        <img src="icons/right-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Why Choose Only Us? -->
+<section class="dd-why">
+  <div class="dd-why__inner">
+
+    <h2 class="dd-why__heading">Why Choose Only Us?</h2>
+    <p class="dd-why__subtitle">Because we don't just plan your trip — we craft unforgettable experiences.</p>
+
+    <div class="dd-why__cards">
+
+      <div class="dd-why__card">
+        <div class="dd-why__icon-wrap">
+          <img src="icons/local-expertise.svg" alt="" aria-hidden="true" class="dd-why__icon">
+        </div>
+        <h3 class="dd-why__card-title">Local Expertise</h3>
+        <p class="dd-why__card-desc">Our team of local experts knows every hidden gem, cultural nuance, and off-the-beaten-path experience to make your journey truly authentic.</p>
+      </div>
+
+      <div class="dd-why__card">
+        <div class="dd-why__icon-wrap">
+          <img src="icons/transparent-pricing.svg" alt="" aria-hidden="true" class="dd-why__icon">
+        </div>
+        <h3 class="dd-why__card-title">Transparent Pricing</h3>
+        <p class="dd-why__card-desc">No hidden fees, no surprises. We believe in honest, upfront pricing so you can plan your dream trip with complete peace of mind.</p>
+      </div>
+
+      <div class="dd-why__card">
+        <div class="dd-why__icon-wrap">
+          <img src="icons/support.svg" alt="" aria-hidden="true" class="dd-why__icon">
+        </div>
+        <h3 class="dd-why__card-title">24/7 Support</h3>
+        <p class="dd-why__card-desc">We're with you every step of the way. Our dedicated support team is available around the clock to assist you whenever you need it.</p>
+      </div>
+
+    </div>
+
+    <div class="dd-why__pills">
+      <span class="dd-why__pill">Personalized Itineraries</span>
+      <span class="dd-why__pill">Trusted Guides &amp; Partners</span>
+      <span class="dd-why__pill">Curated Experiences</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- Experience Gallery -->
+<section class="dd-gallery">
+  <div class="dd-gallery__inner">
+
+    <h2 class="dd-gallery__heading">Experience Gallery</h2>
+
+    <div class="dd-gallery__grid">
+      <div class="dd-gallery__item dd-gallery__item--sm">
+        <img class="dd-gallery__img" src="images/experience-gallery-1.svg" alt="Experience 1">
+      </div>
+      <div class="dd-gallery__item dd-gallery__item--lg">
+        <img class="dd-gallery__img" src="images/experience-gallery-2.svg" alt="Experience 2">
+      </div>
+      <div class="dd-gallery__item dd-gallery__item--sm">
+        <img class="dd-gallery__img" src="images/experience-gallery-3.svg" alt="Experience 3">
+      </div>
+      <div class="dd-gallery__item dd-gallery__item--lg">
+        <img class="dd-gallery__img" src="images/experience-gallery-4.svg" alt="Experience 4">
+      </div>
+      <div class="dd-gallery__item dd-gallery__item--sm">
+        <img class="dd-gallery__img" src="images/experience-gallery-5.svg" alt="Experience 5">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Best Time to Visit -->
+<section class="dd-visit">
+  <div class="dd-visit__inner">
+
+    <h2 class="dd-visit__heading">Best Time to Visit</h2>
+
+    <div class="dd-visit__grid">
+
+      <!-- Spring -->
+      <div class="dd-visit__card">
+        <div class="dd-visit__card-body">
+          <img class="dd-visit__img" src="images/spring.svg" alt="Spring">
+          <div class="dd-visit__content">
+            <h3 class="dd-visit__season">Spring (March–May)</h3>
+            <p class="dd-visit__weather">Weather: 12–20°C / 53–68°F</p>
+            <p class="dd-visit__hl-label">Highlights:</p>
+            <ul class="dd-visit__list">
+              <li class="dd-visit__item">Cherry blossoms, café culture.</li>
+              <li class="dd-visit__item">Moderate crowds.</li>
+              <li class="dd-visit__item">Ideal for outdoor walks &amp; photo spots.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dd-visit__pill">Perfect For: First-time travelers, couples, light packers</div>
+      </div>
+
+      <!-- Summer -->
+      <div class="dd-visit__card">
+        <div class="dd-visit__card-body">
+          <img class="dd-visit__img" src="images/summer.svg" alt="Summer">
+          <div class="dd-visit__content">
+            <h3 class="dd-visit__season">Summer (June–August)</h3>
+            <p class="dd-visit__weather">Weather: 20–30°C / 68–86°F</p>
+            <p class="dd-visit__hl-label">Highlights:</p>
+            <ul class="dd-visit__list">
+              <li class="dd-visit__item">Long daylight hours.</li>
+              <li class="dd-visit__item">Open-air cinema, festivals.</li>
+              <li class="dd-visit__item">High tourist volume &amp; prices.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dd-visit__pill">Perfect For: Festival lovers, families, nightlife explorers</div>
+      </div>
+
+      <!-- Autumn -->
+      <div class="dd-visit__card">
+        <div class="dd-visit__card-body">
+          <img class="dd-visit__img" src="images/autumn.svg" alt="Autumn">
+          <div class="dd-visit__content">
+            <h3 class="dd-visit__season">Autumn (Sep to Nov)</h3>
+            <p class="dd-visit__weather">Weather: 0–18°C / 50–64°F</p>
+            <p class="dd-visit__hl-label">Highlights:</p>
+            <ul class="dd-visit__list">
+              <li class="dd-visit__item">Golden parks, wine season.</li>
+              <li class="dd-visit__item">Fewer tourists, great photos.</li>
+              <li class="dd-visit__item">Fashion Week buzz.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dd-visit__pill">Perfect For: Photographers, solo travelers, wine lovers</div>
+      </div>
+
+      <!-- Winter -->
+      <div class="dd-visit__card">
+        <div class="dd-visit__card-body">
+          <img class="dd-visit__img" src="images/winter.svg" alt="Winter">
+          <div class="dd-visit__content">
+            <h3 class="dd-visit__season">Winter (Dec to Feb)</h3>
+            <p class="dd-visit__weather">Weather: 3–8°C / 37–46°F</p>
+            <p class="dd-visit__hl-label">Highlights:</p>
+            <ul class="dd-visit__list">
+              <li class="dd-visit__item">Christmas markets, cozy cafés.</li>
+              <li class="dd-visit__item">Fewer crowds, better deals.</li>
+              <li class="dd-visit__item">Occasional snow = pure magic.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dd-visit__pill">Perfect For: Budget travelers, romantics, festive moods</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Video Banner (white page background) -->
+<div class="dd-video-banner">
+  <div class="dd-video-banner__inner">
+    <div class="dd-video-banner__frame">
+      <img class="dd-video-banner__img" src="images/video-banner-image.svg" alt="Destination video">
+      <button class="dd-video-banner__play" aria-label="Play video">
+        <svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 13L1 1.5V24.5L21 13Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ section (peach background) -->
+<section class="dd-faq-wrap">
+  <app-faq></app-faq>
+</section>
+
+<!-- Tours Available -->
+<section class="dd-tours">
+  <div class="dd-tours__inner">
+
+    <h2 class="dd-tours__heading">3 Tours Available in Paris</h2>
+    <p class="dd-tours__sub">A curated list of the most popular Tours we hope travels to different destinations</p>
+
+    <div class="dd-tours__grid">
+
+      <!-- Card 1 -->
+      <div class="dd-tours__card">
+        <div class="dd-tours__img-wrap">
+          <img class="dd-tours__img" src="images/tourist-place-1.svg" alt="Kenya Safari Adventure">
+          <span class="dd-tours__badge">Solo Tour</span>
+        </div>
+        <div class="dd-tours__body">
+          <h3 class="dd-tours__title">Kenya Safari Adventure</h3>
+          <div class="dd-tours__meta">
+            <span class="dd-tours__loc">
+              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
+              KENYA
+            </span>
+            <span class="dd-tours__dur">
+              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
+              05 Days/6 Nights
+            </span>
+          </div>
+          <div class="dd-tours__cta-row">
+            <a class="dd-tours__book" href="#">
+              Book Now
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="dd-tours__price-wrap">
+              <span class="dd-tours__per">per person</span>
+              <span class="dd-tours__price">AED 1500</span>
+            </div>
+          </div>
+          <div class="dd-tours__divider"></div>
+          <div class="dd-tours__tags">
+            <span class="dd-tours__tag">
+              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
+              Experience
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+            <span class="dd-tours__tag">
+              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
+              Inclusion
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="dd-tours__card">
+        <div class="dd-tours__img-wrap">
+          <img class="dd-tours__img" src="images/tourist-place-2.svg" alt="Art, Music & Heritage Tour">
+          <span class="dd-tours__badge dd-tours__badge--orange">Sale</span>
+        </div>
+        <div class="dd-tours__body">
+          <h3 class="dd-tours__title">Art, Music &amp; Heritage Tour</h3>
+          <div class="dd-tours__meta">
+            <span class="dd-tours__loc">
+              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
+              FRANCE
+            </span>
+            <span class="dd-tours__dur">
+              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
+              07 Days/8 Nights
+            </span>
+          </div>
+          <div class="dd-tours__cta-row">
+            <a class="dd-tours__book" href="#">
+              Book Now
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="dd-tours__price-wrap">
+              <span class="dd-tours__per">per person</span>
+              <span class="dd-tours__price">AED 5500</span>
+            </div>
+          </div>
+          <div class="dd-tours__divider"></div>
+          <div class="dd-tours__tags">
+            <span class="dd-tours__tag">
+              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
+              Experience
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+            <span class="dd-tours__tag">
+              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
+              Inclusion
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="dd-tours__card">
+        <div class="dd-tours__img-wrap">
+          <img class="dd-tours__img" src="images/tourist-place-3.svg" alt="Eco-Friendly City Ride">
+          <span class="dd-tours__badge dd-tours__badge--green">New</span>
+        </div>
+        <div class="dd-tours__body">
+          <h3 class="dd-tours__title">Eco-Friendly City Ride</h3>
+          <div class="dd-tours__meta">
+            <span class="dd-tours__loc">
+              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
+              PARIS
+            </span>
+            <span class="dd-tours__dur">
+              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
+              03 Days/4 Nights
+            </span>
+          </div>
+          <div class="dd-tours__cta-row">
+            <a class="dd-tours__book" href="#">
+              Book Now
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <div class="dd-tours__price-wrap">
+              <span class="dd-tours__per">per person</span>
+              <span class="dd-tours__price">AED 1500</span>
+            </div>
+          </div>
+          <div class="dd-tours__divider"></div>
+          <div class="dd-tours__tags">
+            <span class="dd-tours__tag">
+              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
+              Experience
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+            <span class="dd-tours__tag">
+              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
+              Inclusion
+              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>
