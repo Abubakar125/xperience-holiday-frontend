@@ -1,0 +1,600 @@
+<app-header></app-header>
+
+<!-- ──────────────────────────────────────────────────────────
+     3. HERO SECTION  –  bg #0056a6, left text+search, right image
+     ────────────────────────────────────────────────────────── -->
+<section class="hero">
+
+  <div class="hero__layout">
+
+    <!-- ── LEFT: trust label + headline + search widget ── -->
+    <div class="hero__left">
+
+      <p class="hero__trust">TRUSTED BY 100,000+ TRAVELLERS</p>
+
+      <h1 class="hero__headline">
+        Xperienz Holidays<br>
+        <span class="hero__headline-orange">Your Holidays, Your Style</span>
+      </h1>
+
+      <p class="hero__sub">
+        Discover tailor-made holidays crafted by destination experts. From family
+        vacations and luxury escapes to cruises and unforgettable adventures, we
+        create journeys designed around you.
+      </p>
+
+      <!-- Search widget card -->
+      <div class="hero__card">
+        <p class="hero__card-title">Find Your Perfect Holiday</p>
+
+        <!-- 4-col inputs -->
+        <div class="hero__inputs">
+          <div class="hero__field">
+            <label class="hero__label">DESTINATION</label>
+            <input class="hero__input" type="text" placeholder="Where to?" />
+          </div>
+          <div class="hero__field">
+            <label class="hero__label">TRAVEL STYLE</label>
+            <input class="hero__input" type="text" placeholder="Family, luxury..." />
+          </div>
+          <div class="hero__field">
+            <label class="hero__label">BUDGET</label>
+            <input class="hero__input" type="text" placeholder="Select budget" />
+          </div>
+          <div class="hero__field">
+            <label class="hero__label">TRAVEL MONTH</label>
+            <input class="hero__input" type="text" placeholder="Pick a month" />
+          </div>
+        </div>
+
+        <!-- Budget pills -->
+        <div class="hero__pills">
+          <button class="hero__pill">AED 3,000–5,000</button>
+          <button class="hero__pill hero__pill--active">AED 5,000–8,000</button>
+          <button class="hero__pill">AED 8,000–12,000</button>
+          <button class="hero__pill">AED 12,000+</button>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="hero__actions">
+          <button class="hero__btn-explore">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            Explore Holidays
+          </button>
+          <button class="hero__btn-plan">Plan My Holiday</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── RIGHT: hero image slider ── -->
+    <div class="hero__right">
+      <div class="hero__slider">
+        <div class="hero__slider-track" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+          @for (slide of heroSlides; track slide; let i = $index) {
+            <img [src]="slide" alt="Xperienz Holidays slide {{i + 1}}" class="hero__slide-img" />
+          }
+        </div>
+      </div>
+      <div class="hero__dots">
+        @for (slide of heroSlides; track slide; let i = $index) {
+          <span
+            class="hero__dot"
+            [class.hero__dot--active]="i === currentSlide"
+            (click)="goToSlide(i)"
+          ></span>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Floating contact buttons -->
+  <div class="hero__floats">
+
+    <!-- WhatsApp — #25d366 -->
+    <a href="https://wa.me/" class="hero__float hero__float--wa" aria-label="WhatsApp">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+    </a>
+
+    <!-- Phone — #0056a6 + white border -->
+    <a href="tel:" class="hero__float hero__float--phone" aria-label="Call us">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+      </svg>
+    </a>
+
+    <!-- CTA / Booking — #f9a147 + white border -->
+    <a href="#" class="hero__float hero__float--cta" aria-label="Book Now">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+      </svg>
+    </a>
+
+  </div>
+
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     4. HOLIDAY TYPE FILTER – 3×2 image cards grid
+     ────────────────────────────────────────────────────────── -->
+<section class="holiday-filter">
+  <div class="holiday-filter__inner">
+    <h2 class="holiday-filter__heading">Find Your Travel Style</h2>
+    <p class="holiday-filter__sub">Curated experiences for every type of traveller.</p>
+
+    <div class="holiday-filter__grid">
+
+      <div class="hf-card">
+        <img src="images/family-holidays.png" alt="Family Holidays" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Family Holidays</span>
+      </div>
+
+      <div class="hf-card">
+        <img src="images/couples-honeymoon.png" alt="Couples &amp; Honeymoon" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Couples &amp; Honeymoon</span>
+      </div>
+
+      <div class="hf-card">
+        <img src="images/luxury-holidays.png" alt="Luxury Holidays" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Luxury Holidays</span>
+      </div>
+
+      <div class="hf-card">
+        <img src="images/adventure-tours.png" alt="Adventure Tours" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Adventure Tours</span>
+      </div>
+
+      <div class="hf-card">
+        <img src="images/group-travel.png" alt="Group Travel" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Group Travel</span>
+      </div>
+
+      <div class="hf-card">
+        <img src="images/cruises.png" alt="Cruises" class="hf-card__img" />
+        <div class="hf-card__overlay"></div>
+        <span class="hf-card__label">Cruises</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     5. FEATURED HOLIDAYS – 4-card grid (Figma node 2:279 / card 2:285)
+     ────────────────────────────────────────────────────────── -->
+<section class="featured-holidays" id="holidays">
+  <div class="featured-holidays__inner">
+    <h2 class="featured-holidays__heading">Featured Holidays</h2>
+    <p class="featured-holidays__sub">Curated experiences designed for every type of traveller</p>
+
+    <div class="fh-grid">
+
+      @for (card of fhCards; track card.title; let ci = $index) {
+        <article class="fh-card">
+          <div class="fh-card__img-wrap">
+            <div class="fh-card__img-clip">
+              <div class="fh-card__slider-track"
+                   [style.margin-left]="'-' + (fhCardSlides[ci] * 100) + '%'">
+                @for (img of card.images; track img) {
+                  <img [src]="img" [alt]="card.title" class="fh-card__photo" />
+                }
+              </div>
+            </div>
+            <span class="fh-card__badge-date">{{ card.date }}</span>
+            <span class="fh-card__badge-type">{{ card.type }}</span>
+            <div class="fh-card__dots">
+              @for (img of card.images; track img; let si = $index) {
+                <span
+                  class="fh-card__dot"
+                  [class.fh-card__dot--active]="si === fhCardSlides[ci]"
+                  (click)="goToFhSlide(ci, si)"
+                ></span>
+              }
+            </div>
+          </div>
+          <div class="fh-card__body">
+            <h3 class="fh-card__title">{{ card.title }}</h3>
+            <div class="fh-card__meta">
+              <img class="fh-card__pin" src="icons/location.png" alt="" aria-hidden="true" />
+              <span class="fh-card__location">{{ card.location }}</span>
+              <img class="fh-card__sep" src="icons/arrows-both-sides.png" alt="" aria-hidden="true" />
+              <span class="fh-card__duration">{{ card.duration }}</span>
+            </div>
+            <div class="fh-card__footer">
+              <a href="#" class="fh-card__book">
+                Book Now
+                <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
+              </a>
+              <div class="fh-card__price">
+                <span class="fh-card__per">per person</span>
+                <span class="fh-card__amount">{{ card.price }}</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     6. WHY TRUST US – blue heading banner (Figma node 2:511)
+     ────────────────────────────────────────────────────────── -->
+<section class="why-us-heading">
+  <div class="why-us-heading__inner">
+    <h2 class="why-us-heading__title">Why 100,000+ Travellers Trust Xperienz</h2>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     6b. WHY TRUST US – orange counter bar (Figma node 2:653)
+     Same design as footer-counter; reused here in home page
+     ────────────────────────────────────────────────────────── -->
+<section class="why-us-counter">
+  <div class="why-us-counter__inner">
+
+    <div class="why-us-counter__item">
+      <img class="why-us-counter__icon" src="icons/tours.png" alt="" aria-hidden="true" />
+      <div class="why-us-counter__text">
+        <span class="why-us-counter__num">30000+</span>
+        <span class="why-us-counter__label">Tour Completed</span>
+      </div>
+    </div>
+
+    <img class="why-us-counter__divider" src="icons/seperation.png" alt="" aria-hidden="true" />
+
+    <div class="why-us-counter__item">
+      <img class="why-us-counter__icon" src="icons/travel-experience.png" alt="" aria-hidden="true" />
+      <div class="why-us-counter__text">
+        <span class="why-us-counter__num">50+</span>
+        <span class="why-us-counter__label">Travel Experience</span>
+      </div>
+    </div>
+
+    <img class="why-us-counter__divider" src="icons/seperation.png" alt="" aria-hidden="true" />
+
+    <div class="why-us-counter__item">
+      <img class="why-us-counter__icon" src="icons/happy-traveler.png" alt="" aria-hidden="true" />
+      <div class="why-us-counter__text">
+        <span class="why-us-counter__num">17000+</span>
+        <span class="why-us-counter__label">Happy Traveler</span>
+      </div>
+    </div>
+
+    <img class="why-us-counter__divider" src="icons/seperation.png" alt="" aria-hidden="true" />
+
+    <div class="why-us-counter__item">
+      <img class="why-us-counter__icon" src="icons/retention-rate.png" alt="" aria-hidden="true" />
+      <div class="why-us-counter__text">
+        <span class="why-us-counter__num">98%</span>
+        <span class="why-us-counter__label">Retention Rate</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     7. MAURITIUS MADE EFFORTLESS (Figma node 2:691)
+     White bg · left text+checklist+CTA · right photo
+     ────────────────────────────────────────────────────────── -->
+<section class="air-mauritius">
+  <div class="air-mauritius__inner">
+
+    <!-- Left: heading + checklist + CTA -->
+    <div class="air-mauritius__left">
+      <h2 class="air-mauritius__heading">Mauritius Made Effortless</h2>
+
+      <ul class="air-mauritius__features">
+        <li class="am-item">
+          <span class="am-item__icon" aria-hidden="true">
+            <img class="am-item__tick" src="icons/tick.png" alt="" />
+          </span>
+          <span class="am-item__text">Exclusive Air Mauritius flight packages</span>
+        </li>
+        <li class="am-item">
+          <span class="am-item__icon" aria-hidden="true">
+            <img class="am-item__tick" src="icons/tick.png" alt="" />
+          </span>
+          <span class="am-item__text">Handpicked luxury resorts and hotels</span>
+        </li>
+        <li class="am-item">
+          <span class="am-item__icon" aria-hidden="true">
+            <img class="am-item__tick" src="icons/tick.png" alt="" />
+          </span>
+          <span class="am-item__text">Personalized itineraries and experiences</span>
+        </li>
+        <li class="am-item">
+          <span class="am-item__icon" aria-hidden="true">
+            <img class="am-item__tick" src="icons/tick.png" alt="" />
+          </span>
+          <span class="am-item__text">Seamless visa assistance</span>
+        </li>
+        <li class="am-item">
+          <span class="am-item__icon" aria-hidden="true">
+            <img class="am-item__tick" src="icons/tick.png" alt="" />
+          </span>
+          <span class="am-item__text">Expert local guidance</span>
+        </li>
+      </ul>
+
+      <button class="air-mauritius__cta">Explore Mauritius</button>
+    </div>
+
+    <!-- Right: Mauritius photo -->
+    <div class="air-mauritius__right">
+      <img class="air-mauritius__photo" src="images/mauritius-beach.png" alt="Mauritius beach" />
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     8. CORPORATE & MICE SOLUTIONS  (Figma node 2:750)
+     bg #faf8f4 · centered heading · 4-card grid
+     ────────────────────────────────────────────────────────── -->
+<section class="mice">
+  <div class="mice__inner">
+
+    <h2 class="mice__heading">Corporate &amp; MICE Solutions</h2>
+
+    <div class="mice__grid">
+
+      <div class="mice-card">
+        <img class="mice-card__icon" src="icons/incentive-travel.svg" alt="" aria-hidden="true" />
+        <h3 class="mice-card__title">Incentive Travel</h3>
+        <p class="mice-card__desc">Reward excellence with unforgettable journeys</p>
+      </div>
+
+      <div class="mice-card">
+        <img class="mice-card__icon" src="icons/conference-event.svg" alt="" aria-hidden="true" />
+        <h3 class="mice-card__title">Conferences &amp; Events</h3>
+        <p class="mice-card__desc">World-class venues and seamless execution</p>
+      </div>
+
+      <div class="mice-card">
+        <img class="mice-card__icon" src="icons/corporates-retreats.svg" alt="" aria-hidden="true" />
+        <h3 class="mice-card__title">Corporate Retreats</h3>
+        <p class="mice-card__desc">Team building in inspiring destinations</p>
+      </div>
+
+      <div class="mice-card">
+        <img class="mice-card__icon" src="icons/persons.svg" alt="" aria-hidden="true" />
+        <h3 class="mice-card__title">Group Management</h3>
+        <p class="mice-card__desc">Expertly coordinated group travel</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     9. TRAVEL STORIES  (Figma node 2:1053)
+     bg #0051a1 · heading + subtitle · 3 video cards · dots · CTA
+     ────────────────────────────────────────────────────────── -->
+<section class="travel-stories">
+  <div class="travel-stories__inner">
+
+    <!-- Header -->
+    <div class="travel-stories__header">
+      <h2 class="travel-stories__heading">Travel Stories, Captured Forever</h2>
+      <p class="travel-stories__sub">Hear directly from our travellers and relive unforgettable moments from around the world.</p>
+    </div>
+
+    <!-- Rolling carousel – 3 cards visible, shifts 1 card per step -->
+    <div class="travel-stories__slider">
+      <div class="travel-stories__slider-track"
+           [style.margin-left]="'calc(' + (-currentTsSlide) + ' * (100% + 32px) / ' + visibleTsCards + ')'">
+        @for (card of travelStoryCards; track card) {
+          <div class="ts-card">
+            <button class="ts-card__play" aria-label="Play video">
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="31" stroke="white" stroke-width="2"/>
+                <path d="M27 21L46 32L27 43V21Z" fill="white"/>
+              </svg>
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Slide dots -->
+    <div class="travel-stories__dots">
+      @for (dot of travelStoryDots; track dot; let i = $index) {
+        <span
+          class="ts-dot"
+          [class.ts-dot--active]="i === currentTsSlide"
+          (click)="goToTsSlide(i)"
+        ></span>
+      }
+    </div>
+
+    <!-- Bottom CTA -->
+    <h3 class="travel-stories__cta-heading">Ready To Create Your Own Story?</h3>
+    <button class="travel-stories__cta-btn">Start Planning Today</button>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     10. WALL OF TRAVELLERS EXPERIENCE  (Figma node 201:20)
+     bg #f9a147 · centered heading · 3 review cards
+     ────────────────────────────────────────────────────────── -->
+<section class="wall-of-travellers">
+  <div class="wall-of-travellers__inner">
+
+    <h2 class="wall-of-travellers__heading">Wall of Travellers Experience</h2>
+    <p class="wall-of-travellers__sub">We go beyond just booking trips—we create unforgettable travel experiences that match your dreams!</p>
+
+    <div class="wall-of-travellers__grid">
+
+      <!-- Card 1: Alia -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Alia" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Alia</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+      <!-- Card 2: Suhana -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Suhana" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Suhana</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+      <!-- Card 3: Ahmed -->
+      <div class="wte-card">
+        <div class="wte-card__header">
+          <img class="wte-card__avatar" src="icons/author-image.png" alt="Ahmed" />
+          <div class="wte-card__author-info">
+            <span class="wte-card__name">Ahmed</span>
+            <span class="wte-card__role">Traveler</span>
+          </div>
+        </div>
+        <div class="wte-card__stars" aria-label="5 out of 5 stars">
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+        </div>
+        <p class="wte-card__rating-label">Average Experience</p>
+        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     11. AWARDS & ACCOLADES
+     bg white · centered header · 4-card grid
+     ────────────────────────────────────────────────────────── -->
+<section class="awards">
+  <div class="awards__inner">
+
+    <h2 class="awards__heading">Awards &amp; Accolades</h2>
+    <p class="awards__sub">Recognized for excellence in the UAE travel industry.</p>
+
+    <div class="awards__grid">
+
+      <div class="award-card">
+        <img class="award-card__icon" src="icons/best-medal.png" alt="" aria-hidden="true" />
+        <h3 class="award-card__title">Best UAE Travel Agency</h3>
+        <span class="award-card__year">2025</span>
+        <p class="award-card__org">DTCM Excellence Awards</p>
+      </div>
+
+      <div class="award-card">
+        <img class="award-card__icon" src="icons/top-medal.png" alt="" aria-hidden="true" />
+        <h3 class="award-card__title">Top Travel Partner</h3>
+        <span class="award-card__year">2024</span>
+        <p class="award-card__org">Air Mauritius Partner Awards</p>
+      </div>
+
+      <div class="award-card">
+        <img class="award-card__icon" src="icons/star.png" alt="" aria-hidden="true" />
+        <h3 class="award-card__title">5-Star Customer Rating</h3>
+        <span class="award-card__year">2024–2025</span>
+        <p class="award-card__org">Google Reviews UAE</p>
+      </div>
+
+      <div class="award-card">
+        <img class="award-card__icon" src="icons/world.png" alt="" aria-hidden="true" />
+        <h3 class="award-card__title">Leading Outbound Operator</h3>
+        <span class="award-card__year">2023–2025</span>
+        <p class="award-card__org">TAAI Travel Awards</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     11. STRATEGIC PARTNERS
+     bg #fff7ef · centered header · 2 chip groups
+     ────────────────────────────────────────────────────────── -->
+<section class="partners">
+  <div class="partners__inner">
+
+    <h2 class="partners__heading">Our Strategic Partners</h2>
+    <p class="partners__sub">Global alliances that ensure the best for our travellers.</p>
+
+    <div class="partners__group">
+      <p class="partners__group-label">Tourism Boards</p>
+      <div class="partners__chips">
+        <span class="partner-chip">Switzerland</span>
+        <span class="partner-chip">Mauritius</span>
+        <span class="partner-chip">Kenya</span>
+        <span class="partner-chip">Dubai</span>
+        <span class="partner-chip">Japan</span>
+      </div>
+    </div>
+
+    <div class="partners__group partners__group--hotels">
+      <p class="partners__group-label">Hotel Partners</p>
+      <div class="partners__chips">
+        <span class="partner-chip partner-chip--muted">Accor</span>
+        <span class="partner-chip partner-chip--muted">Hilton</span>
+        <span class="partner-chip partner-chip--muted">IHG</span>
+        <span class="partner-chip partner-chip--muted">Marriott</span>
+        <span class="partner-chip partner-chip--muted">Jumeirah</span>
+        <span class="partner-chip partner-chip--muted">Taj Group</span>
+        <span class="partner-chip partner-chip--muted">The Oberoi Group</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ──────────────────────────────────────────────────────────
+     12. CTA BANNER
+     white section · next-plan.png as full card · woman overlaid
+     ────────────────────────────────────────────────────────── -->
+<section class="cta-banner">
+  <div class="cta-banner__wrapper">
+    <img class="cta-banner__woman" src="images/woman.svg" alt="" aria-hidden="true" />
+    <img class="cta-banner__bg" src="images/next-plan.svg" alt="Ready to plan your next holiday with Xperienz" />
+  </div>
+</section>
+
+<app-faq></app-faq>
+
+<app-footer></app-footer>

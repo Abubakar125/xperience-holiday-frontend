@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "mcp__plugin_figma_figma__get_design_context",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "mcp__plugin_figma_figma__get_metadata",
+      "Skill(figma:figma-design-to-code)",
+      "Bash(npx ng *)",
+      "mcp__figma__view_node",
+      "mcp__figma__add_figma_file",
+      "Bash(python3 *)",
+      "Bash(python *)"
+    ]
+  }
+}
