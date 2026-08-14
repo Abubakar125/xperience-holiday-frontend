@@ -4,12 +4,29 @@
 .ed-hero {
   position: relative;
   width: 100%;
-  // height: 670px;
+  height: 550px;
   overflow: hidden;
 
+  &__clip {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__slide {
+    flex: 0 0 100%;
+    height: 100%;
+  }
+
   &__img {
-    // position: absolute;
     width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
   }
@@ -18,6 +35,8 @@
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    pointer-events: none;
   }
 
   &__content {
@@ -29,6 +48,23 @@
     justify-content: center;
     gap: 32px;
     z-index: 2;
+    pointer-events: none;
+  }
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    line-height: 0;
+
+    &:disabled { opacity: 0.35; cursor: not-allowed; }
+    &--prev { left: 70px; }
+    &--next { right: 70px; }
   }
 
   &__price-row {
@@ -97,6 +133,7 @@
     &__price-per {
       font-size: 15px;
     }
+    &__btn { &--prev { left: 20px; } &--next { right: 20px; } }
   }
 
   @media (max-width: 640px) {
@@ -119,6 +156,7 @@
     &__price-amount {
       font-size: 20px;
     }
+    &__btn { &--prev { left: 12px; } &--next { right: 12px; } }
   }
 }
 

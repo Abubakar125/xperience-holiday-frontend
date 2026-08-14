@@ -1,12 +1,34 @@
 <app-header></app-header>
 
-<!-- Hero image gallery -->
+<!-- Hero image slider -->
 <section class="dd-hero">
-  <div class="dd-hero__gallery">
-    @for (slide of slides; track $index) {
-      <img class="dd-hero__img" [src]="slide" alt="Destination view">
-    }
+  <div class="dd-hero__clip">
+    <div
+      class="dd-hero__track"
+      [style.margin-left]="'calc(' + (-currentHeroSlide) + ' * (100% + 10px) / ' + visibleHeroSlides + ')'">
+      @for (slide of slides; track $index) {
+        <div class="dd-hero__slide">
+          <img class="dd-hero__img" [src]="slide" alt="Destination view">
+        </div>
+      }
+    </div>
   </div>
+
+  <button
+    class="dd-hero__btn dd-hero__btn--prev"
+    (click)="prevHero()"
+    [disabled]="heroAtStart"
+    aria-label="Previous slide">
+    <img src="icons/button-previous-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+  </button>
+
+  <button
+    class="dd-hero__btn dd-hero__btn--next"
+    (click)="nextHero()"
+    [disabled]="heroAtEnd"
+    aria-label="Next slide">
+    <img src="icons/button-next-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+  </button>
 </section>
 
 <!-- Destination info section -->

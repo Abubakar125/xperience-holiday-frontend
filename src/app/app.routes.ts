@@ -18,11 +18,11 @@ export const routes: Routes = [
     loadChildren: () => import('./destinations/destinations.module').then(m => m.DestinationsModule)
   },
   {
-    path: 'destination/:id',
+    path: 'destinations/:id',
     loadChildren: () => import('./destination-detail/destination-detail.module').then(m => m.DestinationDetailModule)
   },
   {
-    path: 'experience/:id',
+    path: 'experiences/:id',
     loadChildren: () => import('./experience-detail/experience-detail.module').then(m => m.ExperienceDetailModule)
   },
   {

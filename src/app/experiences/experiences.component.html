@@ -169,7 +169,7 @@
       <!-- Cards grid -->
       <div class="exp-cards">
         @for (card of cards; track card.title) {
-          <a class="exp-card" [routerLink]="['/experience', card.id]">
+          <a class="exp-card" [routerLink]="['/experiences', card.id]">
             <div class="exp-card__img-wrap">
               <img class="exp-card__img" [src]="card.image" [alt]="card.title">
               <span class="exp-card__badge"

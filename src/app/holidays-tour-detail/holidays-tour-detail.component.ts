@@ -11,7 +11,24 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
 })
 export class HolidaysTourDetailComponent {
 
-   readonly highlights = [
+  // ── Hero slider ──────────────────────────────────────────────────────────────
+  readonly heroSlides = [
+    'images/holidays-details-hero.svg',
+    'images/tourist-place-4.svg',
+    'images/tourist-place-5.svg',
+    'images/tourist-place-6.svg',
+  ];
+
+  currentHeroSlide = 0;
+
+  get maxHeroSlide(): number { return this.heroSlides.length - 1; }
+  get heroAtStart(): boolean { return this.currentHeroSlide === 0; }
+  get heroAtEnd(): boolean { return this.currentHeroSlide >= this.maxHeroSlide; }
+
+  prevHero(): void { if (!this.heroAtStart) this.currentHeroSlide--; }
+  nextHero(): void { if (!this.heroAtEnd) this.currentHeroSlide++; }
+
+  readonly highlights = [
     'Eiffel Tower – Skip-the-line access & breathtaking views from the summit.',
     'Louvre Museum – See the Mona Lisa and world-renowned masterpieces.',
     'Opéra Garnier – Visit the stunning opera house that inspired "The Phantom of the Opera".',

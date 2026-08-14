@@ -30,7 +30,7 @@
     <!-- Destinations grid -->
     <div class="featured-dest__grid">
       @for (dest of filteredDestinations; track dest.name) {
-        <a class="dest-card" [routerLink]="['/destination', dest.name.toLowerCase().replace(' ', '-')]">
+        <a class="dest-card" [routerLink]="['/destinations', dest.name.toLowerCase().replace(' ', '-')]">
           <div class="dest-card__img-wrap">
             <img [src]="dest.image" [alt]="dest.name" class="dest-card__img" />
           </div>

@@ -2,7 +2,16 @@
 
 <!-- Hero Banner -->
 <section class="ed-hero">
-  <img src="images/holidays-details-hero.svg" alt="Experience" class="ed-hero__img" />
+  <div class="ed-hero__clip">
+    <div class="ed-hero__track"
+      [style.transform]="'translateX(' + (-currentHeroSlide * 100) + '%)'">
+      @for (slide of heroSlides; track $index) {
+        <div class="ed-hero__slide">
+          <img class="ed-hero__img" [src]="slide" alt="Tour">
+        </div>
+      }
+    </div>
+  </div>
   <div class="ed-hero__overlay"></div>
 
   <div class="ed-hero__content">
@@ -14,6 +23,13 @@
     <h1 class="ed-hero__title">GUDAURI & TBILISI, GEORGIA</h1>
     <div class="ed-hero__duration-pill">5 Days | 4 Nights | 2 Destinations</div>
   </div>
+
+  <button class="ed-hero__btn ed-hero__btn--prev" (click)="prevHero()" [disabled]="heroAtStart" aria-label="Previous slide">
+    <img src="icons/button-previous-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+  </button>
+  <button class="ed-hero__btn ed-hero__btn--next" (click)="nextHero()" [disabled]="heroAtEnd" aria-label="Next slide">
+    <img src="icons/button-next-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+  </button>
 </section>
 
 <!-- Trust Bar -->
