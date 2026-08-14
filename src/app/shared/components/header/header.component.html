@@ -48,7 +48,7 @@
         Home
       </a>
 
-      <a href="#" class="site-header__link">Holidays</a>
+      <a routerLink="/holidays-tour" routerLinkActive="site-header__link--active" class="site-header__link">Holidays</a>
       <a routerLink="/experiences" routerLinkActive="site-header__link--active" class="site-header__link">Experiences</a>
       <a routerLink="/destinations" routerLinkActive="site-header__link--active" class="site-header__link">Destinations</a>
       <a href="#" class="site-header__link">Cruises</a>
@@ -92,7 +92,7 @@
         Home
         <span class="mobile-menu__badge">New Tours</span>
       </a>
-      <a href="#" class="mobile-menu__link" (click)="closeMenu()">Holidays</a>
+      <a routerLink="/holidays-tour" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Holidays</a>
       <a routerLink="/experiences" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Experiences</a>
       <a routerLink="/destinations" routerLinkActive="mobile-menu__link--active" class="mobile-menu__link" (click)="closeMenu()">Destinations</a>
       <a href="#" class="mobile-menu__link" (click)="closeMenu()">Cruises</a>

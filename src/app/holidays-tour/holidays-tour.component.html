@@ -1,0 +1,247 @@
+<app-header></app-header>
+
+<!-- ══ Hero Banner ════════════════════════════════════════════════════ -->
+<section class="exp-hero">
+  <img src="images/about-us-hero.svg" alt="Experiences" class="exp-hero__bg" />
+  <div class="exp-hero__overlay"></div>
+  <div class="exp-hero__content">
+    <h1 class="exp-hero__heading">Tours Deals</h1>
+  </div>
+</section>
+
+<!-- ══ Experiences Listing ════════════════════════════════════════════ -->
+<section class="exp-listing">
+  <div class="exp-listing__inner">
+
+    <!-- ── Left Filter Sidebar ──────────────────────────────────────── -->
+    <aside class="exp-sidebar">
+
+      <!-- Header -->
+      <div class="exp-sidebar__header">
+        <span class="exp-sidebar__title">Filter</span>
+        <button class="exp-sidebar__clear" type="button">Clear All</button>
+      </div>
+
+      <!-- Destinations -->
+      <div class="exp-sidebar__section">
+        <h3 class="exp-sidebar__section-title">Destinations</h3>
+        <ul class="exp-sidebar__list">
+          @for (region of regions; track region.key) {
+            <li class="exp-sidebar__item">
+              <div class="exp-sidebar__region-row">
+                <span class="exp-sidebar__checkbox"></span>
+                <span class="exp-sidebar__region-name">{{ region.key }}</span>
+                <button
+                  class="exp-sidebar__chevron"
+                  [class.exp-sidebar__chevron--open]="expandedRegion === region.key"
+                  (click)="toggleRegion(region.key)"
+                  type="button"
+                  [attr.aria-label]="'Toggle ' + region.key">
+                  <img src="icons/down-arrow.png" alt="" aria-hidden="true" width="12" height="8">
+                </button>
+              </div>
+              @if (expandedRegion === region.key && region.items.length) {
+                <ul class="exp-sidebar__sublist">
+                  @for (item of region.items; track item.name) {
+                    <li class="exp-sidebar__subitem">
+                      <label class="exp-sidebar__sublabel">
+                        <span class="exp-sidebar__checkbox"></span>
+                        <span class="exp-sidebar__sublabel-text">{{ item.name }}</span>
+                        <span class="exp-sidebar__count">{{ item.count }}</span>
+                      </label>
+                    </li>
+                  }
+                </ul>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+
+      <!-- Tour Type -->
+      <div class="exp-sidebar__section">
+        <h3 class="exp-sidebar__section-title">Tour Type</h3>
+        <div class="exp-sidebar__chips">
+          @for (type of tourTypes; track type) {
+            <button
+              class="exp-sidebar__chip"
+              [class.exp-sidebar__chip--active]="isTourTypeActive(type)"
+              (click)="toggleTourType(type)"
+              type="button">
+              {{ type }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Pricing -->
+      <div class="exp-sidebar__section">
+        <h3 class="exp-sidebar__section-title">Pricing</h3>
+        <div class="exp-sidebar__slider">
+          <div class="exp-sidebar__slider-track">
+            <div class="exp-sidebar__slider-fill">
+              <div class="exp-sidebar__slider-thumb exp-sidebar__slider-thumb--left"></div>
+              <div class="exp-sidebar__slider-thumb exp-sidebar__slider-thumb--right"></div>
+            </div>
+          </div>
+          <div class="exp-sidebar__slider-labels">
+            <span class="exp-sidebar__slider-min">AED 1,599</span>
+            <span class="exp-sidebar__slider-max">AED 20,000</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experiences -->
+      <div class="exp-sidebar__section">
+        <h3 class="exp-sidebar__section-title">Experiences</h3>
+        <ul class="exp-sidebar__list">
+          @for (exp of experienceFilters; track exp.name) {
+            <li class="exp-sidebar__subitem">
+              <label class="exp-sidebar__sublabel">
+                <span class="exp-sidebar__checkbox"></span>
+                <span class="exp-sidebar__sublabel-text">{{ exp.name }}</span>
+                <span class="exp-sidebar__count">{{ exp.count }}</span>
+              </label>
+            </li>
+          }
+        </ul>
+        <button class="exp-sidebar__see-more" type="button">See More +</button>
+      </div>
+
+      <!-- Discount & Offer -->
+      <div class="exp-sidebar__section exp-sidebar__section--last">
+        <h3 class="exp-sidebar__section-title">Discount &amp; Offer</h3>
+        <ul class="exp-sidebar__list">
+          @for (offer of offerFilters; track offer.name) {
+            <li class="exp-sidebar__subitem">
+              <label class="exp-sidebar__sublabel">
+                <span class="exp-sidebar__checkbox"></span>
+                <span class="exp-sidebar__sublabel-text">{{ offer.name }}</span>
+                <span class="exp-sidebar__count">{{ offer.count }}</span>
+              </label>
+            </li>
+          }
+        </ul>
+      </div>
+
+    </aside>
+
+    <!-- ── Right Content Area ──────────────────────────────────────── -->
+    <div class="exp-content">
+
+      <!-- Results / sort bar -->
+      <div class="exp-bar">
+        <p class="exp-bar__result">
+          <strong class="exp-bar__count">{{ cards.length }}</strong> Unforgettable Journey Await!
+        </p>
+        <div class="exp-bar__controls">
+          <span class="exp-bar__sort-label">Sort By:</span>
+          <div class="exp-bar__sort-wrap">
+            <select class="exp-bar__sort-select">
+              <option>Default</option>
+              <option>Latest</option>
+              <option>Price High</option>
+              <option>Price Low</option>
+            </select>
+          </div>
+          <div class="exp-bar__views">
+            <!-- Grid view -->
+            <button class="exp-bar__view-btn exp-bar__view-btn--active" type="button" aria-label="Grid view">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="0"  y="0"  width="7" height="7" rx="1.5" fill="#f9a147"/>
+                <rect x="11" y="0"  width="7" height="7" rx="1.5" fill="#f9a147"/>
+                <rect x="0"  y="11" width="7" height="7" rx="1.5" fill="#f9a147"/>
+                <rect x="11" y="11" width="7" height="7" rx="1.5" fill="#f9a147"/>
+              </svg>
+            </button>
+            <!-- List view -->
+            <button class="exp-bar__view-btn" type="button" aria-label="List view">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <rect x="0" y="1"  width="18" height="3" rx="1.5" fill="#f9a147"/>
+                <rect x="0" y="7"  width="18" height="3" rx="1.5" fill="#f9a147"/>
+                <rect x="0" y="13" width="18" height="3" rx="1.5" fill="#f9a147"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards grid -->
+      <div class="exp-cards">
+        @for (card of cards; track card.title) {
+          <a class="exp-card" [routerLink]="['/holidays-tour', card.id]">
+            <div class="exp-card__img-wrap">
+              <img class="exp-card__img" [src]="card.image" [alt]="card.title">
+              <span class="exp-card__badge"
+                [class.exp-card__badge--orange]="card.badgeColor === 'orange'"
+                [class.exp-card__badge--green]="card.badgeColor === 'green'">
+                {{ card.badge }}
+              </span>
+            </div>
+            <div class="exp-card__body">
+              <h3 class="exp-card__title">{{ card.title }}</h3>
+              <div class="exp-card__meta">
+                <span class="exp-card__loc">
+                  <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
+                  {{ card.location }}
+                </span>
+                <span class="exp-card__dur">
+                  <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
+                  {{ card.duration }}
+                </span>
+              </div>
+              <div class="exp-card__cta-row">
+                <a class="exp-card__book" href="#">
+                  Book Now
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <div class="exp-card__price-wrap">
+                  <span class="exp-card__per">per person</span>
+                  <span class="exp-card__price">{{ card.price }}</span>
+                </div>
+              </div>
+              <div class="exp-card__divider"></div>
+              <div class="exp-card__tags">
+                <span class="exp-card__tag">
+                  <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
+                  Experience
+                  <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+                </span>
+                <span class="exp-card__tag">
+                  <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
+                  Inclusion
+                  <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
+                </span>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+
+      <!-- ── Pagination ──────────────────────────────────────────────────── -->
+      <div class="exp-pagination">
+        <button class="exp-pagination__prev" type="button">
+          <img src="icons/previous.png" alt="" aria-hidden="true" width="10" height="10">
+          Prev
+        </button>
+
+        <div class="exp-pagination__pages">
+          <button class="exp-pagination__page exp-pagination__page--active" type="button">01</button>
+          <button class="exp-pagination__page" type="button">02</button>
+          <button class="exp-pagination__page" type="button">03</button>
+        </div>
+
+        <button class="exp-pagination__next" type="button">
+          Next
+          <img src="icons/next.png" alt="" aria-hidden="true" width="10" height="10">
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<app-footer></app-footer>

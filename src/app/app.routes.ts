@@ -28,5 +28,13 @@ export const routes: Routes = [
   {
     path: 'contact',
     loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule)
+  },
+  {
+    path: 'holidays-tour',
+    loadChildren: () => import('./holidays-tour/holidays-tour.module').then(m => m.HolidaysTourModule)
+  },
+  {
+    path: 'holidays-tour/:id',
+    loadChildren: () => import('./holidays-tour-detail/holidays-tour-detail.module').then(m => m.HolidaysTourDetailModule)
   }
 ];

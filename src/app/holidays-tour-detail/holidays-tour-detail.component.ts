@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 
 @Component({
-  selector: 'app-experience-detail',
+  selector: 'app-holidays-tour-detail',
   standalone: true,
   imports: [HeaderComponent, FooterComponent],
-  templateUrl: './experience-detail.component.html',
-  styleUrl: './experience-detail.component.scss'
+  templateUrl: './holidays-tour-detail.component.html',
+  styleUrl: './holidays-tour-detail.component.scss'
 })
-export class ExperienceDetailComponent implements OnInit, OnDestroy {
+export class HolidaysTourDetailComponent {
 
-  readonly highlights = [
+   readonly highlights = [
     'Eiffel Tower – Skip-the-line access & breathtaking views from the summit.',
     'Louvre Museum – See the Mona Lisa and world-renowned masterpieces.',
     'Opéra Garnier – Visit the stunning opera house that inspired "The Phantom of the Opera".',
@@ -298,4 +298,5 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.clearRelevantTimer();
   }
+
 }
