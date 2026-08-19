@@ -1,6 +1,8 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { HolidayService } from '../shared/services/holiday.service';
 
 @Component({
   selector: 'app-holidays-tour-detail',
@@ -9,64 +11,46 @@ import { FooterComponent } from '../shared/components/footer/footer.component';
   templateUrl: './holidays-tour-detail.component.html',
   styleUrl: './holidays-tour-detail.component.scss'
 })
-export class HolidaysTourDetailComponent {
+export class HolidaysTourDetailComponent implements OnInit, OnDestroy {
 
-  // ── Hero slider ──────────────────────────────────────────────────────────────
-  readonly heroSlides = [
-    'images/holidays-details-hero.svg',
-    'images/tourist-place-4.svg',
-    'images/tourist-place-5.svg',
-    'images/tourist-place-6.svg',
-  ];
+  // ── API state ─────────────────────────────────────────────────────────────
+  holiday: any = null;
+  loading = true;
+  error   = false;
 
+  get priceDisplay(): string {
+    if (!this.holiday?.price) return '—';
+    return `AED ${Number(this.holiday.price).toLocaleString()}`;
+  }
+
+  // ── Hero slider ───────────────────────────────────────────────────────────
+  heroSlides: string[] = ['images/holidays-details-hero.svg'];
   currentHeroSlide = 0;
 
   get maxHeroSlide(): number { return this.heroSlides.length - 1; }
   get heroAtStart(): boolean { return this.currentHeroSlide === 0; }
-  get heroAtEnd(): boolean { return this.currentHeroSlide >= this.maxHeroSlide; }
+  get heroAtEnd(): boolean   { return this.currentHeroSlide >= this.maxHeroSlide; }
 
   prevHero(): void { if (!this.heroAtStart) this.currentHeroSlide--; }
-  nextHero(): void { if (!this.heroAtEnd) this.currentHeroSlide++; }
+  nextHero(): void { if (!this.heroAtEnd)   this.currentHeroSlide++; }
 
-  readonly highlights = [
-    'Eiffel Tower – Skip-the-line access & breathtaking views from the summit.',
-    'Louvre Museum – See the Mona Lisa and world-renowned masterpieces.',
-    'Opéra Garnier – Visit the stunning opera house that inspired "The Phantom of the Opera".',
-    'French Café & Bakery Tour – Savor croissants, macarons & espresso at historic cafés.',
-    'Sunset Dinner Cruise on the Seine – Romantic fine dining on the river.',
-  ];
+  // ── About grid ────────────────────────────────────────────────────────────
+  details: { icon: string; label: string; value: string }[] = [];
 
-  readonly details = [
-    { icon: 'icons/accomodation-hotel.svg',   label: 'Accomodation',   value: '5 Star Hotel' },
-    { icon: 'icons/meals-hotel.svg',          label: 'Meals',          value: 'Breakfast & Dinner' },
-    { icon: 'icons/transportation.svg', label: 'Transportation',  value: 'Taxi,Car' },
-    { icon: 'icons/group-size.svg',     label: 'Group Size',     value: '10–20' },
-    { icon: 'icons/language.svg',       label: 'Language',       value: 'English, Spanish' },
-    { icon: 'icons/animal.svg',         label: 'Animal',         value: 'Cat, Pet only' },
-    { icon: 'icons/age-range.svg',      label: 'Age Range',      value: '18–45 (Year)' },
-    { icon: 'icons/season.svg',         label: 'Season',         value: 'Winter Season' },
-    { icon: 'icons/category.svg',       label: 'Category',       value: 'Adventure' },
-  ];
+  // ── Explore Locations slider ──────────────────────────────────────────────
+  locations: { name: string; days: string; image: string }[] = [];
 
-  // ── Explore Locations slider ────────────────────────────────────────────────
-  readonly locations = [
-    { name: 'Loire Valley',    days: '(01 Days)', image: 'images/tourist-place-1.svg' },
-    { name: 'Southern France', days: '(01 Days)', image: 'images/tourist-place-2.svg' },
-    { name: 'Louvre Museum',   days: '(03 Days)', image: 'images/tourist-place-3.svg' },
-    { name: 'Notre-Dame',      days: '(02 Days)', image: 'images/tourist-place-4.svg' },
-    { name: 'Versailles',      days: '(01 Days)', image: 'images/tourist-place-5.svg' },
-    { name: 'Carcassonne',     days: '(01 Days)', image: 'images/tourist-place-6.svg' },
-  ];
-
-  visibleLocations = 3;
+  visibleLocations     = 3;
   currentLocationsSlide = 0;
 
-  get maxLocationsSlide(): number { return this.locations.length - this.visibleLocations; }
-  get locationsAtStart(): boolean { return this.currentLocationsSlide === 0; }
-  get locationsAtEnd(): boolean { return this.currentLocationsSlide >= this.maxLocationsSlide; }
+  get maxLocationsSlide(): number      { return Math.max(0, this.locations.length - this.visibleLocations); }
+  get locationsAtStart(): boolean      { return this.currentLocationsSlide === 0; }
+  get locationsAtEnd(): boolean        { return this.currentLocationsSlide >= this.maxLocationsSlide; }
+  get canScrollLocations(): boolean    { return this.locations.length > this.visibleLocations; }
+  get effectiveLocationCount(): number { return Math.min(this.visibleLocations, this.locations.length); }
 
   prevLocation(): void { if (!this.locationsAtStart) this.currentLocationsSlide--; }
-  nextLocation(): void { if (!this.locationsAtEnd) this.currentLocationsSlide++; }
+  nextLocation(): void { if (!this.locationsAtEnd)   this.currentLocationsSlide++; }
 
   private updateVisibleLocations(): void {
     const w = window.innerWidth;
@@ -77,67 +61,12 @@ export class HolidaysTourDetailComponent {
     }
   }
 
-  // ── Tour Itinerary ──────────────────────────────────────────────────────────
-  itinerary = [
-    {
-      destination: 'Paris, France',
-      departure: 'Departure: 8:00 am – 8:30 am',
-      expanded: true,
-      days: [
-        {
-          day: 'Day-01', title: 'Eiffel Tower – The symbol of France', expanded: true,
-          body: 'The Eiffel Tower is the heart of Paris and offers a variety of exciting activities. Begin with a skip-the-line guided tour to the summit for breathtaking panoramic views, followed by a walk along the Champ de Mars.',
-          transport: 'Car, Flight, Boat',
-          activities: 'Climb the Eiffel Tower, Sunset & night view, Bike tour.',
-          meals: 'Breakfast, Lunch, Snacks',
-          accommodation: 'Rajonikanto Hotel',
-        },
-        {
-          day: 'Day-02', title: 'Louvre Museum – Home of the Mona Lisa', expanded: false,
-          body: "Spend a full day exploring the world's largest art museum. See the Mona Lisa, Venus de Milo and thousands of masterpieces across stunning galleries.",
-          transport: 'Metro, Walking',
-          activities: 'Mona Lisa viewing, Egyptian Antiquities, Sculpture Gallery.',
-          meals: 'Breakfast, Lunch',
-          accommodation: 'Rajonikanto Hotel',
-        },
-        {
-          day: 'Day-03', title: 'Notre-Dame – Iconic Gothic Cathedral', expanded: false,
-          body: 'Visit the recently restored Notre-Dame Cathedral and explore the Île de la Cité. Walk along the Seine river banks and visit Saint-Chapelle.',
-          transport: 'Walking, Boat Tour',
-          activities: 'Cathedral tour, Île de la Cité, Saint-Chapelle visit.',
-          meals: 'Breakfast',
-          accommodation: 'Rajonikanto Hotel',
-        },
-      ],
-    },
-    {
-      destination: 'South France',
-      departure: 'Departure: 10:00 am – 10:30 am',
-      expanded: false,
-      days: [
-        {
-          day: 'Day-04', title: 'South France – Wine Country & Lavender Fields', expanded: false,
-          body: 'Journey through the picturesque landscapes of Provence. Visit lavender fields, local wineries, and the charming village of Gordes.',
-          transport: 'Car, Bus',
-          activities: 'Wine tasting, Lavender field walk, Village tour.',
-          meals: 'Breakfast, Dinner',
-          accommodation: 'Provence Boutique Hotel',
-        },
-        {
-          day: 'Day-05', title: 'Carcassonne – Walled Medieval City', expanded: false,
-          body: "Explore the UNESCO-listed medieval citadel of Carcassonne, one of Europe's best-preserved fortified cities, before your evening departure.",
-          transport: 'Car',
-          activities: 'Medieval citadel tour, Rampart walk, City gate.',
-          meals: 'Breakfast, Lunch',
-          accommodation: 'Carcassonne Inn',
-        },
-      ],
-    },
-  ];
+  // ── Highlights ───────────────────────────────────────────────────────────
+  highlights: string[] = [];
 
+  // ── Tour Itinerary ───────────────────────────────────────────────────────
+  itinerary: any[] = [];
   expandAll = false;
-
-  toggleDestination(i: number): void { this.itinerary[i].expanded = !this.itinerary[i].expanded; }
 
   toggleDay(di: number, dayIdx: number): void {
     this.itinerary[di].days[dayIdx].expanded = !this.itinerary[di].days[dayIdx].expanded;
@@ -147,45 +76,18 @@ export class HolidaysTourDetailComponent {
     this.expandAll = !this.expandAll;
     this.itinerary.forEach(d => {
       d.expanded = this.expandAll;
-      d.days.forEach(day => day.expanded = this.expandAll);
+      d.days.forEach((day: any) => day.expanded = this.expandAll);
     });
   }
 
-  // ── Package Features ────────────────────────────────────────────────────────
-  readonly includeFeatures = [
-    'Accommodation (Hotel, Resort, Villa, Camping, etc.)',
-    'Meals (Breakfast, Lunch, Dinner – specify type)',
-    'Guided Tours & Excursions',
-    'Entry Tickets to Attractions',
-    'Adventure Activities & Travel Insurance.',
-  ];
+  // ── Package Features ─────────────────────────────────────────────────────
+  includeFeatures: string[] = [];
+  excludeFeatures: string[] = [];
 
-  readonly excludeFeatures = [
-    'Visa Fees & Processing.',
-    'Personal Expenses (Shopping, Souvenirs, Tips, etc.)',
-    'Optional Excursions & Activities.',
-    'Meals Not Mentioned in Itinerary.',
-    'Travel Insurance (if not included).',
-  ];
+  // ── Additional Info ──────────────────────────────────────────────────────
+  additionalInfo: string[] = [];
 
-  // ── Additional Info ─────────────────────────────────────────────────────────
-  readonly additionalInfo = [
-    'Free Cancellation – Some tours offer free cancellation up to a certain period (e.g., 24–48 hours before departure).',
-    "Health & Safety Guidelines – All travellers must adhere to the destination's local health and safety protocols.",
-  ];
-
-  // ── FAQ ─────────────────────────────────────────────────────────────────────
-  faqs = [
-    { q: 'What are the must-visit places in France?', a: 'Top destinations include Paris (Eiffel Tower, Louvre), Nice (French Riviera), Bordeaux (wine tours), Provence (lavender fields), and Normandy (Mont Saint-Michel).', open: true },
-    { q: 'Do tour packages include entrance fees?', a: 'Yes, most packages include entry tickets to the major attractions listed in the itinerary. Any optional excursions would be at additional cost.', open: false },
-    { q: 'What type of accommodation is included?', a: 'Our packages typically include stays in 3 to 4-star hotels, offering comfortable rooms with essential amenities. Higher or boutique categories may be available upon request.', open: false },
-    { q: 'Will I get a full refund if I cancel my trip?', a: 'Cancellation policies vary depending on the package. Free cancellation is available up to 48 hours before departure on selected tours. Please check the specific package terms.', open: false },
-    { q: 'What travel documents should I carry?', a: 'You should carry a valid passport, visa (if required), travel insurance documents, flight tickets, hotel confirmations, and any required vaccination certificates.', open: false },
-  ];
-
-  toggleFaq(i: number): void { this.faqs[i].open = !this.faqs[i].open; }
-
-  // ── Reviews ─────────────────────────────────────────────────────────────────
+  // ── Reviews (static) ─────────────────────────────────────────────────────
   readonly reviewStats = [
     { label: 'Overall',     score: 5.0, pct: 100 },
     { label: 'Transport',   score: 4.0, pct: 80 },
@@ -209,57 +111,8 @@ export class HolidaysTourDetailComponent {
 
   range(n: number): number[] { return Array.from({ length: n }, (_, i) => i); }
 
-  // ── Relevant Packages ───────────────────────────────────────────────────────
-  readonly relevantPackages = [
-    {
-      title: 'Culture & Cuisine Discovery',
-      badge: 'Solo Tour',
-      location: 'Saudi Arabia',
-      duration: '05 Days/6 Nights',
-      price: 'AED 1,500',
-      image: 'images/tourist-place-1.svg',
-    },
-    {
-      title: 'Art, Music & Heritage Tour',
-      badge: 'Family Tour',
-      location: 'Arab Emirates',
-      duration: '05 Days/6 Nights',
-      price: 'AED 5,500',
-      image: 'images/tourist-place-4.svg',
-    },
-    {
-      title: 'Eco-Friendly City Ride',
-      badge: 'Adventure Tour',
-      location: 'Tokyo, Japan',
-      duration: '05 Days/6 Nights',
-      price: 'AED 1,500',
-      image: 'images/tourist-place-5.svg',
-    },
-    {
-      title: 'Kenya Safari Adventure',
-      badge: 'Group Tour',
-      location: 'Kenya, Africa',
-      duration: '07 Days/8 Nights',
-      price: 'AED 2,800',
-      image: 'images/tourist-place-2.svg',
-    },
-    {
-      title: 'Maldives Honeymoon Escape',
-      badge: 'Honeymoon',
-      location: 'Maldives',
-      duration: '05 Days/6 Nights',
-      price: 'AED 4,200',
-      image: 'images/tourist-place-3.svg',
-    },
-    {
-      title: 'Swiss Alpine Luxury Tour',
-      badge: 'Luxury Tour',
-      location: 'Switzerland',
-      duration: '07 Days/8 Nights',
-      price: 'AED 6,500',
-      image: 'images/tourist-place-6.svg',
-    },
-  ];
+  // ── Relevant Packages ─────────────────────────────────────────────────────
+  relevantPackages: { title: string; badge: string; location: string; duration: string; price: string; image: string }[] = [];
 
   currentRelevantSlide = 0;
   visibleRelevantPackages = 3;
@@ -285,6 +138,7 @@ export class HolidaysTourDetailComponent {
   }
 
   private startRelevantTimer(): void {
+    if (this.relevantPackages.length <= this.visibleRelevantPackages) return;
     this.relevantTimer = setInterval(() => {
       const max = this.relevantPackages.length - this.visibleRelevantPackages;
       this.currentRelevantSlide = (this.currentRelevantSlide + 1) % (max + 1);
@@ -306,14 +160,101 @@ export class HolidaysTourDetailComponent {
     this.updateVisibleRelevantPackages();
   }
 
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
+  constructor(
+    private route: ActivatedRoute,
+    private holidayService: HolidayService,
+  ) {}
+
   ngOnInit(): void {
     this.updateVisibleLocations();
     this.updateVisibleRelevantPackages();
-    this.startRelevantTimer();
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.holidayService.getHoliday(+id).subscribe({
+        next: (h) => {
+          this.holiday = h;
+          this.mapHolidayData(h);
+          this.loading = false;
+          this.loadRelevantPackages(h.id);
+        },
+        error: () => { this.error = true; this.loading = false; },
+      });
+    } else {
+      this.error = true;
+      this.loading = false;
+    }
   }
 
   ngOnDestroy(): void {
     this.clearRelevantTimer();
   }
 
+  // ── Data mapping ──────────────────────────────────────────────────────────
+  private mapHolidayData(h: any): void {
+    // Hero images — fall back to placeholder if none uploaded
+    this.heroSlides = h.heroImages?.length
+      ? h.heroImages
+      : ['images/holidays-details-hero.svg'];
+
+    // About tour grid
+    const join = (arr: string[] | null) => arr?.length ? arr.join(', ') : '—';
+    this.details = [
+      { icon: 'icons/accomodation-hotel.svg', label: 'Accomodation',  value: h.accommodation || '—' },
+      { icon: 'icons/meals-hotel.svg',        label: 'Meals',         value: join(h.meals) },
+      { icon: 'icons/transportation.svg',     label: 'Transportation', value: join(h.transportation) },
+      { icon: 'icons/group-size.svg',         label: 'Group Size',    value: h.groupSize || '—' },
+      { icon: 'icons/language.svg',           label: 'Language',      value: join(h.language) },
+      { icon: 'icons/animal.svg',             label: 'Animal',        value: join(h.animal) },
+      { icon: 'icons/age-range.svg',          label: 'Age Range',     value: h.ageRange || '—' },
+      { icon: 'icons/season.svg',             label: 'Season',        value: h.season || '—' },
+      { icon: 'icons/category.svg',           label: 'Category',      value: h.category || '—' },
+    ];
+
+    // Locations
+    this.locations = h.locations || [];
+
+    // Highlights
+    this.highlights = h.highlights || [];
+
+    // Itinerary — add expanded UI state, sequential day labels
+    let dayNum = 0;
+    this.itinerary = (h.itinerary || []).map((dest: any) => ({
+      ...dest,
+      expanded: true,
+      days: (dest.days || []).map((day: any) => {
+        dayNum++;
+        return {
+          ...day,
+          day: `Day-${String(dayNum).padStart(2, '0')}`,
+          expanded: false,
+        };
+      }),
+    }));
+
+    // Features & additional info
+    this.includeFeatures = h.includeFeatures || [];
+    this.excludeFeatures = h.excludeFeatures || [];
+    this.additionalInfo  = h.additionalInfo  || [];
+  }
+
+  private loadRelevantPackages(currentId: number): void {
+    this.holidayService.getHolidays().subscribe({
+      next: (all) => {
+        this.relevantPackages = all
+          .filter(h => h.id !== currentId && h.isActive)
+          .slice(0, 6)
+          .map(h => ({
+            title:    h.title,
+            badge:    h.badge || h.type || 'Holiday',
+            location: h.location || '',
+            duration: h.summary || h.duration || '',
+            price:    `AED ${Number(h.price).toLocaleString()}`,
+            image:    h.heroImages?.[0] || 'images/tourist-place-1.svg',
+          }));
+        this.startRelevantTimer();
+      },
+    });
+  }
 }

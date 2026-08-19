@@ -290,3 +290,37 @@
     margin: 0;
   }
 }
+
+// ── Loading / Error / Empty states ──────────────────────────────────────────
+.dest-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.dest-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid #e8e8e8;
+  border-top-color: #1b6ca8;
+  border-radius: 50%;
+  animation: dest-spin 0.8s linear infinite;
+}
+
+@keyframes dest-spin { to { transform: rotate(360deg); } }
+
+.dest-error,
+.dest-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  text-align: center;
+
+  p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: #525252;
+  }
+}

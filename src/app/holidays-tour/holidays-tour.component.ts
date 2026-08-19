@@ -1,17 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
-import { RouterLink } from '@angular/router';
+import { HolidayService } from '../shared/services/holiday.service';
+
+interface CardItem {
+  id: number;
+  image: string;
+  badge: string;
+  badgeColor: '' | 'orange' | 'green';
+  title: string;
+  location: string;
+  duration: string;
+  price: string;
+}
 
 @Component({
   selector: 'app-holidays-tour',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, RouterLink],
+  imports: [HeaderComponent, FooterComponent, RouterLink, FormsModule],
   templateUrl: './holidays-tour.component.html',
   styleUrl: './holidays-tour.component.scss'
 })
-export class HolidaysTourComponent {
+export class HolidaysTourComponent implements OnInit {
 
+  // ── API state ─────────────────────────────────────────────────────────────
+  private allHolidays: any[] = [];
+  cards: CardItem[] = [];
+  loading = true;
+  totalItems = 0;
+
+  // ── Pagination ────────────────────────────────────────────────────────────
+  readonly PAGE_SIZE = 6;
+  currentPage = 1;
+
+  get pageNums(): number[] {
+    return Array.from({ length: Math.max(1, Math.ceil(this.totalItems / this.PAGE_SIZE)) }, (_, i) => i + 1);
+  }
+
+  // ── Sort ──────────────────────────────────────────────────────────────────
+  sortMode = 'Default';
+
+  // ── Filter sidebar ────────────────────────────────────────────────────────
   expandedRegion = 'Africa';
 
   regions = [
@@ -35,16 +66,16 @@ export class HolidaysTourComponent {
     { key: 'Oceania',       items: [] },
   ];
 
-  tourTypes = ['Adventure Tour', 'Family Tour', 'Group Tour', 'Solo Tour'];
+  tourTypes = ['Adventure Tour', 'Family Tour', 'Group Tour', 'Solo Tour', 'Luxury Tour', 'Honeymoon', 'Cruise', 'MICE'];
   activeTourTypes: string[] = [];
 
   experienceFilters = [
-    { name: 'Stories in Every Step',    count: '03' },
-    { name: 'Unforgettable Journeys',   count: '06' },
-    { name: 'Wander & Discover',        count: '09' },
-    { name: 'Zip-lining & Canopy',      count: '04' },
-    { name: 'Skydiving & Paragliding',  count: '06' },
-    { name: 'Surfing & Waterfalls',     count: '03' },
+    { name: 'Stories in Every Step',   count: '03' },
+    { name: 'Unforgettable Journeys',  count: '06' },
+    { name: 'Wander & Discover',       count: '09' },
+    { name: 'Zip-lining & Canopy',     count: '04' },
+    { name: 'Skydiving & Paragliding', count: '06' },
+    { name: 'Surfing & Waterfalls',    count: '03' },
   ];
 
   offerFilters = [
@@ -52,77 +83,86 @@ export class HolidaysTourComponent {
     { name: 'Special Offer',     count: '12' },
   ];
 
-  cards = [
-    {
-      id: 1,
-      image: 'images/tourist-place-1.svg',
-      badge: 'Solo Tour', badgeColor: '',
-      title: 'Cultural & Cuisine Discovery',
-      location: 'KENYA', duration: '05 Days/6 Nights', price: 'AED 1,500'
-    },
-    {
-      id: 2,
-      image: 'images/tourist-place-2.svg',
-      badge: 'Sale', badgeColor: 'orange',
-      title: "Morocco's Landmarks Journey",
-      location: 'MOROCCO', duration: '07 Days/8 Nights', price: 'AED 5,500'
-    },
-    {
-      id: 3,
-      image: 'images/tourist-place-3.svg',
-      badge: 'New', badgeColor: 'green',
-      title: 'Art, Music & Heritage Tour',
-      location: 'FRANCE', duration: '07 Days/8 Nights', price: 'AED 1,500'
-    },
-    {
-      id: 4,
-      image: 'images/tourist-place-4.svg',
-      badge: 'Family Tour', badgeColor: '',
-      title: 'Eco-Friendly City Ride',
-      location: 'PARIS', duration: '03 Days/4 Nights', price: 'AED 909'
-    },
-    {
-      id: 5,
-      image: 'images/tourist-place-5.svg',
-      badge: 'Solo Tour', badgeColor: '',
-      title: 'Exotic Adventure Retreat',
-      location: 'KENYA', duration: '04 Days/5 Nights', price: 'AED 2,500'
-    },
-    {
-      id: 6,
-      image: 'images/tourist-place-6.svg',
-      badge: 'Sale', badgeColor: 'orange',
-      title: 'Jain Hiking & Orchid Adventure',
-      location: 'GHANA', duration: '05 Days/6 Nights', price: 'AED 1,999'
-    },
-    {
-      id: 7,
-      image: 'images/tourist-place-2.svg',
-      badge: 'Sale', badgeColor: 'orange',
-      title: "Morocco's Landmarks Journey",
-      location: 'MOROCCO', duration: '07 Days/8 Nights', price: 'AED 5,500'
-    },
-    {
-      id: 8,
-      image: 'images/tourist-place-3.svg',
-      badge: 'New', badgeColor: 'green',
-      title: 'Art, Music & Heritage Tour',
-      location: 'FRANCE', duration: '07 Days/8 Nights', price: 'AED 1,500'
-    },
-  ];
+  constructor(private holidayService: HolidayService) {}
 
-  toggleRegion(key: string): void {
-    this.expandedRegion = this.expandedRegion === key ? '' : key;
+  ngOnInit(): void {
+    this.holidayService.getHolidays().subscribe({
+      next: (data) => {
+        this.allHolidays = data.filter(h => h.isActive);
+        this.updateView();
+        this.loading = false;
+      },
+      error: () => { this.loading = false; },
+    });
+  }
+
+  // ── Core view update ──────────────────────────────────────────────────────
+  private updateView(): void {
+    let filtered = [...this.allHolidays];
+
+    if (this.activeTourTypes.length > 0) {
+      filtered = filtered.filter(h => this.activeTourTypes.includes(h.type));
+    }
+
+    switch (this.sortMode) {
+      case 'Price High': filtered.sort((a, b) => b.price - a.price); break;
+      case 'Price Low':  filtered.sort((a, b) => a.price - b.price); break;
+      case 'Latest':     filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()); break;
+    }
+
+    this.totalItems = filtered.length;
+    const start = (this.currentPage - 1) * this.PAGE_SIZE;
+    this.cards = filtered.slice(start, start + this.PAGE_SIZE).map(h => this.toCard(h));
+  }
+
+  private toCard(h: any): CardItem {
+    return {
+      id:         h.id,
+      image:      h.heroImages?.[0] || 'images/tourist-place-1.svg',
+      badge:      h.badge || h.type || 'Holiday',
+      badgeColor: '',
+      title:      h.title,
+      location:   (h.location || h.destinationTitle || '').toUpperCase(),
+      duration:   h.summary || h.duration || '',
+      price:      `AED ${Number(h.price).toLocaleString()}`,
+    };
+  }
+
+  // ── Sort / filter handlers ────────────────────────────────────────────────
+  onSortChange(): void {
+    this.currentPage = 1;
+    this.updateView();
   }
 
   toggleTourType(type: string): void {
     const idx = this.activeTourTypes.indexOf(type);
     if (idx >= 0) this.activeTourTypes.splice(idx, 1);
     else this.activeTourTypes.push(type);
+    this.currentPage = 1;
+    this.updateView();
   }
 
-  isTourTypeActive(type: string): boolean {
-    return this.activeTourTypes.includes(type);
+  isTourTypeActive(type: string): boolean { return this.activeTourTypes.includes(type); }
+
+  clearAll(): void {
+    this.activeTourTypes = [];
+    this.sortMode = 'Default';
+    this.currentPage = 1;
+    this.updateView();
   }
 
+  // ── Pagination ────────────────────────────────────────────────────────────
+  goToPage(page: number): void {
+    if (page < 1 || page > this.pageNums.length) return;
+    this.currentPage = page;
+    this.updateView();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ── Sidebar accordion ─────────────────────────────────────────────────────
+  toggleRegion(key: string): void {
+    this.expandedRegion = this.expandedRegion === key ? '' : key;
+  }
+
+  formatPage(n: number): string { return n < 10 ? `0${n}` : `${n}`; }
 }

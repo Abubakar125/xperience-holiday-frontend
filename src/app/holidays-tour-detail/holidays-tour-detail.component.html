@@ -1,5 +1,20 @@
 <app-header></app-header>
 
+@if (loading) {
+  <div class="htd-state">
+    <div class="htd-spinner"></div>
+    <p>Loading holiday details…</p>
+  </div>
+}
+
+@if (error) {
+  <div class="htd-state htd-state--error">
+    <p>Holiday not found.</p>
+  </div>
+}
+
+@if (!loading && !error && holiday) {
+
 <!-- Hero Banner -->
 <section class="ed-hero">
   <div class="ed-hero__clip">
@@ -17,11 +32,11 @@
   <div class="ed-hero__content">
     <div class="ed-hero__price-row">
       <span class="ed-hero__price-from">starting from</span>
-      <span class="ed-hero__price-amount">AED 250</span>
+      <span class="ed-hero__price-amount">{{ priceDisplay }}</span>
       <span class="ed-hero__price-per">/per person</span>
     </div>
-    <h1 class="ed-hero__title">GUDAURI & TBILISI, GEORGIA</h1>
-    <div class="ed-hero__duration-pill">5 Days | 4 Nights | 2 Destinations</div>
+    <h1 class="ed-hero__title">{{ holiday?.destinationTitle || holiday?.title }}</h1>
+    <div class="ed-hero__duration-pill">{{ holiday?.summary || holiday?.duration }}</div>
   </div>
 
   <button class="ed-hero__btn ed-hero__btn--prev" (click)="prevHero()" [disabled]="heroAtStart" aria-label="Previous slide">
@@ -60,12 +75,7 @@
 
       <!-- About Tour Package -->
       <h2 class="ed-about__heading">About Tour Package</h2>
-      <p class="ed-about__desc">
-        Celebrate Eid Al Adha 2026 with a breathtaking journey through the mountains and cultural
-        heart of Georgia. This 5-day escape combines the scenic beauty of Gudauri with the historic
-        charm of Tbilisi. From the dramatic landscapes of the Caucasus Mountains and Kazbegi to the
-        cobbled streets of Old Tbilisi and the picturesque Kakheti wine region.
-      </p>
+      <p class="ed-about__desc">{{ holiday?.description }}</p>
 
       <!-- 3×3 info grid -->
       <div class="ed-about__grid">
@@ -84,18 +94,21 @@
       <div class="ed-locations">
         <h3 class="ed-locations__heading">Explore Locations</h3>
         <div class="ed-locations__viewport">
-          <button
-            class="ed-locations__arrow ed-locations__arrow--prev"
-            aria-label="Previous"
-            [disabled]="locationsAtStart"
-            (click)="prevLocation()">
-            <img src="icons/left-arrow.svg" alt="" width="12" height="14">
-          </button>
+          @if (canScrollLocations) {
+            <button
+              class="ed-locations__arrow ed-locations__arrow--prev"
+              aria-label="Previous"
+              [disabled]="locationsAtStart"
+              (click)="prevLocation()">
+              <img src="icons/left-arrow.svg" alt="" width="12" height="14">
+            </button>
+          }
           <div class="ed-locations__clip">
             <div class="ed-locations__track"
-              [style.margin-left]="'calc(' + (-currentLocationsSlide) + ' * (100% + 20px) / ' + visibleLocations + ')'">
+              [style.margin-left]="'calc(' + (-currentLocationsSlide) + ' * (100% + 20px) / ' + effectiveLocationCount + ')'">
               @for (loc of locations; track loc.name) {
-                <div class="ed-locations__card">
+                <div class="ed-locations__card"
+                  [style.flex]="'0 0 calc((100% - ' + (effectiveLocationCount - 1) + ' * 20px) / ' + effectiveLocationCount + ')'">
                   <img class="ed-locations__card-img" [src]="loc.image" [alt]="loc.name">
                   <p class="ed-locations__card-name">{{ loc.name }}</p>
                   <p class="ed-locations__card-days">{{ loc.days }}</p>
@@ -103,13 +116,15 @@
               }
             </div>
           </div>
-          <button
-            class="ed-locations__arrow ed-locations__arrow--next"
-            aria-label="Next"
-            [disabled]="locationsAtEnd"
-            (click)="nextLocation()">
-            <img src="icons/right-arrow.svg" alt="" width="12" height="14">
-          </button>
+          @if (canScrollLocations) {
+            <button
+              class="ed-locations__arrow ed-locations__arrow--next"
+              aria-label="Next"
+              [disabled]="locationsAtEnd"
+              (click)="nextLocation()">
+              <img src="icons/right-arrow.svg" alt="" width="12" height="14">
+            </button>
+          }
         </div>
       </div>
 
@@ -413,7 +428,7 @@
 
         <p class="ed-about__card-from">Starting From</p>
         <div class="ed-about__card-price">
-          <span class="ed-about__card-amount">AED 4199</span>
+          <span class="ed-about__card-amount">{{ priceDisplay }}</span>
           <span class="ed-about__card-per">/per person</span>
         </div>
 
@@ -543,5 +558,7 @@
     </div>
   </div>
 </section>
+
+} <!-- /@if holiday loaded -->
 
 <app-footer></app-footer>

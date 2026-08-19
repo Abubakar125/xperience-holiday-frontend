@@ -15,32 +15,60 @@
 
     <h2 class="featured-dest__heading">Featured Destinations</h2>
 
-    <!-- Filter tabs -->
-    <div class="featured-dest__tabs">
-      @for (tab of filterTabs; track tab.key) {
-        <button
-          class="featured-dest__tab"
-          [class.featured-dest__tab--active]="activeRegion === tab.key"
-          (click)="activeRegion = tab.key"
-          type="button"
-        >{{ tab.label }}</button>
-      }
-    </div>
+    @if (loading) {
+      <div class="dest-loading">
+        <div class="dest-spinner"></div>
+      </div>
+    } @else if (error) {
+      <div class="dest-error">
+        <p>Failed to load destinations. Please try again later.</p>
+      </div>
+    } @else if (allDestinations.length === 0) {
+      <div class="dest-empty">
+        <p>No destinations available yet. Check back soon!</p>
+      </div>
+    } @else {
 
-    <!-- Destinations grid -->
-    <div class="featured-dest__grid">
-      @for (dest of filteredDestinations; track dest.name) {
-        <a class="dest-card" [routerLink]="['/destinations', dest.name.toLowerCase().replace(' ', '-')]">
-          <div class="dest-card__img-wrap">
-            <img [src]="dest.image" [alt]="dest.name" class="dest-card__img" />
-          </div>
-          <div class="dest-card__footer">
-            <img src="icons/location.png" width="14" height="14" alt="" aria-hidden="true" class="dest-card__pin" />
-            <span class="dest-card__name">{{ dest.name }}</span>
-          </div>
-        </a>
+      <!-- Filter tabs — only show tabs that have at least one destination -->
+      @if (availableTabs.length > 1) {
+        <div class="featured-dest__tabs">
+          @for (tab of availableTabs; track tab.key) {
+            <button
+              class="featured-dest__tab"
+              [class.featured-dest__tab--active]="activeRegion === tab.key"
+              (click)="activeRegion = tab.key"
+              type="button"
+            >{{ tab.label }}</button>
+          }
+        </div>
       }
-    </div>
+
+      <!-- Destinations grid -->
+      @if (filteredDestinations.length > 0) {
+        <div class="featured-dest__grid">
+          @for (dest of filteredDestinations; track dest.id) {
+            <a class="dest-card" [routerLink]="['/destinations', dest.id]">
+              <div class="dest-card__img-wrap">
+                <img
+                  [src]="dest.image || 'images/adventure-tours.png'"
+                  [alt]="dest.name"
+                  class="dest-card__img"
+                />
+              </div>
+              <div class="dest-card__footer">
+                <img src="icons/location.png" width="14" height="14" alt="" aria-hidden="true" class="dest-card__pin" />
+                <span class="dest-card__name">{{ dest.name }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      } @else {
+        <div class="dest-empty">
+          <p>No destinations in this region yet.</p>
+        </div>
+      }
+
+    }
 
   </div>
 </section>

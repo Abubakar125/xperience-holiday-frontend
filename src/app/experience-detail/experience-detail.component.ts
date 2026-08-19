@@ -1,24 +1,26 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
+import { ExperienceService } from '../shared/services/experience.service';
+import { HolidayService } from '../shared/services/holiday.service';
 
 @Component({
   selector: 'app-experience-detail',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './experience-detail.component.html',
   styleUrl: './experience-detail.component.scss'
 })
 export class ExperienceDetailComponent implements OnInit, OnDestroy {
 
-  // ── Hero slider ──────────────────────────────────────────────────────────────
-  readonly heroSlides = [
-    'images/experice-details-hero.svg',
-    'images/tourist-place-1.svg',
-    'images/tourist-place-2.svg',
-    'images/tourist-place-3.svg',
-  ];
+  experience: any | null = null;
+  loading = true;
+  error = false;
 
+  // ── Hero slider ──────────────────────────────────────────────────────────────
+  heroSlides: string[] = ['images/experice-details-hero.svg'];
   currentHeroSlide = 0;
 
   get maxHeroSlide(): number { return this.heroSlides.length - 1; }
@@ -28,42 +30,25 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
   prevHero(): void { if (!this.heroAtStart) this.currentHeroSlide--; }
   nextHero(): void { if (!this.heroAtEnd) this.currentHeroSlide++; }
 
-  readonly highlights = [
-    'Eiffel Tower – Skip-the-line access & breathtaking views from the summit.',
-    'Louvre Museum – See the Mona Lisa and world-renowned masterpieces.',
-    'Opéra Garnier – Visit the stunning opera house that inspired "The Phantom of the Opera".',
-    'French Café & Bakery Tour – Savor croissants, macarons & espresso at historic cafés.',
-    'Sunset Dinner Cruise on the Seine – Romantic fine dining on the river.',
-  ];
-
-  readonly details = [
-    { icon: 'icons/accomodation-hotel.svg',   label: 'Accomodation',   value: '5 Star Hotel' },
-    { icon: 'icons/meals-hotel.svg',          label: 'Meals',          value: 'Breakfast & Dinner' },
-    { icon: 'icons/transportation.svg', label: 'Transportation',  value: 'Taxi,Car' },
-    { icon: 'icons/group-size.svg',     label: 'Group Size',     value: '10–20' },
-    { icon: 'icons/language.svg',       label: 'Language',       value: 'English, Spanish' },
-    { icon: 'icons/animal.svg',         label: 'Animal',         value: 'Cat, Pet only' },
-    { icon: 'icons/age-range.svg',      label: 'Age Range',      value: '18–45 (Year)' },
-    { icon: 'icons/season.svg',         label: 'Season',         value: 'Winter Season' },
-    { icon: 'icons/category.svg',       label: 'Category',       value: 'Adventure' },
-  ];
+  // ── Mapped fields ─────────────────────────────────────────────────────────────
+  priceDisplay = 'AED 0';
+  highlights: string[] = [];
+  details: { icon: string; label: string; value: string }[] = [];
+  locations: { image: string; name: string; days: string }[] = [];
+  itinerary: any[] = [];
+  includeFeatures: string[] = [];
+  excludeFeatures: string[] = [];
+  additionalInfo: string[] = [];
 
   // ── Explore Locations slider ────────────────────────────────────────────────
-  readonly locations = [
-    { name: 'Loire Valley',    days: '(01 Days)', image: 'images/tourist-place-1.svg' },
-    { name: 'Southern France', days: '(01 Days)', image: 'images/tourist-place-2.svg' },
-    { name: 'Louvre Museum',   days: '(03 Days)', image: 'images/tourist-place-3.svg' },
-    { name: 'Notre-Dame',      days: '(02 Days)', image: 'images/tourist-place-4.svg' },
-    { name: 'Versailles',      days: '(01 Days)', image: 'images/tourist-place-5.svg' },
-    { name: 'Carcassonne',     days: '(01 Days)', image: 'images/tourist-place-6.svg' },
-  ];
-
   visibleLocations = 3;
   currentLocationsSlide = 0;
 
-  get maxLocationsSlide(): number { return this.locations.length - this.visibleLocations; }
-  get locationsAtStart(): boolean { return this.currentLocationsSlide === 0; }
-  get locationsAtEnd(): boolean { return this.currentLocationsSlide >= this.maxLocationsSlide; }
+  get maxLocationsSlide(): number      { return Math.max(0, this.locations.length - this.visibleLocations); }
+  get locationsAtStart(): boolean      { return this.currentLocationsSlide === 0; }
+  get locationsAtEnd(): boolean        { return this.currentLocationsSlide >= this.maxLocationsSlide; }
+  get canScrollLocations(): boolean    { return this.locations.length > this.visibleLocations; }
+  get effectiveLocationCount(): number { return Math.min(this.visibleLocations, this.locations.length); }
 
   prevLocation(): void { if (!this.locationsAtStart) this.currentLocationsSlide--; }
   nextLocation(): void { if (!this.locationsAtEnd) this.currentLocationsSlide++; }
@@ -78,63 +63,6 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
   }
 
   // ── Tour Itinerary ──────────────────────────────────────────────────────────
-  itinerary = [
-    {
-      destination: 'Paris, France',
-      departure: 'Departure: 8:00 am – 8:30 am',
-      expanded: true,
-      days: [
-        {
-          day: 'Day-01', title: 'Eiffel Tower – The symbol of France', expanded: true,
-          body: 'The Eiffel Tower is the heart of Paris and offers a variety of exciting activities. Begin with a skip-the-line guided tour to the summit for breathtaking panoramic views, followed by a walk along the Champ de Mars.',
-          transport: 'Car, Flight, Boat',
-          activities: 'Climb the Eiffel Tower, Sunset & night view, Bike tour.',
-          meals: 'Breakfast, Lunch, Snacks',
-          accommodation: 'Rajonikanto Hotel',
-        },
-        {
-          day: 'Day-02', title: 'Louvre Museum – Home of the Mona Lisa', expanded: false,
-          body: "Spend a full day exploring the world's largest art museum. See the Mona Lisa, Venus de Milo and thousands of masterpieces across stunning galleries.",
-          transport: 'Metro, Walking',
-          activities: 'Mona Lisa viewing, Egyptian Antiquities, Sculpture Gallery.',
-          meals: 'Breakfast, Lunch',
-          accommodation: 'Rajonikanto Hotel',
-        },
-        {
-          day: 'Day-03', title: 'Notre-Dame – Iconic Gothic Cathedral', expanded: false,
-          body: 'Visit the recently restored Notre-Dame Cathedral and explore the Île de la Cité. Walk along the Seine river banks and visit Saint-Chapelle.',
-          transport: 'Walking, Boat Tour',
-          activities: 'Cathedral tour, Île de la Cité, Saint-Chapelle visit.',
-          meals: 'Breakfast',
-          accommodation: 'Rajonikanto Hotel',
-        },
-      ],
-    },
-    {
-      destination: 'South France',
-      departure: 'Departure: 10:00 am – 10:30 am',
-      expanded: false,
-      days: [
-        {
-          day: 'Day-04', title: 'South France – Wine Country & Lavender Fields', expanded: false,
-          body: 'Journey through the picturesque landscapes of Provence. Visit lavender fields, local wineries, and the charming village of Gordes.',
-          transport: 'Car, Bus',
-          activities: 'Wine tasting, Lavender field walk, Village tour.',
-          meals: 'Breakfast, Dinner',
-          accommodation: 'Provence Boutique Hotel',
-        },
-        {
-          day: 'Day-05', title: 'Carcassonne – Walled Medieval City', expanded: false,
-          body: "Explore the UNESCO-listed medieval citadel of Carcassonne, one of Europe's best-preserved fortified cities, before your evening departure.",
-          transport: 'Car',
-          activities: 'Medieval citadel tour, Rampart walk, City gate.',
-          meals: 'Breakfast, Lunch',
-          accommodation: 'Carcassonne Inn',
-        },
-      ],
-    },
-  ];
-
   expandAll = false;
 
   toggleDestination(i: number): void { this.itinerary[i].expanded = !this.itinerary[i].expanded; }
@@ -147,45 +75,11 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
     this.expandAll = !this.expandAll;
     this.itinerary.forEach(d => {
       d.expanded = this.expandAll;
-      d.days.forEach(day => day.expanded = this.expandAll);
+      d.days.forEach((day: any) => day.expanded = this.expandAll);
     });
   }
 
-  // ── Package Features ────────────────────────────────────────────────────────
-  readonly includeFeatures = [
-    'Accommodation (Hotel, Resort, Villa, Camping, etc.)',
-    'Meals (Breakfast, Lunch, Dinner – specify type)',
-    'Guided Tours & Excursions',
-    'Entry Tickets to Attractions',
-    'Adventure Activities & Travel Insurance.',
-  ];
-
-  readonly excludeFeatures = [
-    'Visa Fees & Processing.',
-    'Personal Expenses (Shopping, Souvenirs, Tips, etc.)',
-    'Optional Excursions & Activities.',
-    'Meals Not Mentioned in Itinerary.',
-    'Travel Insurance (if not included).',
-  ];
-
-  // ── Additional Info ─────────────────────────────────────────────────────────
-  readonly additionalInfo = [
-    'Free Cancellation – Some tours offer free cancellation up to a certain period (e.g., 24–48 hours before departure).',
-    "Health & Safety Guidelines – All travellers must adhere to the destination's local health and safety protocols.",
-  ];
-
-  // ── FAQ ─────────────────────────────────────────────────────────────────────
-  faqs = [
-    { q: 'What are the must-visit places in France?', a: 'Top destinations include Paris (Eiffel Tower, Louvre), Nice (French Riviera), Bordeaux (wine tours), Provence (lavender fields), and Normandy (Mont Saint-Michel).', open: true },
-    { q: 'Do tour packages include entrance fees?', a: 'Yes, most packages include entry tickets to the major attractions listed in the itinerary. Any optional excursions would be at additional cost.', open: false },
-    { q: 'What type of accommodation is included?', a: 'Our packages typically include stays in 3 to 4-star hotels, offering comfortable rooms with essential amenities. Higher or boutique categories may be available upon request.', open: false },
-    { q: 'Will I get a full refund if I cancel my trip?', a: 'Cancellation policies vary depending on the package. Free cancellation is available up to 48 hours before departure on selected tours. Please check the specific package terms.', open: false },
-    { q: 'What travel documents should I carry?', a: 'You should carry a valid passport, visa (if required), travel insurance documents, flight tickets, hotel confirmations, and any required vaccination certificates.', open: false },
-  ];
-
-  toggleFaq(i: number): void { this.faqs[i].open = !this.faqs[i].open; }
-
-  // ── Reviews ─────────────────────────────────────────────────────────────────
+  // ── Reviews (static) ────────────────────────────────────────────────────────
   readonly reviewStats = [
     { label: 'Overall',     score: 5.0, pct: 100 },
     { label: 'Transport',   score: 4.0, pct: 80 },
@@ -209,58 +103,8 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
 
   range(n: number): number[] { return Array.from({ length: n }, (_, i) => i); }
 
-  // ── Relevant Packages ───────────────────────────────────────────────────────
-  readonly relevantPackages = [
-    {
-      title: 'Culture & Cuisine Discovery',
-      badge: 'Solo Tour',
-      location: 'Saudi Arabia',
-      duration: '05 Days/6 Nights',
-      price: 'AED 1,500',
-      image: 'images/tourist-place-1.svg',
-    },
-    {
-      title: 'Art, Music & Heritage Tour',
-      badge: 'Family Tour',
-      location: 'Arab Emirates',
-      duration: '05 Days/6 Nights',
-      price: 'AED 5,500',
-      image: 'images/tourist-place-4.svg',
-    },
-    {
-      title: 'Eco-Friendly City Ride',
-      badge: 'Adventure Tour',
-      location: 'Tokyo, Japan',
-      duration: '05 Days/6 Nights',
-      price: 'AED 1,500',
-      image: 'images/tourist-place-5.svg',
-    },
-    {
-      title: 'Kenya Safari Adventure',
-      badge: 'Group Tour',
-      location: 'Kenya, Africa',
-      duration: '07 Days/8 Nights',
-      price: 'AED 2,800',
-      image: 'images/tourist-place-2.svg',
-    },
-    {
-      title: 'Maldives Honeymoon Escape',
-      badge: 'Honeymoon',
-      location: 'Maldives',
-      duration: '05 Days/6 Nights',
-      price: 'AED 4,200',
-      image: 'images/tourist-place-3.svg',
-    },
-    {
-      title: 'Swiss Alpine Luxury Tour',
-      badge: 'Luxury Tour',
-      location: 'Switzerland',
-      duration: '07 Days/8 Nights',
-      price: 'AED 6,500',
-      image: 'images/tourist-place-6.svg',
-    },
-  ];
-
+  // ── Relevant Packages (from holidays) ──────────────────────────────────────
+  relevantPackages: any[] = [];
   currentRelevantSlide = 0;
   visibleRelevantPackages = 3;
   private relevantTimer: ReturnType<typeof setInterval> | null = null;
@@ -306,10 +150,78 @@ export class ExperienceDetailComponent implements OnInit, OnDestroy {
     this.updateVisibleRelevantPackages();
   }
 
+  constructor(
+    private route: ActivatedRoute,
+    private experienceService: ExperienceService,
+    private holidayService: HolidayService,
+  ) {}
+
   ngOnInit(): void {
     this.updateVisibleLocations();
     this.updateVisibleRelevantPackages();
-    this.startRelevantTimer();
+
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.experienceService.getExperience(id).subscribe({
+      next: (data) => {
+        this.experience = data;
+        this.mapData(data);
+        this.loading = false;
+      },
+      error: () => { this.error = true; this.loading = false; },
+    });
+
+    this.holidayService.getHolidays().subscribe({
+      next: (holidays) => {
+        this.relevantPackages = holidays
+          .filter((h: any) => h.isActive)
+          .map((h: any) => ({
+            id: h.id,
+            title: h.title,
+            badge: h.badge || h.type || 'Holiday',
+            location: (h.location || h.destinationTitle || '').toUpperCase(),
+            duration: h.summary || h.duration || '',
+            price: `AED ${Number(h.price).toLocaleString()}`,
+            image: h.heroImages?.[0] || 'images/tourist-place-1.svg',
+          }));
+        this.startRelevantTimer();
+      },
+      error: () => { this.startRelevantTimer(); },
+    });
+  }
+
+  private mapData(data: any): void {
+    this.heroSlides = data.heroImages?.length
+      ? data.heroImages
+      : ['images/experice-details-hero.svg'];
+
+    this.priceDisplay = `AED ${Number(data.price).toLocaleString()}`;
+    this.highlights = data.highlights || [];
+    this.locations = data.locations || [];
+    this.includeFeatures = data.includeFeatures || [];
+    this.excludeFeatures = data.excludeFeatures || [];
+    this.additionalInfo = data.additionalInfo || [];
+
+    this.details = [
+      { icon: 'icons/accomodation-hotel.svg', label: 'Accomodation', value: data.accommodation || '—' },
+      { icon: 'icons/meals-hotel.svg',        label: 'Meals',        value: (data.meals || []).join(', ') || '—' },
+      { icon: 'icons/transportation.svg',     label: 'Transportation', value: (data.transportation || []).join(', ') || '—' },
+      { icon: 'icons/group-size.svg',         label: 'Group Size',   value: data.groupSize || '—' },
+      { icon: 'icons/language.svg',           label: 'Language',     value: (data.language || []).join(', ') || '—' },
+      { icon: 'icons/animal.svg',             label: 'Animal',       value: (data.animal || []).join(', ') || '—' },
+      { icon: 'icons/age-range.svg',          label: 'Age Range',    value: data.ageRange || '—' },
+      { icon: 'icons/season.svg',             label: 'Season',       value: data.season || '—' },
+      { icon: 'icons/category.svg',           label: 'Category',     value: data.category || '—' },
+    ];
+
+    let globalDay = 0;
+    this.itinerary = (data.itinerary || []).map((dest: any, di: number) => ({
+      ...dest,
+      expanded: di === 0,
+      days: (dest.days || []).map((day: any, dayIdx: number) => {
+        const label = `Day-${String(++globalDay).padStart(2, '0')}`;
+        return { ...day, day: label, expanded: di === 0 && dayIdx === 0 };
+      }),
+    }));
   }
 
   ngOnDestroy(): void {

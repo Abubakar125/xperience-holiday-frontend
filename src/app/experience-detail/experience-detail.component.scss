@@ -1,5 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
 
+// ── Loading / Error states ────────────────────────────────────────────────────
+.ed-state {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 60vh; flex-direction: column; gap: 16px;
+  &--error p { color: #e53e3e; font-size: 16px; }
+}
+.ed-spinner {
+  width: 40px; height: 40px;
+  border: 3px solid #e8e8e8; border-top-color: #0056a6;
+  border-radius: 50%; animation: ed-spin 0.8s linear infinite;
+}
+@keyframes ed-spin { to { transform: rotate(360deg); } }
+
 // ── Hero ──────────────────────────────────────────────────────────────────────
 .ed-hero {
   position: relative;

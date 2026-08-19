@@ -19,7 +19,7 @@
       <!-- Header -->
       <div class="exp-sidebar__header">
         <span class="exp-sidebar__title">Filter</span>
-        <button class="exp-sidebar__clear" type="button">Clear All</button>
+        <button class="exp-sidebar__clear" type="button" (click)="clearAll()">Clear All</button>
       </div>
 
       <!-- Destinations -->
@@ -132,12 +132,12 @@
       <!-- Results / sort bar -->
       <div class="exp-bar">
         <p class="exp-bar__result">
-          <strong class="exp-bar__count">{{ cards.length }}</strong> Unforgettable Journey Await!
+          <strong class="exp-bar__count">{{ totalItems }}</strong> Unforgettable Journey(s) Await!
         </p>
         <div class="exp-bar__controls">
           <span class="exp-bar__sort-label">Sort By:</span>
           <div class="exp-bar__sort-wrap">
-            <select class="exp-bar__sort-select">
+            <select class="exp-bar__sort-select" [(ngModel)]="sortMode" (change)="onSortChange()">
               <option>Default</option>
               <option>Latest</option>
               <option>Price High</option>
@@ -166,9 +166,19 @@
         </div>
       </div>
 
+      <!-- Loading / Empty states -->
+      @if (loading) {
+        <div class="exp-state"><div class="exp-spinner"></div></div>
+      } @else if (!loading && totalItems === 0) {
+        <div class="exp-state exp-state--empty">
+          <p>No experiences found.</p>
+          <button class="exp-card__book" (click)="clearAll()">Clear Filters</button>
+        </div>
+      }
+
       <!-- Cards grid -->
       <div class="exp-cards">
-        @for (card of cards; track card.title) {
+        @for (card of cards; track card.id) {
           <a class="exp-card" [routerLink]="['/experiences', card.id]">
             <div class="exp-card__img-wrap">
               <img class="exp-card__img" [src]="card.image" [alt]="card.title">
@@ -221,23 +231,31 @@
       </div>
 
       <!-- ── Pagination ──────────────────────────────────────────────────── -->
-      <div class="exp-pagination">
-        <button class="exp-pagination__prev" type="button">
-          <img src="icons/previous.png" alt="" aria-hidden="true" width="10" height="10">
-          Prev
-        </button>
+      @if (pageNums.length > 1) {
+        <div class="exp-pagination">
+          <button class="exp-pagination__prev" type="button" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">
+            <img src="icons/previous.png" alt="" aria-hidden="true" width="10" height="10">
+            Prev
+          </button>
 
-        <div class="exp-pagination__pages">
-          <button class="exp-pagination__page exp-pagination__page--active" type="button">01</button>
-          <button class="exp-pagination__page" type="button">02</button>
-          <button class="exp-pagination__page" type="button">03</button>
+          <div class="exp-pagination__pages">
+            @for (n of pageNums; track n) {
+              <button
+                class="exp-pagination__page"
+                [class.exp-pagination__page--active]="n === currentPage"
+                type="button"
+                (click)="goToPage(n)">
+                {{ formatPage(n) }}
+              </button>
+            }
+          </div>
+
+          <button class="exp-pagination__next" type="button" [disabled]="currentPage === pageNums.length" (click)="goToPage(currentPage + 1)">
+            Next
+            <img src="icons/next.png" alt="" aria-hidden="true" width="10" height="10">
+          </button>
         </div>
-
-        <button class="exp-pagination__next" type="button">
-          Next
-          <img src="icons/next.png" alt="" aria-hidden="true" width="10" height="10">
-        </button>
-      </div>
+      }
 
     </div>
   </div>

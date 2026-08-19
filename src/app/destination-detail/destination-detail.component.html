@@ -1,12 +1,24 @@
 <app-header></app-header>
 
+@if (loading) {
+  <div class="dd-loading">
+    <div class="dd-spinner"></div>
+  </div>
+} @else if (error || !destination) {
+  <div class="dd-error">
+    <h2>Destination not found.</h2>
+    <p>Please check the URL or go back to explore other destinations.</p>
+  </div>
+} @else {
+
 <!-- Hero image slider -->
+@if (heroSlides.length > 0) {
 <section class="dd-hero">
   <div class="dd-hero__clip">
     <div
       class="dd-hero__track"
       [style.margin-left]="'calc(' + (-currentHeroSlide) + ' * (100% + 10px) / ' + visibleHeroSlides + ')'">
-      @for (slide of slides; track $index) {
+      @for (slide of heroSlides; track $index) {
         <div class="dd-hero__slide">
           <img class="dd-hero__img" [src]="slide" alt="Destination view">
         </div>
@@ -14,54 +26,58 @@
     </div>
   </div>
 
-  <button
-    class="dd-hero__btn dd-hero__btn--prev"
-    (click)="prevHero()"
-    [disabled]="heroAtStart"
-    aria-label="Previous slide">
-    <img src="icons/button-previous-slide.svg" alt="" aria-hidden="true" width="50" height="50">
-  </button>
+  @if (!heroAtStart) {
+    <button
+      class="dd-hero__btn dd-hero__btn--prev"
+      (click)="prevHero()"
+      aria-label="Previous slide">
+      <img src="icons/button-previous-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+    </button>
+  }
 
-  <button
-    class="dd-hero__btn dd-hero__btn--next"
-    (click)="nextHero()"
-    [disabled]="heroAtEnd"
-    aria-label="Next slide">
-    <img src="icons/button-next-slide.svg" alt="" aria-hidden="true" width="50" height="50">
-  </button>
+  @if (!heroAtEnd) {
+    <button
+      class="dd-hero__btn dd-hero__btn--next"
+      (click)="nextHero()"
+      aria-label="Next slide">
+      <img src="icons/button-next-slide.svg" alt="" aria-hidden="true" width="50" height="50">
+    </button>
+  }
 </section>
+}
 
 <!-- Destination info section -->
 <section class="dd-info">
   <div class="dd-info__inner">
 
-    <h1 class="dd-info__title">Paris, France</h1>
+    <h1 class="dd-info__title">{{ destination.name }}</h1>
 
-    <div class="dd-info__pills">
-      <span class="dd-info__pill">Capital - Paris</span>
-      <span class="dd-info__pill">Currency - Euro</span>
-      <span class="dd-info__pill">Language - French</span>
-    </div>
+    @if (destination.tags?.length > 0) {
+      <div class="dd-info__pills">
+        @for (tag of destination.tags; track $index) {
+          <span class="dd-info__pill">{{ tag }}</span>
+        }
+      </div>
+    }
 
-    <p class="dd-info__desc">
-      Paris, known as the <strong>"City of Light"</strong> (La Ville Lumière), is the capital of France and one
-      of the most romantic and iconic cities in the world. Known for its timeless architecture, world-class
-      museums, charming streets, rich history, and exquisite cuisine, Paris is a must-visit destination for
-      travelers from around the globe. Globally recognized as a fashion capital, Paris is the birthplace of haute
-      couture and luxury brands like Chanel, Louis Vuitton, and Dior.
-    </p>
+    @if (destination.description) {
+      <p class="dd-info__desc">{{ destination.description }}</p>
+    }
 
-    <a class="dd-info__cta">
-      Best Time to Visit
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 13L13 3M13 3H5M13 3V11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </a>
+    @if (destination.bestTimeSeasons?.length > 0) {
+      <a class="dd-info__cta" [href]="'#best-time'">
+        Best Time to Visit
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 13L13 3M13 3H5M13 3V11" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    }
 
   </div>
 </section>
 
 <!-- Popular Tourist Places slider -->
+@if (places.length > 0) {
 <section class="dd-places">
   <div class="dd-places__inner">
 
@@ -69,22 +85,23 @@
 
     <div class="dd-places__viewport">
 
-      <!-- Left arrow — sits -20px outside the clip area -->
-      <button
-        class="dd-places__arrow dd-places__arrow--prev"
-        (click)="prevPlace()"
-        [disabled]="placesAtStart"
-        aria-label="Previous places">
-        <img src="icons/left-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
-      </button>
+      @if (canScrollPlaces) {
+        <button
+          class="dd-places__arrow dd-places__arrow--prev"
+          (click)="prevPlace()"
+          [disabled]="placesAtStart"
+          aria-label="Previous places">
+          <img src="icons/left-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
+        </button>
+      }
 
-      <!-- Clip wrapper — only this clips the scrolling track -->
       <div class="dd-places__clip">
         <div
           class="dd-places__track"
-          [style.margin-left]="'calc(' + (-currentPlacesSlide) + ' * (100% + 24px) / ' + visiblePlaces + ')'">
+          [style.margin-left]="'calc(' + (-currentPlacesSlide) + ' * (100% + 24px) / ' + effectivePlaceCount + ')'">
           @for (place of places; track $index) {
-            <div class="dd-places__card">
+            <div class="dd-places__card"
+              [style.flex]="'0 0 calc((100% - ' + (effectivePlaceCount - 1) + ' * 24px) / ' + effectivePlaceCount + ')'">
               <div class="dd-places__img-wrap">
                 <img class="dd-places__img" [src]="place.image" [alt]="place.name">
               </div>
@@ -94,21 +111,23 @@
         </div>
       </div>
 
-      <!-- Right arrow — sits -20px outside the clip area -->
-      <button
-        class="dd-places__arrow dd-places__arrow--next"
-        (click)="nextPlace()"
-        [disabled]="placesAtEnd"
-        aria-label="Next places">
-        <img src="icons/right-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
-      </button>
+      @if (canScrollPlaces) {
+        <button
+          class="dd-places__arrow dd-places__arrow--next"
+          (click)="nextPlace()"
+          [disabled]="placesAtEnd"
+          aria-label="Next places">
+          <img src="icons/right-arrow.svg" alt="" aria-hidden="true" width="12" height="14">
+        </button>
+      }
 
     </div>
 
   </div>
 </section>
+}
 
-<!-- Why Choose Only Us? -->
+<!-- Why Choose Only Us? (static) -->
 <section class="dd-why">
   <div class="dd-why__inner">
 
@@ -152,7 +171,8 @@
   </div>
 </section>
 
-<!-- Experience Gallery -->
+<!-- Experience Gallery (exactly 5 images) -->
+@if (destination.galleryImages?.length === 5) {
 <section class="dd-gallery">
   <div class="dd-gallery__inner">
 
@@ -160,271 +180,95 @@
 
     <div class="dd-gallery__grid">
       <div class="dd-gallery__item dd-gallery__item--sm">
-        <img class="dd-gallery__img" src="images/experience-gallery-1.svg" alt="Experience 1">
+        <img class="dd-gallery__img" [src]="destination.galleryImages[0]" alt="Experience 1">
       </div>
       <div class="dd-gallery__item dd-gallery__item--lg">
-        <img class="dd-gallery__img" src="images/experience-gallery-2.svg" alt="Experience 2">
+        <img class="dd-gallery__img" [src]="destination.galleryImages[1]" alt="Experience 2">
       </div>
       <div class="dd-gallery__item dd-gallery__item--sm">
-        <img class="dd-gallery__img" src="images/experience-gallery-3.svg" alt="Experience 3">
+        <img class="dd-gallery__img" [src]="destination.galleryImages[2]" alt="Experience 3">
       </div>
       <div class="dd-gallery__item dd-gallery__item--lg">
-        <img class="dd-gallery__img" src="images/experience-gallery-4.svg" alt="Experience 4">
+        <img class="dd-gallery__img" [src]="destination.galleryImages[3]" alt="Experience 4">
       </div>
       <div class="dd-gallery__item dd-gallery__item--sm">
-        <img class="dd-gallery__img" src="images/experience-gallery-5.svg" alt="Experience 5">
+        <img class="dd-gallery__img" [src]="destination.galleryImages[4]" alt="Experience 5">
       </div>
     </div>
 
   </div>
 </section>
+}
 
 <!-- Best Time to Visit -->
-<section class="dd-visit">
+@if (destination.bestTimeSeasons?.length > 0) {
+<section class="dd-visit" id="best-time">
   <div class="dd-visit__inner">
 
     <h2 class="dd-visit__heading">Best Time to Visit</h2>
 
     <div class="dd-visit__grid">
-
-      <!-- Spring -->
-      <div class="dd-visit__card">
-        <div class="dd-visit__card-body">
-          <img class="dd-visit__img" src="images/spring.svg" alt="Spring">
-          <div class="dd-visit__content">
-            <h3 class="dd-visit__season">Spring (March–May)</h3>
-            <p class="dd-visit__weather">Weather: 12–20°C / 53–68°F</p>
-            <p class="dd-visit__hl-label">Highlights:</p>
-            <ul class="dd-visit__list">
-              <li class="dd-visit__item">Cherry blossoms, café culture.</li>
-              <li class="dd-visit__item">Moderate crowds.</li>
-              <li class="dd-visit__item">Ideal for outdoor walks &amp; photo spots.</li>
-            </ul>
+      @for (season of destination.bestTimeSeasons; track $index) {
+        <div class="dd-visit__card">
+          <div class="dd-visit__card-body">
+            @if (season.image) {
+              <img class="dd-visit__img" [src]="season.image" [alt]="season.seasonName">
+            }
+            <div class="dd-visit__content">
+              <h3 class="dd-visit__season">{{ season.seasonName }}</h3>
+              @if (season.weather) {
+                <p class="dd-visit__weather">Weather: {{ season.weather }}</p>
+              }
+              @if (season.highlights?.length > 0) {
+                <p class="dd-visit__hl-label">Highlights:</p>
+                <ul class="dd-visit__list">
+                  @for (hl of season.highlights; track $index) {
+                    <li class="dd-visit__item">{{ hl }}</li>
+                  }
+                </ul>
+              }
+            </div>
           </div>
+          @if (season.perfectFor) {
+            <div class="dd-visit__pill">Perfect For: {{ season.perfectFor }}</div>
+          }
         </div>
-        <div class="dd-visit__pill">Perfect For: First-time travelers, couples, light packers</div>
-      </div>
-
-      <!-- Summer -->
-      <div class="dd-visit__card">
-        <div class="dd-visit__card-body">
-          <img class="dd-visit__img" src="images/summer.svg" alt="Summer">
-          <div class="dd-visit__content">
-            <h3 class="dd-visit__season">Summer (June–August)</h3>
-            <p class="dd-visit__weather">Weather: 20–30°C / 68–86°F</p>
-            <p class="dd-visit__hl-label">Highlights:</p>
-            <ul class="dd-visit__list">
-              <li class="dd-visit__item">Long daylight hours.</li>
-              <li class="dd-visit__item">Open-air cinema, festivals.</li>
-              <li class="dd-visit__item">High tourist volume &amp; prices.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dd-visit__pill">Perfect For: Festival lovers, families, nightlife explorers</div>
-      </div>
-
-      <!-- Autumn -->
-      <div class="dd-visit__card">
-        <div class="dd-visit__card-body">
-          <img class="dd-visit__img" src="images/autumn.svg" alt="Autumn">
-          <div class="dd-visit__content">
-            <h3 class="dd-visit__season">Autumn (Sep to Nov)</h3>
-            <p class="dd-visit__weather">Weather: 0–18°C / 50–64°F</p>
-            <p class="dd-visit__hl-label">Highlights:</p>
-            <ul class="dd-visit__list">
-              <li class="dd-visit__item">Golden parks, wine season.</li>
-              <li class="dd-visit__item">Fewer tourists, great photos.</li>
-              <li class="dd-visit__item">Fashion Week buzz.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dd-visit__pill">Perfect For: Photographers, solo travelers, wine lovers</div>
-      </div>
-
-      <!-- Winter -->
-      <div class="dd-visit__card">
-        <div class="dd-visit__card-body">
-          <img class="dd-visit__img" src="images/winter.svg" alt="Winter">
-          <div class="dd-visit__content">
-            <h3 class="dd-visit__season">Winter (Dec to Feb)</h3>
-            <p class="dd-visit__weather">Weather: 3–8°C / 37–46°F</p>
-            <p class="dd-visit__hl-label">Highlights:</p>
-            <ul class="dd-visit__list">
-              <li class="dd-visit__item">Christmas markets, cozy cafés.</li>
-              <li class="dd-visit__item">Fewer crowds, better deals.</li>
-              <li class="dd-visit__item">Occasional snow = pure magic.</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dd-visit__pill">Perfect For: Budget travelers, romantics, festive moods</div>
-      </div>
-
+      }
     </div>
+
   </div>
 </section>
+}
 
-<!-- Video Banner (white page background) -->
+<!-- Video Banner -->
 <div class="dd-video-banner">
   <div class="dd-video-banner__inner">
     <div class="dd-video-banner__frame">
-      <img class="dd-video-banner__img" src="images/video-banner-image.svg" alt="Destination video">
-      <button class="dd-video-banner__play" aria-label="Play video">
-        <svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 13L1 1.5V24.5L21 13Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
-        </svg>
-      </button>
+      @if (safeVideoUrl) {
+        <iframe
+          class="dd-video-banner__iframe"
+          [src]="safeVideoUrl"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      } @else {
+        <img class="dd-video-banner__img" src="images/video-banner-image.svg" alt="Destination video">
+        <button class="dd-video-banner__play" aria-label="Play video">
+          <svg width="22" height="26" viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 13L1 1.5V24.5L21 13Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      }
     </div>
   </div>
 </div>
 
-<!-- FAQ section (peach background) -->
+<!-- FAQ section -->
 <section class="dd-faq-wrap">
   <app-faq></app-faq>
 </section>
 
-<!-- Tours Available -->
-<section class="dd-tours">
-  <div class="dd-tours__inner">
-
-    <h2 class="dd-tours__heading">3 Tours Available in Paris</h2>
-    <p class="dd-tours__sub">A curated list of the most popular Tours we hope travels to different destinations</p>
-
-    <div class="dd-tours__grid">
-
-      <!-- Card 1 -->
-      <div class="dd-tours__card">
-        <div class="dd-tours__img-wrap">
-          <img class="dd-tours__img" src="images/tourist-place-1.svg" alt="Kenya Safari Adventure">
-          <span class="dd-tours__badge">Solo Tour</span>
-        </div>
-        <div class="dd-tours__body">
-          <h3 class="dd-tours__title">Kenya Safari Adventure</h3>
-          <div class="dd-tours__meta">
-            <span class="dd-tours__loc">
-              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
-              KENYA
-            </span>
-            <span class="dd-tours__dur">
-              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
-              05 Days/6 Nights
-            </span>
-          </div>
-          <div class="dd-tours__cta-row">
-            <a class="dd-tours__book" href="#">
-              Book Now
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <div class="dd-tours__price-wrap">
-              <span class="dd-tours__per">per person</span>
-              <span class="dd-tours__price">AED 1500</span>
-            </div>
-          </div>
-          <div class="dd-tours__divider"></div>
-          <div class="dd-tours__tags">
-            <span class="dd-tours__tag">
-              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
-              Experience
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-            <span class="dd-tours__tag">
-              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
-              Inclusion
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="dd-tours__card">
-        <div class="dd-tours__img-wrap">
-          <img class="dd-tours__img" src="images/tourist-place-2.svg" alt="Art, Music & Heritage Tour">
-          <span class="dd-tours__badge dd-tours__badge--orange">Sale</span>
-        </div>
-        <div class="dd-tours__body">
-          <h3 class="dd-tours__title">Art, Music &amp; Heritage Tour</h3>
-          <div class="dd-tours__meta">
-            <span class="dd-tours__loc">
-              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
-              FRANCE
-            </span>
-            <span class="dd-tours__dur">
-              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
-              07 Days/8 Nights
-            </span>
-          </div>
-          <div class="dd-tours__cta-row">
-            <a class="dd-tours__book" href="#">
-              Book Now
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <div class="dd-tours__price-wrap">
-              <span class="dd-tours__per">per person</span>
-              <span class="dd-tours__price">AED 5500</span>
-            </div>
-          </div>
-          <div class="dd-tours__divider"></div>
-          <div class="dd-tours__tags">
-            <span class="dd-tours__tag">
-              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
-              Experience
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-            <span class="dd-tours__tag">
-              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
-              Inclusion
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="dd-tours__card">
-        <div class="dd-tours__img-wrap">
-          <img class="dd-tours__img" src="images/tourist-place-3.svg" alt="Eco-Friendly City Ride">
-          <span class="dd-tours__badge dd-tours__badge--green">New</span>
-        </div>
-        <div class="dd-tours__body">
-          <h3 class="dd-tours__title">Eco-Friendly City Ride</h3>
-          <div class="dd-tours__meta">
-            <span class="dd-tours__loc">
-              <img src="icons/location.png" alt="" aria-hidden="true" width="14" height="14">
-              PARIS
-            </span>
-            <span class="dd-tours__dur">
-              <img src="icons/arrows-both-sides.png" alt="" aria-hidden="true" width="20" height="20">
-              03 Days/4 Nights
-            </span>
-          </div>
-          <div class="dd-tours__cta-row">
-            <a class="dd-tours__book" href="#">
-              Book Now
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-            <div class="dd-tours__price-wrap">
-              <span class="dd-tours__per">per person</span>
-              <span class="dd-tours__price">AED 1500</span>
-            </div>
-          </div>
-          <div class="dd-tours__divider"></div>
-          <div class="dd-tours__tags">
-            <span class="dd-tours__tag">
-              <img src="icons/experience.png" alt="" aria-hidden="true" width="16" height="16">
-              Experience
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-            <span class="dd-tours__tag">
-              <img src="icons/inclusion.png" alt="" aria-hidden="true" width="16" height="16">
-              Inclusion
-              <img src="icons/info.svg" alt="" aria-hidden="true" width="14" height="14">
-            </span>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+} <!-- end @else (destination loaded) -->
 
 <app-footer></app-footer>

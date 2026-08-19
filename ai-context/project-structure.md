@@ -8,16 +8,22 @@ frontend/
 │   ├── app/
 │   │   ├── app.component.ts/.html/.scss   ← root shell (just <router-outlet>)
 │   │   ├── app.routes.ts                  ← top-level routes
-│   │   ├── app.config.ts                  ← Angular app config (provideRouter, etc.)
+│   │   ├── app.config.ts                  ← Angular app config (provideRouter, provideHttpClient, etc.)
 │   │   ├── home/                          ← Home feature module (lazy-loaded at '/')
 │   │   │   ├── home.module.ts
 │   │   │   ├── home.component.ts/.html/.scss
+│   │   ├── holidays-tour/                 ← Holidays listing page (lazy-loaded at '/holidays-tour')
+│   │   │   ├── holidays-tour.component.ts/.html/.scss
+│   │   ├── holidays-tour-detail/          ← Holiday detail page (lazy-loaded at '/holidays-tour/:id')
+│   │   │   ├── holidays-tour-detail.component.ts/.html/.scss
 │   │   └── shared/
-│   │       └── components/
-│   │           ├── header/
-│   │           │   ├── header.component.ts/.html/.scss
-│   │           └── footer/
-│   │               ├── footer.component.ts/.html/.scss
+│   │       ├── components/
+│   │       │   ├── header/
+│   │       │   │   ├── header.component.ts/.html/.scss
+│   │       │   └── footer/
+│   │       │       ├── footer.component.ts/.html/.scss
+│   │       └── services/
+│   │           └── holiday.service.ts     ← HTTP calls to /api/holidays
 │   ├── styles.scss      ← global styles & design tokens
 │   └── ...
 ├── public/              ← static assets (icons/, images/)
@@ -27,15 +33,34 @@ frontend/
 ```
 
 ## Routing
-| Route | Module | Notes |
+| Route | Component | Notes |
 |---|---|---|
 | `/` | `HomeModule` (lazy) | Loads `HomeComponent` |
+| `/holidays-tour` | `HolidaysTourComponent` (lazy standalone) | Listings page — client-side filter/sort/pagination |
+| `/holidays-tour/:id` | `HolidaysTourDetailComponent` (lazy standalone) | Detail page — full holiday package |
 
 ## Component architecture
 - `AppComponent` — standalone, just wraps `<router-outlet>`
 - `HomeComponent` — standalone, imports `HeaderComponent` + `FooterComponent`
+- `HolidaysTourComponent` — standalone, imports `HeaderComponent`, `FooterComponent`, `RouterLink`, `FormsModule`
+- `HolidaysTourDetailComponent` — standalone, imports `HeaderComponent`, `FooterComponent`, `RouterLink`
 - `HeaderComponent` — standalone, shared
 - `FooterComponent` — standalone, shared
+
+## HttpClient
+`provideHttpClient()` is registered in `app.config.ts`. All HTTP services inject `HttpClient` via constructor DI.
+
+## HolidayService (`src/app/shared/services/holiday.service.ts`)
+```typescript
+@Injectable({ providedIn: 'root' })
+export class HolidayService {
+  private readonly API = 'http://localhost:3000/api';
+  constructor(private http: HttpClient) {}
+  getHoliday(id: number)  { return this.http.get<any>(`${this.API}/holidays/${id}`); }
+  getHolidays()           { return this.http.get<any[]>(`${this.API}/holidays`); }
+}
+```
+Note: `GET /api/holidays` and `GET /api/holidays/:id` are public — no auth token needed.
 
 ### HeaderComponent state
 | Property | Type | Purpose |
@@ -60,9 +85,20 @@ frontend/
 All sliders auto-advance on `setInterval` (4 s hero, 4 s travel stories, 3 s featured holiday cards). Timers are cleared in `ngOnDestroy`.
 
 ## Adding new pages (pattern to follow)
+
+### Option A — NgModule (legacy, used by Home)
 1. Create `src/app/<page>/<page>.module.ts` + `<page>.component.ts/.html/.scss`
 2. Add lazy route in `app.routes.ts`:
    ```ts
    { path: '<path>', loadChildren: () => import('./<page>/<page>.module').then(m => m.<Page>Module) }
    ```
 3. The module registers `RouterModule.forChild([{ path: '', component: <Page>Component }])`
+
+### Option B — Standalone component (preferred for new pages)
+1. Create `src/app/<page>/<page>.component.ts/.html/.scss`
+2. Add lazy route in `app.routes.ts`:
+   ```ts
+   { path: '<path>', loadComponent: () => import('./<page>/<page>.component').then(m => m.<Page>Component) }
+   ```
+3. Component declares `standalone: true` and lists its own `imports` array.
+4. `HolidaysTourComponent` and `HolidaysTourDetailComponent` follow this pattern.

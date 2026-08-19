@@ -128,43 +128,13 @@
     <p class="holiday-filter__sub">Curated experiences for every type of traveller.</p>
 
     <div class="holiday-filter__grid">
-
-      <div class="hf-card">
-        <img src="images/family-holidays.png" alt="Family Holidays" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Family Holidays</span>
-      </div>
-
-      <div class="hf-card">
-        <img src="images/couples-honeymoon.png" alt="Couples &amp; Honeymoon" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Couples &amp; Honeymoon</span>
-      </div>
-
-      <div class="hf-card">
-        <img src="images/luxury-holidays.png" alt="Luxury Holidays" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Luxury Holidays</span>
-      </div>
-
-      <div class="hf-card">
-        <img src="images/adventure-tours.png" alt="Adventure Tours" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Adventure Tours</span>
-      </div>
-
-      <div class="hf-card">
-        <img src="images/group-travel.png" alt="Group Travel" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Group Travel</span>
-      </div>
-
-      <div class="hf-card">
-        <img src="images/cruises.png" alt="Cruises" class="hf-card__img" />
-        <div class="hf-card__overlay"></div>
-        <span class="hf-card__label">Cruises</span>
-      </div>
-
+      @for (card of travelStyleCards; track card.label) {
+        <div class="hf-card">
+          <img [src]="card.image" [alt]="card.label" class="hf-card__img" />
+          <div class="hf-card__overlay"></div>
+          <span class="hf-card__label">{{ card.label }}</span>
+        </div>
+      }
     </div>
   </div>
 </section>
@@ -179,7 +149,7 @@
 
     <div class="fh-grid">
 
-      @for (card of fhCards; track card.title; let ci = $index) {
+      @for (card of fhCards; track card.id; let ci = $index) {
         <article class="fh-card">
           <div class="fh-card__img-wrap">
             <div class="fh-card__img-clip">
@@ -211,7 +181,7 @@
               <span class="fh-card__duration">{{ card.duration }}</span>
             </div>
             <div class="fh-card__footer">
-              <a href="#" class="fh-card__book">
+              <a [routerLink]="['/holidays-tour', card.id]" class="fh-card__book">
                 Book Now
                 <img class="fh-card__book-arrow" src="icons/booking-arrow.png" alt="" aria-hidden="true" />
               </a>
@@ -437,68 +407,28 @@
     <h2 class="wall-of-travellers__heading">Wall of Travellers Experience</h2>
     <p class="wall-of-travellers__sub">We go beyond just booking trips—we create unforgettable travel experiences that match your dreams!</p>
 
-    <div class="wall-of-travellers__grid">
-
-      <!-- Card 1: Alia -->
-      <div class="wte-card">
-        <div class="wte-card__header">
-          <img class="wte-card__avatar" src="icons/author-image.png" alt="Alia" />
-          <div class="wte-card__author-info">
-            <span class="wte-card__name">Alia</span>
-            <span class="wte-card__role">Traveler</span>
+    <div class="wte-slider">
+      <div class="wte-slider__track"
+           [style.transform]="'translateX(calc(-' + wteSlide + ' * (100% + 24px) / ' + visibleWte + '))'">
+        @for (t of testimonials; track t.id) {
+          <div class="wte-card" [style.flex]="'0 0 calc((100% - ' + (visibleWte - 1) + ' * 24px) / ' + visibleWte + ')'">
+            <div class="wte-card__header">
+              <img class="wte-card__avatar" src="icons/author-image.png" [alt]="t.name" />
+              <div class="wte-card__author-info">
+                <span class="wte-card__name">{{ t.name }}</span>
+                <span class="wte-card__role">{{ t.role || 'Traveler' }}</span>
+              </div>
+            </div>
+            <div class="wte-card__stars" [attr.aria-label]="t.stars + ' out of 5 stars'">
+              @for (s of starsArray(t.stars); track $index) {
+                <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
+              }
+            </div>
+            <p class="wte-card__rating-label">{{ t.ratingLabel }}</p>
+            <p class="wte-card__review">{{ t.review }}</p>
           </div>
-        </div>
-        <div class="wte-card__stars" aria-label="5 out of 5 stars">
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-        </div>
-        <p class="wte-card__rating-label">Average Experience</p>
-        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
+        }
       </div>
-
-      <!-- Card 2: Suhana -->
-      <div class="wte-card">
-        <div class="wte-card__header">
-          <img class="wte-card__avatar" src="icons/author-image.png" alt="Suhana" />
-          <div class="wte-card__author-info">
-            <span class="wte-card__name">Suhana</span>
-            <span class="wte-card__role">Traveler</span>
-          </div>
-        </div>
-        <div class="wte-card__stars" aria-label="5 out of 5 stars">
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-        </div>
-        <p class="wte-card__rating-label">Average Experience</p>
-        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
-      </div>
-
-      <!-- Card 3: Ahmed -->
-      <div class="wte-card">
-        <div class="wte-card__header">
-          <img class="wte-card__avatar" src="icons/author-image.png" alt="Ahmed" />
-          <div class="wte-card__author-info">
-            <span class="wte-card__name">Ahmed</span>
-            <span class="wte-card__role">Traveler</span>
-          </div>
-        </div>
-        <div class="wte-card__stars" aria-label="5 out of 5 stars">
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-          <img class="wte-card__star" src="icons/rating-star.png" alt="" aria-hidden="true" />
-        </div>
-        <p class="wte-card__rating-label">Average Experience</p>
-        <p class="wte-card__review">The tour was well-organized, and we enjoyed every bit of it. However, I wish we had more free time to explore on our own. Overall, a great experience!</p>
-      </div>
-
     </div>
   </div>
 </section>

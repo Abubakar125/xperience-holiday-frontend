@@ -1,5 +1,14 @@
 <app-header></app-header>
 
+@if (loading) {
+  <div class="ed-state"><div class="ed-spinner"></div></div>
+}
+@if (error) {
+  <div class="ed-state ed-state--error"><p>Failed to load experience. Please try again.</p></div>
+}
+
+@if (!loading && !error && experience) {
+
 <!-- Hero Banner -->
 <section class="ed-hero">
   <div class="ed-hero__clip">
@@ -17,11 +26,11 @@
   <div class="ed-hero__content">
     <div class="ed-hero__price-row">
       <span class="ed-hero__price-from">starting from</span>
-      <span class="ed-hero__price-amount">AED 250</span>
+      <span class="ed-hero__price-amount">{{ priceDisplay }}</span>
       <span class="ed-hero__price-per">/per person</span>
     </div>
-    <h1 class="ed-hero__title">Top of Burj Khalifa</h1>
-    <div class="ed-hero__duration-pill">5 Days | 4 Nights | 2 Destinations</div>
+    <h1 class="ed-hero__title">{{ experience.destinationTitle || experience.title }}</h1>
+    <div class="ed-hero__duration-pill">{{ experience.summary || experience.duration }}</div>
   </div>
 
   <button class="ed-hero__btn ed-hero__btn--prev" (click)="prevHero()" [disabled]="heroAtStart" aria-label="Previous slide">
@@ -60,12 +69,7 @@
 
       <!-- About Tour Package -->
       <h2 class="ed-about__heading">About Tour Package</h2>
-      <p class="ed-about__desc">
-        Celebrate Eid Al Adha 2026 with a breathtaking journey through the mountains and cultural
-        heart of Georgia. This 5-day escape combines the scenic beauty of Gudauri with the historic
-        charm of Tbilisi. From the dramatic landscapes of the Caucasus Mountains and Kazbegi to the
-        cobbled streets of Old Tbilisi and the picturesque Kakheti wine region.
-      </p>
+      <p class="ed-about__desc">{{ experience.description }}</p>
 
       <!-- 3×3 info grid -->
       <div class="ed-about__grid">
@@ -84,18 +88,21 @@
       <div class="ed-locations">
         <h3 class="ed-locations__heading">Explore Locations</h3>
         <div class="ed-locations__viewport">
-          <button
-            class="ed-locations__arrow ed-locations__arrow--prev"
-            aria-label="Previous"
-            [disabled]="locationsAtStart"
-            (click)="prevLocation()">
-            <img src="icons/left-arrow.svg" alt="" width="12" height="14">
-          </button>
+          @if (canScrollLocations) {
+            <button
+              class="ed-locations__arrow ed-locations__arrow--prev"
+              aria-label="Previous"
+              [disabled]="locationsAtStart"
+              (click)="prevLocation()">
+              <img src="icons/left-arrow.svg" alt="" width="12" height="14">
+            </button>
+          }
           <div class="ed-locations__clip">
             <div class="ed-locations__track"
-              [style.margin-left]="'calc(' + (-currentLocationsSlide) + ' * (100% + 20px) / ' + visibleLocations + ')'">
+              [style.margin-left]="'calc(' + (-currentLocationsSlide) + ' * (100% + 20px) / ' + effectiveLocationCount + ')'">
               @for (loc of locations; track loc.name) {
-                <div class="ed-locations__card">
+                <div class="ed-locations__card"
+                  [style.flex]="'0 0 calc((100% - ' + (effectiveLocationCount - 1) + ' * 20px) / ' + effectiveLocationCount + ')'">
                   <img class="ed-locations__card-img" [src]="loc.image" [alt]="loc.name">
                   <p class="ed-locations__card-name">{{ loc.name }}</p>
                   <p class="ed-locations__card-days">{{ loc.days }}</p>
@@ -103,13 +110,15 @@
               }
             </div>
           </div>
-          <button
-            class="ed-locations__arrow ed-locations__arrow--next"
-            aria-label="Next"
-            [disabled]="locationsAtEnd"
-            (click)="nextLocation()">
-            <img src="icons/right-arrow.svg" alt="" width="12" height="14">
-          </button>
+          @if (canScrollLocations) {
+            <button
+              class="ed-locations__arrow ed-locations__arrow--next"
+              aria-label="Next"
+              [disabled]="locationsAtEnd"
+              (click)="nextLocation()">
+              <img src="icons/right-arrow.svg" alt="" width="12" height="14">
+            </button>
+          }
         </div>
       </div>
 
@@ -413,7 +422,7 @@
 
         <p class="ed-about__card-from">Starting From</p>
         <div class="ed-about__card-price">
-          <span class="ed-about__card-amount">AED 4199</span>
+          <span class="ed-about__card-amount">{{ priceDisplay }}</span>
           <span class="ed-about__card-per">/per person</span>
         </div>
 
@@ -483,8 +492,8 @@
     <div class="ed-relevant__clip">
       <div class="ed-relevant__track"
         [style.margin-left]="'calc(' + (-currentRelevantSlide) + ' * (100% + 24px) / ' + visibleRelevantPackages + ')'">
-      @for (pkg of relevantPackages; track pkg.title) {
-        <div class="ed-relevant__card">
+      @for (pkg of relevantPackages; track pkg.id) {
+        <a class="ed-relevant__card" [routerLink]="['/holidays-tour', pkg.id]" style="text-decoration:none;color:inherit;display:block">
           <div class="ed-relevant__img-wrap">
             <img class="ed-relevant__img" [src]="pkg.image" [alt]="pkg.title">
             <span class="ed-relevant__badge">{{ pkg.badge }}</span>
@@ -502,12 +511,12 @@
               </span>
             </div>
             <div class="ed-relevant__cta-row">
-              <a class="ed-relevant__book" href="#">
+              <span class="ed-relevant__book">
                 Book Now
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
                   <path d="M1 9L9 1M9 1H3M9 1V7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-              </a>
+              </span>
               <div class="ed-relevant__price-wrap">
                 <span class="ed-relevant__per">per person</span>
                 <span class="ed-relevant__price">{{ pkg.price }}</span>
@@ -527,7 +536,7 @@
               </span>
             </div>
           </div>
-        </div>
+        </a>
       }
       </div>
     </div>
@@ -543,5 +552,7 @@
     </div>
   </div>
 </section>
+
+} <!-- end @if experience -->
 
 <app-footer></app-footer>

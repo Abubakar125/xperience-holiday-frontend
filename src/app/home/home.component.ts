@@ -1,45 +1,51 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HeaderComponent } from '../shared/components/header/header.component';
 import { FooterComponent } from '../shared/components/footer/footer.component';
 import { FaqComponent } from '../shared/components/faq/faq.component';
+import { HomeConfigService } from '../shared/services/home-config.service';
+import { TestimonialService } from '../shared/services/testimonial.service';
+import { HolidayService } from '../shared/services/holiday.service';
+import { environment } from '../../environments/environment';
+
+const IMG_BASE = environment.imgBase;
+
+const FALLBACK_SLIDES = [
+  'images/main-container.png',
+  'images/luxury-holidays.png',
+  'images/couples-honeymoon.png',
+  'images/adventure-tours.png',
+  'images/group-travel.png',
+  'images/cruises.png',
+  'images/mauritius-beach.png',
+];
+
+const FALLBACK_TRAVEL_STYLE = [
+  { label: 'Family Holidays',      image: 'images/family-holidays.png' },
+  { label: 'Couples & Honeymoon',  image: 'images/couples-honeymoon.png' },
+  { label: 'Luxury Holidays',      image: 'images/luxury-holidays.png' },
+  { label: 'Adventure Tours',      image: 'images/adventure-tours.png' },
+  { label: 'Group Travel',         image: 'images/group-travel.png' },
+  { label: 'Cruises',              image: 'images/cruises.png' },
+];
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, FaqComponent],
+  imports: [HeaderComponent, FooterComponent, FaqComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  constructor(
+    private homeConfigService: HomeConfigService,
+    private testimonialService: TestimonialService,
+    private holidayService: HolidayService,
+  ) {}
 
   // ── Featured Holiday cards ───────────────────────────────────
-  fhCards = [
-    {
-      images: ['images/mauritius.jpg', 'images/family-holidays.png', 'images/mauritius-beach.png'],
-      date: '27 July 2026', type: 'Family Tour',
-      title: 'Mauritius Family Escape', location: 'Mauritius',
-      duration: '05 Days/6 Nights', price: 'AED 1,500'
-    },
-    {
-      images: ['images/adventure-tours.png', 'images/group-travel.png', 'images/luxury-holidays.png'],
-      date: '15 Aug 2026', type: 'Adventure Tour',
-      title: 'Kenya Safari Adventure', location: 'Kenya, Africa',
-      duration: '07 Days/8 Nights', price: 'AED 5,500'
-    },
-    {
-      images: ['images/luxury-holidays.png', 'images/cruises.png', 'images/couples-honeymoon.png'],
-      date: '20 Sep 2026', type: 'Luxury Tour',
-      title: 'Switzerland Scenic Holiday', location: 'Switzerland',
-      duration: '07 Days/8 Nights', price: 'AED 1,500'
-    },
-    {
-      images: ['images/couples-honeymoon.png', 'images/mauritius-beach.png', 'images/family-holidays.png'],
-      date: '10 Oct 2026', type: 'Honeymoon',
-      title: 'Maldives Honeymoon', location: 'Maldives',
-      duration: '05 Days/6 Nights', price: 'AED 1,500'
-    }
-  ];
-  fhCardSlides = [0, 0, 0, 0];
+  fhCards: { id: number; images: string[]; date: string; type: string; title: string; location: string; duration: string; price: string }[] = [];
+  fhCardSlides: number[] = [];
   private fhCardTimer: ReturnType<typeof setInterval> | null = null;
 
   goToFhSlide(cardIndex: number, slideIndex: number) {
@@ -49,7 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   private startFhCardTimer() {
     this.fhCardTimer = setInterval(() => {
       this.fhCardSlides = this.fhCardSlides.map((slide, i) =>
-        (slide + 1) % this.fhCards[i].images.length
+        (slide + 1) % (this.fhCards[i]?.images.length || 1)
       );
     }, 3000);
   }
@@ -58,16 +64,36 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.fhCardTimer) { clearInterval(this.fhCardTimer); this.fhCardTimer = null; }
   }
 
+  // ── Travel Style cards ───────────────────────────────────────
+  travelStyleCards = FALLBACK_TRAVEL_STYLE;
+
+  // ── Testimonials slider ──────────────────────────────────────
+  testimonials: any[] = [];
+  wteSlide = 0;
+  visibleWte = 3;
+  private wteTimer: ReturnType<typeof setInterval> | null = null;
+
+  starsArray(n: number): number[] { return Array.from({ length: n ?? 5 }); }
+
+  private updateVisibleWte() {
+    const w = window.innerWidth;
+    this.visibleWte = w < 640 ? 1 : w < 1024 ? 2 : 3;
+  }
+
+  private startWteTimer() {
+    this.wteTimer = setInterval(() => {
+      const max = this.testimonials.length - this.visibleWte;
+      if (max <= 0) return;
+      this.wteSlide = this.wteSlide >= max ? 0 : this.wteSlide + 1;
+    }, 3500);
+  }
+
+  private clearWteTimer() {
+    if (this.wteTimer) { clearInterval(this.wteTimer); this.wteTimer = null; }
+  }
+
   // ── Hero slider ──────────────────────────────────────────────
-  heroSlides = [
-    'images/main-container.png',
-    'images/luxury-holidays.png',
-    'images/couples-honeymoon.png',
-    'images/adventure-tours.png',
-    'images/group-travel.png',
-    'images/cruises.png',
-    'images/mauritius-beach.png',
-  ];
+  heroSlides: string[] = FALLBACK_SLIDES;
   currentSlide = 0;
   private heroTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -90,6 +116,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.clearTsTimer();
       this.startTsTimer();
     }
+    this.updateVisibleWte();
+    this.wteSlide = 0;
   }
 
   private updateVisibleTsCards() {
@@ -103,15 +131,63 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.updateVisibleTsCards();
+    this.updateVisibleWte();
     this.startHeroTimer();
     this.startTsTimer();
     this.startFhCardTimer();
+    this.testimonialService.getTestimonials().subscribe({
+      next: (data) => {
+        this.testimonials = data.filter((t: any) => t.isActive);
+        if (this.testimonials.length > this.visibleWte) this.startWteTimer();
+      },
+    });
+    this.holidayService.getHolidays().subscribe({
+      next: (data) => {
+        const recent = data
+          .filter((h: any) => h.isActive)
+          .sort((a: any, b: any) => b.id - a.id)
+          .slice(0, 4);
+        this.fhCards = recent.map((h: any) => ({
+          id: h.id,
+          images: (h.heroImages?.length ? h.heroImages : ['images/adventure-tours.png'])
+            .map((u: string) => u.startsWith('http') ? u : IMG_BASE + u),
+          date:     h.date || '',
+          type:     h.type || h.badge || 'Holiday',
+          title:    h.title,
+          location: (h.location || h.destinationTitle || '').toUpperCase(),
+          duration: h.duration || h.summary || '',
+          price:    `AED ${Number(h.price).toLocaleString()}`,
+        }));
+        this.fhCardSlides = this.fhCards.map(() => 0);
+        this.clearFhCardTimer();
+        this.startFhCardTimer();
+      },
+    });
+    this.homeConfigService.getHomeConfig().subscribe({
+      next: ({ heroImages, travelStyleImages }) => {
+        if (heroImages?.length) {
+          this.heroSlides = heroImages.map((url: string) =>
+            url.startsWith('http') ? url : IMG_BASE + url
+          );
+          this.currentSlide = 0;
+        }
+        if (travelStyleImages?.length) {
+          this.travelStyleCards = FALLBACK_TRAVEL_STYLE.map((card, i) => ({
+            label: card.label,
+            image: travelStyleImages[i]
+              ? (travelStyleImages[i].startsWith('http') ? travelStyleImages[i] : IMG_BASE + travelStyleImages[i])
+              : card.image,
+          }));
+        }
+      },
+    });
   }
 
   ngOnDestroy() {
     this.clearHeroTimer();
     this.clearTsTimer();
     this.clearFhCardTimer();
+    this.clearWteTimer();
   }
 
   goToSlide(index: number) {
